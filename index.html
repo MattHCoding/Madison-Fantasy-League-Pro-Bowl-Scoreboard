@@ -34,6 +34,11 @@
       font-weight: 600;
       margin-bottom: 5px;
       color: #1d1d1f;
+    
+      /* make the title wrap */
+      white-space: normal;         /* override any inherited nowrap */
+      overflow-wrap: anywhere;     /* wrap long/unbroken strings */
+      word-break: break-word;      /* fallback for older browsers */
     }
     
     .week-info {
@@ -1337,3 +1342,4 @@ init();
 </script>
 </body>
 </html>
+
