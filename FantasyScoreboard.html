@@ -1,0 +1,1311 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Fantasy Football Matchup - Week 4, 2025</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    
+    body { 
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background: #f5f5f5;
+      color: #1d1d1f;
+      min-height: 100vh;
+      padding: 20px 0;
+    }
+    
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+    
+    .header {
+      text-align: center;
+      padding: 20px 0 30px;
+      background: white;
+      margin: -20px -20px 20px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+    }
+    
+    .header h1 {
+      font-size: 28px;
+      font-weight: 600;
+      margin-bottom: 5px;
+      color: #1d1d1f;
+    }
+    
+    .week-info {
+      color: #6c757d;
+      font-size: 14px;
+    }
+    
+    .matchup-container {
+      display: grid;
+      grid-template-columns: 1fr 100px 1fr;
+      gap: 15px;
+      margin-bottom: 40px;
+    }
+    
+    .team-column {
+      background: white;
+      border-radius: 8px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+      overflow: hidden;
+    }
+    
+    .team-header {
+      padding: 20px;
+      background: linear-gradient(to bottom, #f8f9fa, #ffffff);
+      border-bottom: 1px solid #e9ecef;
+    }
+    
+    .team-header-content {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+    }
+    
+    .team-name {
+      font-size: 20px;
+      font-weight: 600;
+      color: #1d1d1f;
+    }
+    
+    .team-score {
+      text-align: right;
+      min-width: 180px;
+    }
+    
+    .actual-score {
+      font-size: 32px;
+      font-weight: 700;
+      line-height: 1;
+      color: #1d1d1f;
+    }
+    
+    .projected-score {
+      font-size: 12px;
+      color: #6c757d;
+      margin-top: 4px;
+    }
+    
+    .projected-score span {
+      font-weight: 600;
+    }
+
+    /* NEW: Expected miles + status bar */
+    .expected-miles {
+      font-size: 12px;
+      color: #6c757d;
+      margin-top: 6px;
+      font-weight: 600;
+    }
+    .expected-miles-value {
+      font-weight: 700;
+      color: #1d1d1f;
+      margin-left: 4px;
+    }
+    .status-bar {
+      width: 180px;
+      height: 8px;
+      background: #eef2f7;
+      border: 1px solid #e3e7ee;
+      border-radius: 999px;
+      overflow: hidden;
+      margin-top: 6px;
+    }
+    .status-fill {
+      height: 100%;
+      width: 0%;
+      transition: width 300ms ease;
+    }
+    .status-fill.high {
+      background: linear-gradient(90deg, #22c55e, #86efac);
+    }
+    .status-fill.neutral {
+      background: linear-gradient(90deg, #3b82f6, #93c5fd);
+    }
+    .status-fill.low {
+      background: linear-gradient(90deg, #ef4444, #fecaca);
+    }
+    
+    .win-probability {
+      font-size: 11px;
+      color: #6c757d;
+      margin-top: 2px;
+    }
+    
+    .win-probability .prob-value {
+      font-weight: 600;
+      font-size: 13px;
+    }
+    
+    .win-probability .prob-value.high {
+      color: #22c55e;
+    }
+    
+    .win-probability .prob-value.low {
+      color: #ef4444;
+    }
+    
+    .projection-up {
+      color: #22c55e;
+    }
+    
+    .projection-down {
+      color: #ef4444;
+    }
+    
+    .vs-divider {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      padding-top: 80px;
+    }
+    
+    .vs-text {
+      background: white;
+      border: 2px solid #e9ecef;
+      border-radius: 50%;
+      width: 60px;
+      height: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+      font-weight: 600;
+      color: #6c757d;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.06);
+    }
+    
+    .player-list {
+      padding: 8px;
+    }
+    
+    .player-row {
+      display: grid;
+      grid-template-columns: 40px 40px 1fr auto auto;
+      gap: 10px;
+      padding: 10px;
+      margin-bottom: 4px;
+      border-radius: 6px;
+      align-items: center;
+      transition: all 0.2s;
+      position: relative;
+    }
+    
+    .player-row:hover {
+      background: #f8f9fa;
+    }
+    
+    .player-row.is-playing {
+      background: #fff3cd;
+      border: 1px solid #ffc107;
+      box-shadow: 0 2px 4px rgba(255, 193, 7, 0.2);
+      animation: pulse 2s ease-in-out infinite;
+    }
+    
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.01); }
+    }
+    
+    .player-photo {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 2px solid #e9ecef;
+      background: white;
+    }
+    
+    .player-photo.placeholder {
+      background: linear-gradient(135deg, #e9ecef, #dee2e6);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #6c757d;
+      font-size: 14px;
+      font-weight: 600;
+    }
+    
+    .position {
+      background: #e9ecef;
+      padding: 4px 8px;
+      border-radius: 4px;
+      font-size: 11px;
+      text-align: center;
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+    
+    .position.QB { background: #dc3545; color: white; }
+    .position.RB { background: #28a745; color: white; }
+    .position.WR { background: #007bff; color: white; }
+    .position.TE { background: #fd7e14; color: white; }
+    .position.FLEX { background: #6610f2; color: white; }
+    .position.DEF { background: #6c757d; color: white; }
+    
+    .player-name {
+      font-weight: 500;
+      font-size: 14px;
+      color: #1d1d1f;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    
+    .points-actual {
+      font-weight: 700;
+      font-size: 16px;
+      min-width: 60px;
+      text-align: right;
+      color: #1d1d1f;
+    }
+    
+    .points-actual.not-started {
+      color: #adb5bd;
+      font-size: 14px;
+    }
+    
+    .points-projected {
+      font-size: 13px;
+      min-width: 50px;
+      text-align: right;
+      font-weight: 600;
+    }
+    
+    .game-status {
+      font-size: 11px;
+      font-weight: 600;
+      min-width: 50px;
+      text-align: right;
+      text-transform: uppercase;
+    }
+    
+    .game-status.live {
+      color: #ffc107;
+    }
+    
+    .game-status.final {
+      color: #6c757d;
+    }
+    
+    .game-status.not-started {
+      color: #adb5bd;
+    }
+    
+    /* Game Scores Section */
+    .games-section {
+      margin-top: 40px;
+    }
+    
+    .games-header {
+      font-size: 18px;
+      font-weight: 600;
+      color: #1d1d1f;
+      margin-bottom: 15px;
+      padding-left: 5px;
+    }
+    
+    .games-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 12px;
+    }
+    
+    .game-card {
+      background: white;
+      border-radius: 8px;
+      padding: 12px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+      border: 1px solid #e9ecef;
+    }
+    
+    .game-card.live {
+      border-color: #ffc107;
+      background: linear-gradient(to bottom, #fffdf7, #ffffff);
+    }
+    
+    .game-status-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid #e9ecef;
+    }
+    
+    .game-time {
+      font-size: 12px;
+      font-weight: 600;
+      color: #6c757d;
+    }
+    
+    .game-time.live {
+      color: #dc3545;
+    }
+    
+    .game-quarter {
+      font-size: 11px;
+      color: #6c757d;
+      font-weight: 500;
+    }
+    
+    .game-teams {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    
+    .game-team {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    
+    .team-info {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    
+    .team-logo {
+      width: 24px;
+      height: 24px;
+      object-fit: contain;
+    }
+    
+    .team-abbr {
+      font-size: 14px;
+      font-weight: 500;
+      color: #1d1d1f;
+    }
+    
+    .possession-indicator {
+      display: inline-block;
+      width: 6px;
+      height: 6px;
+      background: #22c55e;
+      border-radius: 50%;
+      margin-left: 4px;
+      animation: blink 1.5s ease-in-out infinite;
+    }
+    
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.3; }
+    }
+    
+    .team-score-display {
+      font-size: 18px;
+      font-weight: 700;
+      color: #1d1d1f;
+    }
+    
+    .loading {
+      text-align: center;
+      padding: 40px;
+      color: #6c757d;
+    }
+    
+    .loading-spinner {
+      width: 40px;
+      height: 40px;
+      border: 3px solid #e9ecef;
+      border-top-color: #007bff;
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+      margin: 20px auto;
+    }
+    
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+    
+    .error {
+      background: #f8d7da;
+      border: 1px solid #f5c6cb;
+      color: #721c24;
+      padding: 15px;
+      border-radius: 8px;
+      margin: 20px 0;
+      text-align: center;
+    }
+
+    @media (max-width: 768px) {
+      .matchup-container {
+        grid-template-columns: 1fr;
+        gap: 10px;
+      }
+      
+      .vs-divider {
+        height: 50px;
+        padding-top: 0;
+      }
+      
+      .player-row {
+        grid-template-columns: 36px 36px 1fr auto auto;
+        padding: 8px;
+      }
+      
+      .games-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>Fantasy Football Matchup</h1>
+      <div class="week-info">Week 4 • 2025 Season</div>
+    </div>
+    
+    <div class="matchup-container">
+      <div class="team-column">
+        <div class="team-header">
+          <div class="team-header-content">
+            <div class="team-name">Team West</div>
+            <div class="team-score">
+              <div class="actual-score" id="west-actual">0.00</div>
+              <div class="projected-score">Proj: <span id="west-projected">0.00</span></div>
+              <div class="expected-miles">Expected Miles To Run:<span class="expected-miles-value" id="west-miles">—</span></div>
+              <div class="status-bar" aria-label="Team West win probability">
+                <div class="status-fill" id="west-bar"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="player-list" id="west-players">
+          <div class="loading">
+            <div class="loading-spinner"></div>
+            Loading player data...
+          </div>
+        </div>
+      </div>
+      
+      <div class="vs-divider">
+        <div class="vs-text">VS</div>
+      </div>
+      
+      <div class="team-column">
+        <div class="team-header">
+          <div class="team-header-content">
+            <div class="team-name">Team East</div>
+            <div class="team-score">
+              <div class="actual-score" id="east-actual">0.00</div>
+              <div class="projected-score">Proj: <span id="east-projected">0.00</span></div>
+              <div class="expected-miles">Expected Miles To Run:<span class="expected-miles-value" id="east-miles">—</span></div>
+              <div class="status-bar" aria-label="Team East win probability">
+                <div class="status-fill" id="east-bar"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="player-list" id="east-players">
+          <div class="loading">
+            <div class="loading-spinner"></div>
+            Loading player data...
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="games-section">
+      <h2 class="games-header">Live Scores</h2>
+      <div class="games-grid" id="games-grid">
+        <div class="loading">
+          <div class="loading-spinner"></div>
+          Loading games...
+        </div>
+      </div>
+    </div>
+  </div>
+
+<script>
+// ---- Configuration ----
+const YEAR = 2025;
+const WEEK = 4;
+
+const TEAMS = {
+  west: {
+    name: "Team West",
+    players: [
+      { pos: "QB", name: "Josh Allen", id: "3918298", projected: 22.7 },
+      { pos: "RB", name: "Bijan Robinson", id: "4430807", projected: 17.5 },
+      { pos: "RB", name: "Jonathan Taylor", id: "4242335", projected: 17.8 },
+      { pos: "WR", name: "Amon-Ra St. Brown", id: "4374302", projected: 14.1 },
+      { pos: "WR", name: "Ja'marr Chase", id: "4362628", projected: 13.4 },
+      { pos: "TE", name: "Tyler Warren", id: "4431459", projected: 9.5 },
+      { pos: "FLEX", name: "Saquon Barkley", id: "3929630", projected: 16.8 },
+      { pos: "FLEX", name: "Christian McCaffery", id: "3117251", projected: 19.8 },
+      { pos: "DEF", name: "Denver Broncos", id: null, projected: 8.6, logo: "https://a.espncdn.com/i/teamlogos/nfl/500/den.png" }
+    ]
+  },
+  east: {
+    name: "Team East",
+    players: [
+      { pos: "QB", name: "Jalen Hurts", id: "4040715", projected: 20.5 },
+      { pos: "RB", name: "Jahmyr Gibbs", id: "4429795", projected: 17.2 },
+      { pos: "RB", name: "De'Von Achane", id: "4429160", projected: 17.2 },
+      { pos: "WR", name: "Jaxon Smith-Njigba", id: "4430878", projected: 13.3 },
+      { pos: "WR", name: "Puka Nacua", id: "4426515", projected: 17.6 },
+      { pos: "TE", name: "Trey McBride", id: "4361307", projected: 11.8 },
+      { pos: "FLEX", name: "Derrick Henry", id: "3043078", projected: 16.2 },
+      { pos: "FLEX", name: "Justin Jefferson", id: "4262921", projected: 13.5 },
+      { pos: "DEF", name: "Houston Texans", id: null, projected: 7.1, logo: "https://a.espncdn.com/i/teamlogos/nfl/500/hou.png" }
+    ]
+  }
+};
+
+// ---- Error Function (erf) Implementation ----
+function erf(x) {
+  // Using approximation: erf(x) ≈ sign(x) * sqrt(1 - exp(-x^2 * (4/π + ax^2) / (1 + ax^2)))
+  // where a ≈ 0.147
+  const a = 0.147;
+  const x2 = x * x;
+  const ax2 = a * x2;
+  const num = 4.0 / Math.PI + ax2;
+  const denom = 1.0 + ax2;
+  const inner = -x2 * (num / denom);
+  const result = Math.sign(x) * Math.sqrt(1.0 - Math.exp(inner));
+  return result;
+}
+
+// ---- Win Probability Calculation ----
+function calculateWinProbability(westPlayers, eastPlayers, westStats, eastStats) {
+  const k = 0.3;
+  const v0 = 1.8;
+  const c = 2.0;
+  
+  const allPlayers = [...westPlayers, ...eastPlayers];
+  const teamArray = [...westPlayers.map(() => true), ...eastPlayers.map(() => false)];
+  
+  let muA = 0;
+  let muB = 0;
+  let varA = 0;
+  let varB = 0;
+  
+  for (let i = 0; i < allPlayers.length; i++) {
+    const player = allPlayers[i];
+    const isWest = teamArray[i];
+    const stats = isWest ? 
+      westStats.find(s => s.playerId === player.id) :
+      eastStats.find(s => s.playerId === player.id);
+    
+    // Get current points and time remaining
+    let s = 0;  // current points
+    let r = 1;  // fraction remaining
+    
+    if (stats) {
+      s = stats.fantasyPoints || 0;
+      const minRemaining = stats.minutesRemaining;
+      
+      if (minRemaining === "OT") {
+        r = 0;  // Game in OT, no time remaining
+      } else if (minRemaining === "0:00") {
+        r = 0;  // Game finished
+      } else if (minRemaining === "60:00" || minRemaining === "—") {
+        r = 1;  // Game not started
+      } else {
+        // Parse time
+        const parts = minRemaining.split(":");
+        const minutes = parseInt(parts[0]) + parseInt(parts[1]) / 60;
+        r = minutes / 60;
+      }
+    }
+    
+    const p = player.projected || 0;
+    
+    // Calculate remaining mean and variance
+    const rem_mu = r * p + k * (s - (1 - r) * p);
+    const mu = s + Math.max(rem_mu, 0.0);
+    const rem_var = v0 * r * (p + c);
+    
+    if (isWest) {
+      muA += mu;
+      varA += rem_var;
+    } else {
+      muB += mu;
+      varB += rem_var;
+    }
+  }
+  
+  // Calculate probability
+  const sd = Math.sqrt(varA + varB) + 1e-9;
+  const z = (muA - muB) / sd;
+  const probA = 0.5 * (1 + erf(z / Math.sqrt(2)));
+  
+  return {
+    westProb: probA,
+    eastProb: 1 - probA,
+    westExpected: muA,
+    eastExpected: muB
+  };
+}
+
+// ---- Import all utility functions from original HTML ----
+const get = (o, path, fb=undefined) => path.reduce((a,k)=>(a && a[k]!=null)?a[k]:undefined, o) ?? fb;
+const toNum = (v) => {
+  if (v == null) return 0;
+  if (typeof v === "number") return Number.isFinite(v) ? v : 0;
+  if (typeof v === "string") {
+    const cleaned = v.replace(/[,]/g, "").trim();
+    const n = parseFloat(cleaned);
+    return Number.isFinite(n) ? n : 0;
+  }
+  return 0;
+};
+
+async function fetchJSON(url) {
+  const res = await fetch(url, { cache: "no-store", credentials: "omit" });
+  if (!res.ok) throw new Error(`HTTP ${res.status} for ${url}`);
+  return res.json();
+}
+
+async function getEventIds(year, week) {
+  const url = `https://site.api.espn.com/apis/site/v2/sports/football/nfl/scoreboard?dates=${year}&seasontype=2&week=${week}`;
+  const sb = await fetchJSON(url);
+  return (sb.events || []).map(e => String(e.id)).filter(Boolean);
+}
+
+async function getBoxscore(gameId) {
+  const url = `https://cdn.espn.com/core/nfl/boxscore?xhr=1&gameId=${gameId}`;
+  return fetchJSON(url);
+}
+
+async function getPlays(eventId) {
+  const url = `https://sports.core.api.espn.com/v2/sports/football/leagues/nfl/events/${eventId}/competitions/${eventId}/plays?limit=300`;
+  return fetchJSON(url);
+}
+
+function extractAthleteIdFromRef(ref) {
+  try {
+    const u = new URL(ref);
+    const m = u.pathname.match(/\/athletes\/(\d+)/);
+    if (m) return String(m[1]);
+  } catch {
+    const m = String(ref).match(/\/athletes\/(\d+)/);
+    if (m) return String(m[1]);
+  }
+  return null;
+}
+
+async function buildTwoPtMap(eventId, idSet) {
+  try {
+    const data = await getPlays(eventId);
+    const items = Array.isArray(data?.items) ? data.items : [];
+    const out = Object.create(null);
+
+    for (const it of items) {
+      const val = toNum(get(it, ["pointAfterAttempt","value"]));
+      if (val !== 2) continue;
+
+      const parts = Array.isArray(it?.participants) ? it.participants : [];
+      for (const p of parts) {
+        const t = p?.type;
+        if (t !== "patPasser" && t !== "patScorer") continue;
+
+        const ref = get(p, ["athlete","$ref"]);
+        if (typeof ref !== "string") continue;
+
+        const pid = extractAthleteIdFromRef(ref);
+        if (!pid || !idSet.has(pid)) continue;
+
+        if (!out[pid]) out[pid] = { twoPtPasses: 0, twoPtScores: 0 };
+        if (t === "patPasser") out[pid].twoPtPasses += 1;
+        if (t === "patScorer") out[pid].twoPtScores += 1;
+      }
+    }
+    return out;
+  } catch {
+    return {};
+  }
+}
+
+async function resolveHeadshot(ath) {
+  const hs = get(ath, ["headshot"]);
+  if (!hs) return "";
+  if (typeof hs === "string") return hs;
+
+  const href = get(hs, ["href"]) || get(hs, ["url"]);
+  if (href) return href;
+
+  const ref = get(hs, ["$ref"]);
+  if (typeof ref === "string" && ref.startsWith("http")) {
+    try {
+      const x = await fetchJSON(`${ref}?lang=en&region=us`);
+      return get(x, ["href"]) || get(x, ["url"]) || "";
+    } catch {
+      return "";
+    }
+  }
+  return "";
+}
+
+function resolveDisplayName(ath) {
+  return (
+    get(ath, ["displayName"]) ||
+    get(ath, ["fullName"]) ||
+    [get(ath, ["firstName"], ""), get(ath, ["lastName"], "")]
+      .filter(Boolean)
+      .join(" ")
+      .trim()
+  );
+}
+
+async function fetchAthletesMap(ids) {
+  const results = await Promise.all(ids.map(async (id) => {
+    const url = `https://sports.core.api.espn.com/v2/sports/football/leagues/nfl/athletes/${id}?lang=en&region=us`;
+    try {
+      const ath = await fetchJSON(url);
+      const name = resolveDisplayName(ath) || "";
+      const headshot = await resolveHeadshot(ath);
+      return [String(id), { name, headshot }];
+    } catch {
+      return [String(id), { name: "", headshot: "" }];
+    }
+  }));
+  return Object.fromEntries(results);
+}
+
+function pluckPlayerFromBox(box, playerId) {
+  const groups = get(box, ["gamepackageJSON","boxscore","players"], []);
+  let rec = null;
+
+  for (const group of groups) {
+    const statistics = group?.statistics || [];
+    for (let sIdx = 0; sIdx <= 3; sIdx++) {
+      const statObj = statistics[sIdx];
+      if (!statObj) continue;
+      const athletes = statObj.athletes || [];
+      for (const a of athletes) {
+        const id = String(get(a, ["athlete","id"], ""));
+        if (id !== playerId) continue;
+        if (!rec) {
+          rec = {
+            id,
+            name: get(a, ["athlete","displayName"], ""),
+            headshot: get(a, ["athlete","headshot","href"], ""),
+            cats: {0:[],1:[],2:[],3:[]}
+          };
+        }
+        if (!rec.cats[sIdx]?.length) {
+          rec.cats[sIdx] = Array.isArray(a.stats) ? a.stats.slice() : [];
+        }
+      }
+    }
+  }
+  return rec;
+}
+
+function deriveMetrics(cats) {
+  const pass = cats[0] || [];
+  const rush = cats[1] || [];
+  const recv = cats[2] || [];
+  const fumb = cats[3] || [];
+
+  return {
+    passYds: toNum(pass[1]),
+    passTD:  toNum(pass[3]),
+    passINT: toNum(pass[4]),
+    rushYds: toNum(rush[1]),
+    rushTD:  toNum(rush[3]),
+    rec:     toNum(recv[0]),
+    recYds:  toNum(recv[1]),
+    recTD:   toNum(recv[3]),
+    fumLost: toNum(fumb[1]),
+  };
+}
+
+function computeFantasyPoints(s) {
+  return (
+    0.04 * toNum(s.passYds) +
+    4    * toNum(s.passTD)  +
+   -2    * toNum(s.passINT) +
+    0.1  * toNum(s.rushYds) +
+    6    * toNum(s.rushTD)  +
+    0.5  * toNum(s.rec)     +
+    0.1  * toNum(s.recYds)  +
+    6    * toNum(s.recTD)   +
+   -2    * toNum(s.fumLost) +
+    2    * toNum(s.twoPtPasses) +
+    2    * toNum(s.twoPtScores)
+  );
+}
+
+function parseClockToSeconds(clock) {
+  if (typeof clock !== "string") return NaN;
+  const m = clock.trim().match(/^(\d+):(\d{1,2})(?:\.\d+)?$/);
+  if (!m) return NaN;
+  const min = parseInt(m[1], 10);
+  const sec = parseInt(m[2], 10);
+  if (!Number.isFinite(min) || !Number.isFinite(sec)) return NaN;
+  return min * 60 + sec;
+}
+
+function formatSecsToClock(totalSecs) {
+  const t = Math.max(0, Math.round(totalSecs));
+  const min = Math.floor(t / 60);
+  const sec = t % 60;
+  return `${min}:${String(sec).padStart(2, "0")}`;
+}
+
+function computeMinutesRemainingFromBox(box) {
+  const st = get(box, ["gamepackageJSON","header","competitions",0,"status"]);
+  if (!st) return "—";
+
+  const period = toNum(get(st, ["period"]));
+  if (![1,2,3,4].includes(period)) return "OT";
+
+  const state = String(get(st, ["type","state"], "")).toLowerCase();
+  const completed = !!get(st, ["type","completed"]);
+
+  if (state !== "in") {
+    return completed ? "0:00" : "60:00";
+  }
+
+  const clockStr = get(st, ["displayClock"]) || get(st, ["type","statusPrimary"]) || "";
+  let secLeftQ = parseClockToSeconds(clockStr);
+  if (!Number.isFinite(secLeftQ)) secLeftQ = 0;
+
+  const total = secLeftQ + (4 - period) * 15 * 60;
+  return formatSecsToClock(total);
+}
+
+// ---- Extract game info for scorecards ----
+function extractGameInfo(box) {
+  const comp = get(box, ["gamepackageJSON","header","competitions",0]);
+  if (!comp) return null;
+  
+  const status = comp.status || {};
+  const competitors = comp.competitors || [];
+  
+  if (competitors.length < 2) return null;
+  
+  // Get game status
+  const state = String(get(status, ["type","state"], "")).toLowerCase();
+  const completed = !!get(status, ["type","completed"]);
+  const isLive = state === "in";
+  
+  const startISO = get(comp, ["date"]) || get(comp, ["startDate"]) || "";
+  const gameInfo = {
+  id: comp.id,
+  quarter: get(status, ["period"]),
+  displayQuarter: get(status, ["type","shortDetail"]) || get(status, ["displayPeriod"]) || "",
+  clock: get(status, ["displayClock"]) || "",
+  isLive: isLive,
+  isFinal: completed,
+  startTimeMs: startISO ? Date.parse(startISO) : Number.POSITIVE_INFINITY,
+  teams: []
+};
+
+  
+  // Process each team
+  for (let i = 0; i < 2; i++) {
+    const team = competitors[i];
+    if (!team) continue;
+    
+    const teamInfo = {
+      id: get(team, ["team","id"]),
+      name: get(team, ["team","displayName"]),
+      abbreviation: get(team, ["team","abbreviation"]),
+      logo: get(team, ["team","logos",0,"href"]) || get(team, ["team","logo"]),
+      score: get(team, ["score"]) || "0",
+      hasPossession: !!get(team, ["possession"]),
+      homeAway: get(team, ["homeAway"])
+    };
+    
+    gameInfo.teams.push(teamInfo);
+  }
+  
+  return gameInfo;
+}
+
+async function getWeekStatsForPlayers(year, week, playerIds) {
+  const ids = playerIds.map(String);
+  const idSet = new Set(ids);
+
+  const athletes = await fetchAthletesMap(ids);
+  const events = await getEventIds(year, week);
+  
+  const gamesInfo = [];
+  const perEvent = await Promise.all(events.map(async (eventId) => {
+    const [box, twoPtMap] = await Promise.all([
+      getBoxscore(eventId).catch(()=>null),
+      buildTwoPtMap(eventId, idSet).catch(()=>({}))
+    ]);
+    const minutesRemaining = box ? computeMinutesRemainingFromBox(box) : "60:00";
+    
+    // Extract game info for scorecard
+    if (box) {
+      const gameInfo = extractGameInfo(box);
+      if (gameInfo) {
+        gamesInfo.push(gameInfo);
+      }
+    }
+    
+    return { eventId, box, twoPtMap, minutesRemaining };
+  }));
+
+  const rows = [];
+  const seen = new Set();
+
+  for (const { eventId, box, twoPtMap, minutesRemaining } of perEvent) {
+    for (const pid of idSet) {
+      const rec = box ? pluckPlayerFromBox(box, pid) : null;
+      const two = twoPtMap?.[pid] || { twoPtPasses: 0, twoPtScores: 0 };
+
+      if (!rec && two.twoPtPasses === 0 && two.twoPtScores === 0) continue;
+
+      const m = rec ? deriveMetrics(rec.cats) : {
+        passYds:0, passTD:0, passINT:0,
+        rushYds:0, rushTD:0,
+        rec:0, recYds:0, recTD:0,
+        fumLost:0
+      };
+      const info = athletes[pid] || { name: "", headshot: "" };
+
+      const baseRow = {
+        eventId: String(eventId),
+        minutesRemaining: minutesRemaining || "60:00",
+        playerId: String(pid),
+        photo: (rec?.headshot) || info.headshot || "",
+        displayName: (rec?.name) || info.name || "",
+        passYds: m.passYds,
+        passTD:  m.passTD,
+        passINT: m.passINT,
+        rushYds: m.rushYds,
+        rushTD:  m.rushTD,
+        rec:     m.rec,
+        recYds:  m.recYds,
+        recTD:   m.recTD,
+        fumLost: m.fumLost,
+        twoPtPasses: two.twoPtPasses,
+        twoPtScores: two.twoPtScores
+      };
+
+      rows.push({
+        ...baseRow,
+        fantasyPoints: computeFantasyPoints(baseRow)
+      });
+      seen.add(pid);
+    }
+  }
+
+  for (const pid of idSet) {
+    if (seen.has(pid)) continue;
+    const info = athletes[pid] || { name: "", headshot: "" };
+    const baseRow = {
+      eventId: "—",
+      minutesRemaining: "60:00",
+      playerId: String(pid),
+      photo: info.headshot || "",
+      displayName: info.name || "",
+      passYds: 0, passTD: 0, passINT: 0,
+      rushYds: 0, rushTD: 0,
+      rec: 0, recYds: 0, recTD: 0,
+      fumLost: 0,
+      twoPtPasses: 0,
+      twoPtScores: 0
+    };
+    rows.push({
+      ...baseRow,
+      fantasyPoints: computeFantasyPoints(baseRow)
+    });
+  }
+
+  return { players: rows, games: gamesInfo };
+}
+
+// ---- Calculate Prorated Projection ----
+function calculateProratedProjection(minutesRemaining, actualPoints, originalProjection) {
+  if (minutesRemaining === "—" || minutesRemaining === "60:00") {
+    return originalProjection;
+  }
+  
+  if (minutesRemaining === "0:00") {
+    return actualPoints;
+  }
+  
+  if (minutesRemaining === "OT") {
+    return actualPoints;
+  }
+  
+  const parts = minutesRemaining.split(":");
+  const minutes = parseInt(parts[0]) + parseInt(parts[1]) / 60;
+  const percentRemaining = minutes / 60;
+  
+  return actualPoints + (percentRemaining * originalProjection);
+}
+
+// ---- Render Player Row ----
+function renderPlayerRow(player, statsData) {
+  const playerStats = statsData.find(s => s.playerId === player.id) || null;
+  
+  let actualPoints = 0;
+  let minutesRemaining = "60:00";
+  let photo = "";
+  let hasPlayed = false;
+  let isPlaying = false;
+  
+  if (playerStats) {
+    actualPoints = playerStats.fantasyPoints || 0;
+    minutesRemaining = playerStats.minutesRemaining;
+    photo = playerStats.photo;
+    
+    if (minutesRemaining === "60:00" || minutesRemaining === "—") {
+      hasPlayed = false;
+    } else if (minutesRemaining === "0:00") {
+      hasPlayed = true;
+    } else if (minutesRemaining === "OT") {
+      hasPlayed = true;
+      isPlaying = true;
+    } else {
+      hasPlayed = true;
+      isPlaying = true;
+    }
+  }
+  
+  const proratedProjection = player.id ? 
+    calculateProratedProjection(minutesRemaining, actualPoints, player.projected) :
+    player.projected;
+  
+  // Determine projection color
+  let projectionClass = "";
+  if (hasPlayed || isPlaying) {
+    if (proratedProjection > player.projected) {
+      projectionClass = "projection-up";
+    } else if (proratedProjection < player.projected) {
+      projectionClass = "projection-down";
+    }
+  }
+  
+  // Handle photo/logo
+  let photoHtml = "";
+  if (player.logo) {
+    // Defense team with logo
+    photoHtml = `<img src="${player.logo}" alt="${player.name}" class="player-photo" onerror="this.style.display='none'">`;
+  } else if (photo) {
+    // Player with ESPN photo
+    photoHtml = `<img src="${photo}" alt="${player.name}" class="player-photo" onerror="this.style.display='none'">`;
+  } else {
+    // Placeholder
+    photoHtml = `<div class="player-photo placeholder">${player.name.charAt(0)}</div>`;
+  }
+  
+  const playerRowClass = isPlaying ? "player-row is-playing" : "player-row";
+  
+  const actualPointsDisplay = hasPlayed ? actualPoints.toFixed(2) : "—";
+  const actualPointsClass = hasPlayed ? "points-actual" : "points-actual not-started";
+  
+  return `
+    <div class="${playerRowClass}">
+      ${photoHtml}
+      <div class="position ${player.pos}">${player.pos}</div>
+      <div class="player-name">${player.name}</div>
+      <div class="${actualPointsClass}">${actualPointsDisplay}</div>
+      <div class="points-projected ${projectionClass}">${proratedProjection.toFixed(1)}</div>
+    </div>
+  `;
+}
+
+// ---- Render Game Card ----
+function renderGameCard(game) {
+  const isLive = game.isLive;
+  const cardClass = isLive ? "game-card live" : "game-card";
+  const timeClass = isLive ? "game-time live" : "game-time";
+  
+  let timeDisplay = game.clock || "—";
+  if (game.isFinal) {
+    timeDisplay = "FINAL";
+  } else if (!game.isLive && !game.isFinal) {
+    timeDisplay = "NOT STARTED";
+  }
+  
+  const awayTeam = game.teams.find(t => t.homeAway === "away");
+  const homeTeam = game.teams.find(t => t.homeAway === "home");
+  
+  if (!awayTeam || !homeTeam) return "";
+  
+  // Show "—" for scores if game hasn't started
+  const awayScore = (!game.isLive && !game.isFinal) ? "—" : awayTeam.score;
+  const homeScore = (!game.isLive && !game.isFinal) ? "—" : homeTeam.score;
+  
+  return `
+    <div class="${cardClass}">
+      <div class="game-status-header">
+        <div class="${timeClass}">${timeDisplay}</div>
+        <div class="game-quarter">${game.displayQuarter}</div>
+      </div>
+      <div class="game-teams">
+        <div class="game-team">
+          <div class="team-info">
+            <img src="${awayTeam.logo}" alt="${awayTeam.abbreviation}" class="team-logo">
+            <span class="team-abbr">${awayTeam.abbreviation}</span>
+            ${awayTeam.hasPossession && isLive ? '<span class="possession-indicator"></span>' : ''}
+          </div>
+          <div class="team-score-display">${awayScore}</div>
+        </div>
+        <div class="game-team">
+          <div class="team-info">
+            <img src="${homeTeam.logo}" alt="${homeTeam.abbreviation}" class="team-logo">
+            <span class="team-abbr">${homeTeam.abbreviation}</span>
+            ${homeTeam.hasPossession && isLive ? '<span class="possession-indicator"></span>' : ''}
+          </div>
+          <div class="team-score-display">${homeScore}</div>
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+// ---- Update Team Display ----
+function updateTeamDisplay(teamKey, team, statsData) {
+  const container = document.getElementById(`${teamKey}-players`);
+  const actualScoreEl = document.getElementById(`${teamKey}-actual`);
+  const projectedScoreEl = document.getElementById(`${teamKey}-projected`);
+  
+  let totalActual = 0;
+  let totalProjected = 0;
+  let html = '';
+  
+  for (const player of team.players) {
+    const playerStats = player.id ? 
+      statsData.find(s => s.playerId === player.id) : 
+      null;
+    
+    const actualPoints = playerStats ? playerStats.fantasyPoints : 0;
+    const minutesRemaining = playerStats ? playerStats.minutesRemaining : "60:00";
+    const hasPlayed = minutesRemaining !== "60:00" && minutesRemaining !== "—";
+    const proratedProjection = player.id ?
+      calculateProratedProjection(minutesRemaining, actualPoints, player.projected) :
+      player.projected;
+    
+    if (hasPlayed) {
+      totalActual += actualPoints;
+    }
+    totalProjected += proratedProjection;
+    
+    html += renderPlayerRow(player, statsData);
+  }
+  
+  container.innerHTML = html;
+  actualScoreEl.textContent = totalActual.toFixed(2);
+  projectedScoreEl.textContent = totalProjected.toFixed(2);
+  
+  // Color the projection based on original sum
+  const originalProjected = team.players.reduce((sum, p) => sum + p.projected, 0);
+  const projectedSpan = document.getElementById(`${teamKey}-projected`);
+  
+  if (totalProjected > originalProjected) {
+    projectedSpan.className = "projection-up";
+  } else if (totalProjected < originalProjected) {
+    projectedSpan.className = "projection-down";
+  } else {
+    projectedSpan.className = "";
+  }
+}
+
+// ---- Update Both Teams and Calculate Win Probability ----
+function updateMatchup(statsData) {
+  // Update displays for both teams
+  updateTeamDisplay('west', TEAMS.west, statsData);
+  updateTeamDisplay('east', TEAMS.east, statsData);
+  
+  // Calculate win probabilities
+  const probs = calculateWinProbability(
+    TEAMS.west.players,
+    TEAMS.east.players,
+    statsData,
+    statsData
+  );
+  
+  // NEW: Update expected miles and status bars (replacing % display)
+  const westMiles = Math.round((1 - probs.westProb) * 100);
+  const eastMiles = Math.round((1 - probs.eastProb) * 100);
+  const westBarPct = Math.max(0, Math.min(100, Math.round(probs.westProb * 100)));
+  const eastBarPct = Math.max(0, Math.min(100, Math.round(probs.eastProb * 100)));
+  
+  const westMilesEl = document.getElementById('west-miles');
+  const eastMilesEl = document.getElementById('east-miles');
+  const westBarEl = document.getElementById('west-bar');
+  const eastBarEl = document.getElementById('east-bar');
+  
+  if (westMilesEl) westMilesEl.textContent = ` ${westMiles}`;
+  if (eastMilesEl) eastMilesEl.textContent = ` ${eastMiles}`;
+  
+  if (westBarEl) {
+    westBarEl.style.width = `${westBarPct}%`;
+    westBarEl.className = `status-fill ${probs.westProb >= 0.6 ? 'high' : probs.westProb <= 0.4 ? 'low' : 'neutral'}`;
+  }
+  if (eastBarEl) {
+    eastBarEl.style.width = `${eastBarPct}%`;
+    eastBarEl.className = `status-fill ${probs.eastProb >= 0.6 ? 'high' : probs.eastProb <= 0.4 ? 'low' : 'neutral'}`;
+  }
+}
+
+// ---- Update Games Display ----
+function updateGamesDisplay(games) {
+  const container = document.getElementById('games-grid');
+  
+  if (!games || games.length === 0) {
+    container.innerHTML = '<div style="color: #6c757d; text-align: center; padding: 20px;">No games available</div>';
+    return;
+  }
+  
+  // Sort games: live first, then final, then not started
+  games.sort((a, b) => {
+  if (a.isLive !== b.isLive) return a.isLive ? -1 : 1;
+  if (a.isFinal !== b.isFinal) return a.isFinal ? 1 : -1;
+
+  const ta = Number.isFinite(a.startTimeMs) ? a.startTimeMs : Number.POSITIVE_INFINITY;
+  const tb = Number.isFinite(b.startTimeMs) ? b.startTimeMs : Number.POSITIVE_INFINITY;
+  return ta - tb;
+});
+  
+  const html = games.map(game => renderGameCard(game)).join('');
+  container.innerHTML = html;
+}
+
+// ---- Main Initialization ----
+async function init() {
+  try {
+    // Get all player IDs
+    const allPlayerIds = [
+      ...TEAMS.west.players.filter(p => p.id).map(p => p.id),
+      ...TEAMS.east.players.filter(p => p.id).map(p => p.id)
+    ];
+    
+    // Fetch stats for all players and games
+    const { players: statsData, games: gamesData } = await getWeekStatsForPlayers(YEAR, WEEK, allPlayerIds);
+    console.log("Stats data loaded:", statsData);
+    console.log("Games data loaded:", gamesData);
+    
+    // Update both teams and calculate win probability
+    updateMatchup(statsData);
+    
+    // Update games display
+    updateGamesDisplay(gamesData);
+    
+    // Auto-refresh every 60 seconds
+    setTimeout(() => init(), 60000);
+    
+  } catch (error) {
+    console.error("Error loading data:", error);
+    document.getElementById('west-players').innerHTML = `<div class="error">Error loading data: ${error.message}</div>`;
+    document.getElementById('east-players').innerHTML = `<div class="error">Error loading data: ${error.message}</div>`;
+    document.getElementById('games-grid').innerHTML = `<div class="error">Error loading games: ${error.message}</div>`;
+  }
+}
+
+// Start the app
+init();
+</script>
+</body>
+</html>
