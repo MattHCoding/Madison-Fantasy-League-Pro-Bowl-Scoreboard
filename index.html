@@ -168,7 +168,7 @@
     }
     
     .vs-text {
-      background: white;
+      background: rgba(182, 179, 179, 0.397);
       border: 2px solid #e9ecef;
       border-radius: 50%;
       width: 60px;
@@ -207,6 +207,25 @@
       border: 1px solid #ffc107;
       box-shadow: 0 2px 4px rgba(255, 193, 7, 0.2);
       animation: pulse 2s ease-in-out infinite;
+    }
+
+    .player-row.is-complete {
+      background: #cfd2d4d0;              /* dark grey */
+      border: 1px solid #212529;
+      box-shadow: 0 2px 4px rgba(43, 48, 53, 0.041);
+      animation: none;
+    }
+    .player-row.is-complete .player-name,
+    .player-row.is-complete .points-actual,
+    .player-row.is-complete .points-projected,
+    .player-row.is-complete .position {
+      color: #5e5d5d;
+    }
+    .player-row.is-complete .position {
+      background: #7d848bdc;
+    }
+    .player-row.is-complete:hover {      /* keep hover from lightening it */
+      background: #7f848a;
     }
     
     @keyframes pulse {
@@ -1104,8 +1123,12 @@ function renderPlayerRow(player, statsData) {
     photoHtml = `<div class="player-photo placeholder">${player.name.charAt(0)}</div>`;
   }
   
-  const playerRowClass = isPlaying ? "player-row is-playing" : "player-row";
-  
+  // new: dark grey highlight when the player's game is completed
+  const isFinal = minutesRemaining === "OT";
+  const playerRowClass = isFinal
+    ? "player-row is-complete"
+    : (isPlaying ? "player-row is-playing" : "player-row");
+
   const actualPointsDisplay = hasPlayed ? actualPoints.toFixed(2) : "—";
   const actualPointsClass = hasPlayed ? "points-actual" : "points-actual not-started";
   
