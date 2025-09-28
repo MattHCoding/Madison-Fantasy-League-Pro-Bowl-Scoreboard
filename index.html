@@ -22,29 +22,30 @@
     }
     
     .header {
+      position: relative;
       text-align: center;
-      padding: 20px 0 30px;
-      background: white;
+      padding: 60px 0 70px;              /* taller so the image shows */
       margin: -20px -20px 20px;
+      background:
+        linear-gradient(rgba(0,0,0,.35), rgba(0,0,0,.35)),  /* darken for legibility */
+        url("./westWinsPhoto.jpg") center/cover no-repeat;  /* image in same folder */
+      color: #fff;                                          /* make text white */
       box-shadow: 0 1px 3px rgba(0,0,0,0.08);
     }
-    
+
     .header h1 {
       font-size: 28px;
       font-weight: 600;
       margin-bottom: 5px;
-      color: #1d1d1f;
-    
-      /* make the title wrap */
-      white-space: normal;         /* override any inherited nowrap */
-      overflow-wrap: anywhere;     /* wrap long/unbroken strings */
-      word-break: break-word;      /* fallback for older browsers */
+      color: inherit;                                       /* inherit white */
+      text-shadow: 0 2px 4px rgba(0,0,0,.35);
     }
-    
+
     .week-info {
-      color: #6c757d;
+      color: rgba(255,255,255,.9);                          /* lighter subtitle */
       font-size: 14px;
     }
+
     
     .matchup-container {
       display: grid;
@@ -101,7 +102,7 @@
       font-weight: 600;
     }
 
-    /* NEW: Expected miles + status bar */
+    /* Expected miles + status bar */
     .expected-miles {
       font-size: 12px;
       color: #6c757d;
@@ -491,7 +492,7 @@
 <body>
   <div class="container">
     <div class="header">
-      <h1>1st Annual Madison Fantasy Pro Bowl</h1>
+      <h1>Fantasy Football Matchup</h1>
       <div class="week-info">Week 4 • 2025 Season</div>
     </div>
     
@@ -560,6 +561,8 @@
 // ---- Configuration ----
 const YEAR = 2025;
 const WEEK = 4;
+const DEN_DEF_POINTS_OVERRIDE = null; // e.g., 12
+const HOU_DEF_POINTS_OVERRIDE = 9.0;  // e.g., 8
 
 const TEAMS = {
   west: {
@@ -594,8 +597,6 @@ const TEAMS = {
 
 // ---- Error Function (erf) Implementation ----
 function erf(x) {
-  // Using approximation: erf(x) ≈ sign(x) * sqrt(1 - exp(-x^2 * (4/π + ax^2) / (1 + ax^2)))
-  // where a ≈ 0.147
   const a = 0.147;
   const x2 = x * x;
   const ax2 = a * x2;
@@ -606,79 +607,7 @@ function erf(x) {
   return result;
 }
 
-// ---- Win Probability Calculation ----
-function calculateWinProbability(westPlayers, eastPlayers, westStats, eastStats) {
-  const k = 0.3;
-  const v0 = 1.8;
-  const c = 2.0;
-  
-  const allPlayers = [...westPlayers, ...eastPlayers];
-  const teamArray = [...westPlayers.map(() => true), ...eastPlayers.map(() => false)];
-  
-  let muA = 0;
-  let muB = 0;
-  let varA = 0;
-  let varB = 0;
-  
-  for (let i = 0; i < allPlayers.length; i++) {
-    const player = allPlayers[i];
-    const isWest = teamArray[i];
-    const stats = isWest ? 
-      westStats.find(s => s.playerId === player.id) :
-      eastStats.find(s => s.playerId === player.id);
-    
-    // Get current points and time remaining
-    let s = 0;  // current points
-    let r = 1;  // fraction remaining
-    
-    if (stats) {
-      s = stats.fantasyPoints || 0;
-      const minRemaining = stats.minutesRemaining;
-      
-      if (minRemaining === "OT") {
-        r = 0;  // Game in OT, no time remaining
-      } else if (minRemaining === "0:00") {
-        r = 0;  // Game finished
-      } else if (minRemaining === "60:00" || minRemaining === "—") {
-        r = 1;  // Game not started
-      } else {
-        // Parse time
-        const parts = minRemaining.split(":");
-        const minutes = parseInt(parts[0]) + parseInt(parts[1]) / 60;
-        r = minutes / 60;
-      }
-    }
-    
-    const p = player.projected || 0;
-    
-    // Calculate remaining mean and variance
-    const rem_mu = r * p + k * (s - (1 - r) * p);
-    const mu = s + Math.max(rem_mu, 0.0);
-    const rem_var = v0 * r * (p + c);
-    
-    if (isWest) {
-      muA += mu;
-      varA += rem_var;
-    } else {
-      muB += mu;
-      varB += rem_var;
-    }
-  }
-  
-  // Calculate probability
-  const sd = Math.sqrt(varA + varB) + 1e-9;
-  const z = (muA - muB) / sd;
-  const probA = 0.5 * (1 + erf(z / Math.sqrt(2)));
-  
-  return {
-    westProb: probA,
-    eastProb: 1 - probA,
-    westExpected: muA,
-    eastExpected: muB
-  };
-}
-
-// ---- Import all utility functions from original HTML ----
+// ---- Utility (safe getters, numbers) ----
 const get = (o, path, fb=undefined) => path.reduce((a,k)=>(a && a[k]!=null)?a[k]:undefined, o) ?? fb;
 const toNum = (v) => {
   if (v == null) return 0;
@@ -691,6 +620,7 @@ const toNum = (v) => {
   return 0;
 };
 
+// ---- Fetch helpers ----
 async function fetchJSON(url) {
   const res = await fetch(url, { cache: "no-store", credentials: "omit" });
   if (!res.ok) throw new Error(`HTTP ${res.status} for ${url}`);
@@ -713,6 +643,7 @@ async function getPlays(eventId) {
   return fetchJSON(url);
 }
 
+// ---- Athlete helpers ----
 function extractAthleteIdFromRef(ref) {
   try {
     const u = new URL(ref);
@@ -803,6 +734,7 @@ async function fetchAthletesMap(ids) {
   return Object.fromEntries(results);
 }
 
+// ---- Box helpers ----
 function pluckPlayerFromBox(box, playerId) {
   const groups = get(box, ["gamepackageJSON","boxscore","players"], []);
   let rec = null;
@@ -868,6 +800,7 @@ function computeFantasyPoints(s) {
   );
 }
 
+// ---- Clock helpers ----
 function parseClockToSeconds(clock) {
   if (typeof clock !== "string") return NaN;
   const m = clock.trim().match(/^(\d+):(\d{1,2})(?:\.\d+)?$/);
@@ -885,18 +818,22 @@ function formatSecsToClock(totalSecs) {
   return `${min}:${String(sec).padStart(2, "0")}`;
 }
 
+// *** FIXED: don’t label pre-game as OT; compute from state ***
 function computeMinutesRemainingFromBox(box) {
   const st = get(box, ["gamepackageJSON","header","competitions",0,"status"]);
   if (!st) return "—";
 
-  const period = toNum(get(st, ["period"]));
-  if (![1,2,3,4].includes(period)) return "OT";
-
   const state = String(get(st, ["type","state"], "")).toLowerCase();
   const completed = !!get(st, ["type","completed"]);
+  const period = toNum(get(st, ["period"]));
 
   if (state !== "in") {
     return completed ? "0:00" : "60:00";
+  }
+
+  // Live:
+  if (period > 4) {
+    return "OT";
   }
 
   const clockStr = get(st, ["displayClock"]) || get(st, ["type","statusPrimary"]) || "";
@@ -907,39 +844,84 @@ function computeMinutesRemainingFromBox(box) {
   return formatSecsToClock(total);
 }
 
-// ---- Extract game info for scorecards ----
+function isFiniteNumber(x) {
+  return typeof x === "number" && Number.isFinite(x);
+}
+
+// ---- Defense helpers (override + game status mapping) ----
+function getDefenseOverride(player) {
+  if (!player || player.pos !== "DEF") return null;
+  const name = String(player.name || "").toLowerCase();
+  if (name.includes("denver")) return isFiniteNumber(DEN_DEF_POINTS_OVERRIDE) ? DEN_DEF_POINTS_OVERRIDE : null;
+  if (name.includes("houston")) return isFiniteNumber(HOU_DEF_POINTS_OVERRIDE) ? HOU_DEF_POINTS_OVERRIDE : null;
+  return null;
+}
+
+function logoKey(url) {
+  if (typeof url !== "string") return "";
+  const last = url.split("/").pop() || "";
+  return last.replace(/\.(png|jpg|jpeg|svg)$/i, "").toLowerCase(); // e.g., "den"
+}
+
+function findDefenseGame(player, games) {
+  if (!player || player.pos !== "DEF" || !Array.isArray(games)) return null;
+  const key = logoKey(player.logo);
+  const nameLc = String(player.name || "").toLowerCase();
+  for (const g of games) {
+    for (const t of g.teams || []) {
+      const tKey = logoKey(t.logo);
+      const abbrLc = String(t.abbreviation || "").toLowerCase();
+      const nameMatch = nameLc.includes(String(t.abbreviation || "").toLowerCase()) ||
+                        nameLc.includes(String(t.name || "").toLowerCase());
+      if ((key && tKey && key === tKey) || nameMatch) {
+        return g;
+      }
+    }
+  }
+  return null;
+}
+
+function getDefenseMinutesRemaining(player, games) {
+  const g = findDefenseGame(player, games);
+  if (!g) return "60:00";
+  return g.minutesRemaining || (g.isFinal ? "0:00" : g.isLive ? "OT" : "60:00");
+}
+
+function fractionRemainingFromMinutes(m) {
+  if (m === "OT" || m === "0:00") return 0;
+  if (m === "—"  || m === "60:00") return 1;
+  const parts = m.split(":");
+  const minutes = (parseInt(parts[0]) || 0) + (parseInt(parts[1]) || 0) / 60;
+  return Math.max(0, Math.min(1, minutes / 60));
+}
+
+// ---- Game card extraction ----
 function extractGameInfo(box) {
   const comp = get(box, ["gamepackageJSON","header","competitions",0]);
   if (!comp) return null;
   
   const status = comp.status || {};
   const competitors = comp.competitors || [];
-  
   if (competitors.length < 2) return null;
   
-  // Get game status
   const state = String(get(status, ["type","state"], "")).toLowerCase();
   const completed = !!get(status, ["type","completed"]);
   const isLive = state === "in";
-  
   const startISO = get(comp, ["date"]) || get(comp, ["startDate"]) || "";
   const gameInfo = {
-  id: comp.id,
-  quarter: get(status, ["period"]),
-  displayQuarter: get(status, ["type","shortDetail"]) || get(status, ["displayPeriod"]) || "",
-  clock: get(status, ["displayClock"]) || "",
-  isLive: isLive,
-  isFinal: completed,
-  startTimeMs: startISO ? Date.parse(startISO) : Number.POSITIVE_INFINITY,
-  teams: []
-};
+    id: comp.id,
+    quarter: get(status, ["period"]),
+    displayQuarter: get(status, ["type","shortDetail"]) || get(status, ["displayPeriod"]) || "",
+    clock: get(status, ["displayClock"]) || "",
+    isLive,
+    isFinal: completed,
+    startTimeMs: startISO ? Date.parse(startISO) : Number.POSITIVE_INFINITY,
+    teams: []
+  };
 
-  
-  // Process each team
   for (let i = 0; i < 2; i++) {
     const team = competitors[i];
     if (!team) continue;
-    
     const teamInfo = {
       id: get(team, ["team","id"]),
       name: get(team, ["team","displayName"]),
@@ -949,13 +931,12 @@ function extractGameInfo(box) {
       hasPossession: !!get(team, ["possession"]),
       homeAway: get(team, ["homeAway"])
     };
-    
     gameInfo.teams.push(teamInfo);
   }
-  
   return gameInfo;
 }
 
+// ---- Fetch weekly player stats + games ----
 async function getWeekStatsForPlayers(year, week, playerIds) {
   const ids = playerIds.map(String);
   const idSet = new Set(ids);
@@ -971,14 +952,14 @@ async function getWeekStatsForPlayers(year, week, playerIds) {
     ]);
     const minutesRemaining = box ? computeMinutesRemainingFromBox(box) : "60:00";
     
-    // Extract game info for scorecard
     if (box) {
       const gameInfo = extractGameInfo(box);
       if (gameInfo) {
+        // attach minutes remaining so defenses can key off team state
+        gameInfo.minutesRemaining = minutesRemaining;
         gamesInfo.push(gameInfo);
       }
     }
-    
     return { eventId, box, twoPtMap, minutesRemaining };
   }));
 
@@ -1052,58 +1033,159 @@ async function getWeekStatsForPlayers(year, week, playerIds) {
   return { players: rows, games: gamesInfo };
 }
 
-// ---- Calculate Prorated Projection ----
+// ---- Prorated projection ----
 function calculateProratedProjection(minutesRemaining, actualPoints, originalProjection) {
   if (minutesRemaining === "—" || minutesRemaining === "60:00") {
     return originalProjection;
   }
-  
   if (minutesRemaining === "0:00") {
     return actualPoints;
   }
-  
   if (minutesRemaining === "OT") {
+    // treat as no guaranteed time left; projection is current actual
     return actualPoints;
   }
-  
   const parts = minutesRemaining.split(":");
   const minutes = parseInt(parts[0]) + parseInt(parts[1]) / 60;
   const percentRemaining = minutes / 60;
-  
   return actualPoints + (percentRemaining * originalProjection);
 }
 
-// ---- Render Player Row ----
-function renderPlayerRow(player, statsData) {
-  const playerStats = statsData.find(s => s.playerId === player.id) || null;
+// ---- Win Probability Calculation (includes DEF overrides + status) ----
+function calculateWinProbability(westPlayers, eastPlayers, westStats, eastStats, gamesData) {
+  const k = 0.3;
+  const v0 = 1.8;
+  const c = 2.0;
+  
+  const allPlayers = [...westPlayers, ...eastPlayers];
+  const teamArray = [...westPlayers.map(() => true), ...eastPlayers.map(() => false)];
+  
+  let muA = 0, muB = 0, varA = 0, varB = 0;
+  
+  for (let i = 0; i < allPlayers.length; i++) {
+    const player = allPlayers[i];
+    const isWest = teamArray[i];
+    const stats = player.id
+      ? (isWest ? westStats.find(s => s.playerId === player.id) : eastStats.find(s => s.playerId === player.id))
+      : null;
+
+    // current points (s) and fraction remaining (r)
+    let s = 0;
+    let r = 1;
+
+    const override = getDefenseOverride(player);
+
+    if (stats) {
+      s = stats.fantasyPoints || 0;
+      const minRemaining = stats.minutesRemaining;
+      if (minRemaining === "OT" || minRemaining === "0:00") {
+        r = 0;
+      } else if (minRemaining === "60:00" || minRemaining === "—") {
+        r = 1;
+      } else {
+        const parts = minRemaining.split(":");
+        const minutes = parseInt(parts[0]) + parseInt(parts[1]) / 60;
+        r = minutes / 60;
+      }
+    } else if (player.pos === "DEF") {
+      // use game state for defenses
+      const m = getDefenseMinutesRemaining(player, gamesData);
+      r = fractionRemainingFromMinutes(m);
+      if (override != null) s = override;
+    }
+
+    if (override != null && player.pos === "DEF") {
+      // treat DEF override as finalized for WP
+      r = 0;
+    }
+    
+    const p = player.projected || 0;
+    const rem_mu = r * p + k * (s - (1 - r) * p);
+    const mu = s + Math.max(rem_mu, 0.0);
+    const rem_var = v0 * r * (p + c);
+    
+    if (isWest) {
+      muA += mu;
+      varA += rem_var;
+    } else {
+      muB += mu;
+      varB += rem_var;
+    }
+  }
+  
+  const sd = Math.sqrt(varA + varB) + 1e-9;
+  const z = (muA - muB) / sd;
+  const probA = 0.5 * (1 + erf(z / Math.sqrt(2)));
+  
+  return {
+    westProb: probA,
+    eastProb: 1 - probA,
+    westExpected: muA,
+    eastExpected: muB
+  };
+}
+
+// ---- Render Player Row (now DEF-aware; proper live/final styles) ----
+function renderPlayerRow(player, statsData, gamesData) {
+  const playerStats = player.id ? (statsData.find(s => s.playerId === player.id) || null) : null;
   
   let actualPoints = 0;
   let minutesRemaining = "60:00";
   let photo = "";
   let hasPlayed = false;
   let isPlaying = false;
-  
+
+  // Base from player stats
   if (playerStats) {
     actualPoints = playerStats.fantasyPoints || 0;
     minutesRemaining = playerStats.minutesRemaining;
     photo = playerStats.photo;
-    
+
     if (minutesRemaining === "60:00" || minutesRemaining === "—") {
       hasPlayed = false;
     } else if (minutesRemaining === "0:00") {
       hasPlayed = true;
-    } else if (minutesRemaining === "OT") {
+      isPlaying = false;
+    } else {
       hasPlayed = true;
-      isPlaying = true;
+      isPlaying = true; // includes "OT"
+    }
+  }
+
+  // DEF: pull game state from schedule
+  if (player.pos === "DEF") {
+    minutesRemaining = getDefenseMinutesRemaining(player, gamesData);
+    // no photo for defense; use logo below
+    if (minutesRemaining === "60:00" || minutesRemaining === "—") {
+      hasPlayed = false;
+      isPlaying = false;
+    } else if (minutesRemaining === "0:00") {
+      hasPlayed = true;
+      isPlaying = false;
     } else {
       hasPlayed = true;
       isPlaying = true;
     }
   }
+
+  // Apply override for DEF (points only; keep live/final styling from game state)
+  const defOverride = getDefenseOverride(player);
+  if (defOverride != null) {
+    actualPoints = defOverride;
+  }
   
-  const proratedProjection = player.id ? 
-    calculateProratedProjection(minutesRemaining, actualPoints, player.projected) :
-    player.projected;
+  // Prorate projections
+  let proratedProjection;
+  if (player.pos === "DEF") {
+    // If override present, projected = override (treat as final for projection simplicity)
+    proratedProjection = (defOverride != null)
+      ? defOverride
+      : calculateProratedProjection(minutesRemaining, actualPoints, player.projected);
+  } else {
+    proratedProjection = player.id
+      ? calculateProratedProjection(minutesRemaining, actualPoints, player.projected)
+      : player.projected;
+  }
   
   // Determine projection color
   let projectionClass = "";
@@ -1115,27 +1197,24 @@ function renderPlayerRow(player, statsData) {
     }
   }
   
-  // Handle photo/logo
+  // Photo/logo
   let photoHtml = "";
   if (player.logo) {
-    // Defense team with logo
     photoHtml = `<img src="${player.logo}" alt="${player.name}" class="player-photo" onerror="this.style.display='none'">`;
   } else if (photo) {
-    // Player with ESPN photo
     photoHtml = `<img src="${photo}" alt="${player.name}" class="player-photo" onerror="this.style.display='none'">`;
   } else {
-    // Placeholder
     photoHtml = `<div class="player-photo placeholder">${player.name.charAt(0)}</div>`;
   }
   
-  // new: dark grey highlight when the player's game is completed
-  const isFinal = minutesRemaining === "OT";
+  // *** FIXED: mark complete on 0:00 (final), not OT
+  const isFinal = minutesRemaining === "0:00";
   const playerRowClass = isFinal
     ? "player-row is-complete"
     : (isPlaying ? "player-row is-playing" : "player-row");
 
-  const actualPointsDisplay = hasPlayed ? actualPoints.toFixed(2) : "—";
-  const actualPointsClass = hasPlayed ? "points-actual" : "points-actual not-started";
+  const actualPointsDisplay = (hasPlayed || defOverride != null) ? actualPoints.toFixed(2) : "—";
+  const actualPointsClass = (hasPlayed || defOverride != null) ? "points-actual" : "points-actual not-started";
   
   return `
     <div class="${playerRowClass}">
@@ -1163,10 +1242,8 @@ function renderGameCard(game) {
   
   const awayTeam = game.teams.find(t => t.homeAway === "away");
   const homeTeam = game.teams.find(t => t.homeAway === "home");
-  
   if (!awayTeam || !homeTeam) return "";
   
-  // Show "—" for scores if game hasn't started
   const awayScore = (!game.isLive && !game.isFinal) ? "—" : awayTeam.score;
   const homeScore = (!game.isLive && !game.isFinal) ? "—" : homeTeam.score;
   
@@ -1198,8 +1275,8 @@ function renderGameCard(game) {
   `;
 }
 
-// ---- Update Team Display ----
-function updateTeamDisplay(teamKey, team, statsData) {
+// ---- Update Team Display (DEF-aware) ----
+function updateTeamDisplay(teamKey, team, statsData, gamesData) {
   const container = document.getElementById(`${teamKey}-players`);
   const actualScoreEl = document.getElementById(`${teamKey}-actual`);
   const projectedScoreEl = document.getElementById(`${teamKey}-projected`);
@@ -1209,30 +1286,47 @@ function updateTeamDisplay(teamKey, team, statsData) {
   let html = '';
   
   for (const player of team.players) {
-    const playerStats = player.id ? 
-      statsData.find(s => s.playerId === player.id) : 
-      null;
-    
-    const actualPoints = playerStats ? playerStats.fantasyPoints : 0;
-    const minutesRemaining = playerStats ? playerStats.minutesRemaining : "60:00";
-    const hasPlayed = minutesRemaining !== "60:00" && minutesRemaining !== "—";
-    const proratedProjection = player.id ?
-      calculateProratedProjection(minutesRemaining, actualPoints, player.projected) :
-      player.projected;
-    
-    if (hasPlayed) {
+    const playerStats = player.id ? (statsData.find(s => s.playerId === player.id) || null) : null;
+        
+    let actualPoints = playerStats ? playerStats.fantasyPoints : 0;
+    let minutesRemaining = playerStats ? playerStats.minutesRemaining : "60:00";
+
+    if (player.pos === "DEF") {
+      minutesRemaining = getDefenseMinutesRemaining(player, gamesData);
+      const override = getDefenseOverride(player);
+      if (override != null) {
+        actualPoints = override;
+      }
+    }
+
+    const hasStarted = minutesRemaining !== "60:00" && minutesRemaining !== "—";
+    const overridePresent = (player.pos === "DEF" && getDefenseOverride(player) != null);
+
+    // Include DEF override in actual total regardless of game start; others only once started
+    if (overridePresent || hasStarted) {
       totalActual += actualPoints;
     }
+
+    let proratedProjection;
+    if (player.pos === "DEF") {
+      proratedProjection = overridePresent
+        ? actualPoints
+        : calculateProratedProjection(minutesRemaining, actualPoints, player.projected);
+    } else {
+      proratedProjection = player.id
+        ? calculateProratedProjection(minutesRemaining, actualPoints, player.projected)
+        : player.projected;
+    }
     totalProjected += proratedProjection;
-    
-    html += renderPlayerRow(player, statsData);
+
+    html += renderPlayerRow(player, statsData, gamesData);
   }
   
   container.innerHTML = html;
   actualScoreEl.textContent = totalActual.toFixed(2);
   projectedScoreEl.textContent = totalProjected.toFixed(2);
   
-  // Color the projection based on original sum
+  // Color the projection vs original sum
   const originalProjected = team.players.reduce((sum, p) => sum + p.projected, 0);
   const projectedSpan = document.getElementById(`${teamKey}-projected`);
   
@@ -1245,21 +1339,20 @@ function updateTeamDisplay(teamKey, team, statsData) {
   }
 }
 
-// ---- Update Both Teams and Calculate Win Probability ----
-function updateMatchup(statsData) {
-  // Update displays for both teams
-  updateTeamDisplay('west', TEAMS.west, statsData);
-  updateTeamDisplay('east', TEAMS.east, statsData);
+// ---- Update Both Teams + Win Probability ----
+function updateMatchup(statsData, gamesData) {
+  updateTeamDisplay('west', TEAMS.west, statsData, gamesData);
+  updateTeamDisplay('east', TEAMS.east, statsData, gamesData);
   
-  // Calculate win probabilities
   const probs = calculateWinProbability(
     TEAMS.west.players,
     TEAMS.east.players,
     statsData,
-    statsData
+    statsData,
+    gamesData
   );
   
-  // NEW: Update expected miles and status bars (replacing % display)
+  // Expected miles + status bars
   const westMiles = Math.round((1 - probs.westProb) * 100);
   const eastMiles = Math.round((1 - probs.eastProb) * 100);
   const westBarPct = Math.max(0, Math.min(100, Math.round(probs.westProb * 100)));
@@ -1294,13 +1387,12 @@ function updateGamesDisplay(games) {
   
   // Sort games: live first, then final, then not started
   games.sort((a, b) => {
-  if (a.isLive !== b.isLive) return a.isLive ? -1 : 1;
-  if (a.isFinal !== b.isFinal) return a.isFinal ? 1 : -1;
-
-  const ta = Number.isFinite(a.startTimeMs) ? a.startTimeMs : Number.POSITIVE_INFINITY;
-  const tb = Number.isFinite(b.startTimeMs) ? b.startTimeMs : Number.POSITIVE_INFINITY;
-  return ta - tb;
-});
+    if (a.isLive !== b.isLive) return a.isLive ? -1 : 1;
+    if (a.isFinal !== b.isFinal) return a.isFinal ? 1 : -1;
+    const ta = Number.isFinite(a.startTimeMs) ? a.startTimeMs : Number.POSITIVE_INFINITY;
+    const tb = Number.isFinite(b.startTimeMs) ? b.startTimeMs : Number.POSITIVE_INFINITY;
+    return ta - tb;
+  });
   
   const html = games.map(game => renderGameCard(game)).join('');
   container.innerHTML = html;
@@ -1309,19 +1401,17 @@ function updateGamesDisplay(games) {
 // ---- Main Initialization ----
 async function init() {
   try {
-    // Get all player IDs
     const allPlayerIds = [
       ...TEAMS.west.players.filter(p => p.id).map(p => p.id),
       ...TEAMS.east.players.filter(p => p.id).map(p => p.id)
     ];
     
-    // Fetch stats for all players and games
     const { players: statsData, games: gamesData } = await getWeekStatsForPlayers(YEAR, WEEK, allPlayerIds);
     console.log("Stats data loaded:", statsData);
     console.log("Games data loaded:", gamesData);
     
-    // Update both teams and calculate win probability
-    updateMatchup(statsData);
+    // Update teams + WP
+    updateMatchup(statsData, gamesData);
     
     // Update games display
     updateGamesDisplay(gamesData);
@@ -1342,5 +1432,3 @@ init();
 </script>
 </body>
 </html>
-
-
