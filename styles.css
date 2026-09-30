@@ -491,3 +491,6 @@ fieldset {margin:20px 0;padding:16px;border:1px solid #ccc;border-radius:8px;}
 label {display:block;margin:12px 0;} select,input,button {font:inherit;padding:8px;max-width:100%;} button {cursor:pointer;}
 .setup-grid {display:grid;grid-template-columns:1fr 1fr;gap:20px;}
 @media(max-width:768px){.team-header-content{flex-wrap:wrap}.team-score{min-width:0}.setup-grid{grid-template-columns:1fr}.player-row{grid-template-columns:36px 1fr 55px 55px;gap:6px}}
+/* Native dropdowns must not force the setup grid beyond the viewport. */
+.setup-grid > fieldset { min-width: 0; }
+.setup-grid select { width: 100%; }
