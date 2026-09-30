@@ -1,9 +1,11 @@
 import copy
+import json
+from unittest.mock import patch
 import sys
 import unittest
 from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / 'scripts'))
-from espn import stat_points, validate
+from espn import stat_points, validate, league_query
 from update_scores import build_scores
 from update_rosters import build_snapshot
 
@@ -22,6 +24,16 @@ def fixture():
 
 
 class DataTests(unittest.TestCase):
+    def test_query_explicitly_requests_weekly_projections(self):
+        config = {'season': 2025, 'leagueId': 123}
+        with patch.dict('os.environ', {'ESPN_SWID': 'test-swid', 'ESPN_S2': 'test-s2'}):
+            with patch('espn.get_json', return_value={}) as request:
+                league_query(config, ['kona_playercard'], 4, ['3918298'])
+        _, headers = request.call_args.args
+        filters = json.loads(headers['x-fantasy-filter'])['players']
+        self.assertIn('1120254', filters['filterStatsForTopScoringPeriodIds']['additionalValue'])
+        self.assertEqual(filters['filterIds']['value'], [3918298])
+
     def test_stat_scope_and_negative_scores(self):
         player = {'stats':[{'seasonId':2026,'scoringPeriodId':4,'statSourceId':0,'statSplitTypeId':0,'appliedTotal':999}, {'seasonId':2026,'scoringPeriodId':4,'statSourceId':0,'statSplitTypeId':1,'appliedTotal':-2}]}
         self.assertEqual(stat_points(player,2026,4,0),-2)

@@ -45,7 +45,14 @@ def league_query(config, views, week=None, player_ids=None):
         params.append(('scoringPeriodId', week))
     headers = {'Cookie': f'SWID={swid}; espn_s2={s2}', 'Accept': 'application/json'}
     if player_ids is not None:
-        headers['x-fantasy-filter'] = json.dumps({'players': {'filterIds': {'value': [int(i) for i in player_ids]}, 'filterStatsForTopScoringPeriodIds': {'value': 18, 'additionalValue': [f"00{config['season']}", f"10{config['season']}"]}}})
+        stat_codes = [f"00{config['season']}", f"10{config['season']}"]
+        if week is not None:
+            # Weekly projections are not included by the season-only codes.
+            stat_codes.append(f"11{config['season']}{week}")
+        headers['x-fantasy-filter'] = json.dumps({'players': {
+            'filterIds': {'value': [int(i) for i in player_ids]},
+            'filterStatsForTopScoringPeriodIds': {'value': 18, 'additionalValue': stat_codes},
+        }})
     url = f"https://lm-api-reads.fantasy.espn.com/apis/v3/games/ffl/seasons/{config['season']}/segments/0/leagues/{config['leagueId']}?{urllib.parse.urlencode(params)}"
     return get_json(url, headers)
 
