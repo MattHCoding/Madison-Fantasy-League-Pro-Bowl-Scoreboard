@@ -1,0 +1,76 @@
+name: ESPN Pro Bowl data
+on:
+  workflow_dispatch:
+    inputs:
+      operation:
+        description: Data operation
+        type: choice
+        options: [rosters, configure, scores]
+        required: true
+      replace_snapshot:
+        description: Intentionally replace an existing annual roster snapshot
+        type: boolean
+        default: false
+      setup_json:
+        description: Contents of the exported annual setup file (configure only)
+        type: string
+  schedule:
+    - cron: '*/5 * * * 0,1,2,4,5'
+permissions:
+  contents: write
+concurrency:
+  group: pro-bowl-data-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref_name }}
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Refresh the selected data only
+        env:
+          ESPN_SWID: ${{ secrets.ESPN_SWID }}
+          ESPN_S2: ${{ secrets.ESPN_S2 }}
+          EVENT_NAME: ${{ github.event_name }}
+          OPERATION: ${{ inputs.operation || 'scores' }}
+          REPLACE_SNAPSHOT: ${{ inputs.replace_snapshot }}
+          SETUP_JSON: ${{ inputs.setup_json }}
+        run: |
+          case "$OPERATION" in
+            rosters)
+              if [ "$REPLACE_SNAPSHOT" = "true" ]; then
+                python scripts/update_rosters.py --replace
+              else
+                python scripts/update_rosters.py
+              fi
+              ;;
+            configure)
+              python - <<'PY'
+          import os
+          from pathlib import Path
+          Path('/tmp/pro-bowl-setup.json').write_text(os.environ['SETUP_JSON'])
+          PY
+              python scripts/configure_matchup.py /tmp/pro-bowl-setup.json
+              ;;
+            scores)
+              if [ "$EVENT_NAME" = "schedule" ]; then
+                python scripts/update_scores.py --scheduled
+              else
+                python scripts/update_scores.py
+              fi
+              ;;
+            *) exit 1 ;;
+          esac
+      - name: Publish only sanitized data
+        run: |
+          git add data
+          if ! git diff --cached --quiet; then
+            git config user.name 'github-actions[bot]'
+            git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+            git commit -m 'Refresh Pro Bowl data'
+            git push
+          fi

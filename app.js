@@ -1,0 +1,55 @@
+'use strict';
+const dataBase = location.hostname.endsWith('.github.io')
+  ? 'https://raw.githubusercontent.com/MattHCoding/Madison-Fantasy-League-Pro-Bowl-Scoreboard/main/' : './';
+const escapeHTML = value => String(value ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const points = value => Number.isFinite(value) ? value.toFixed(2) : '—';
+async function loadJSON(path) {
+  const response = await fetch(dataBase + path, {cache: 'no-store'});
+  if (!response.ok) throw new Error('Could not load scoreboard data.');
+  return response.json();
+}
+let refreshing = false;
+async function refresh() {
+  if (refreshing) return;
+  refreshing = true;
+  try {
+    const config = await loadJSON('data/matchup.json');
+    const [snapshot, scores] = await Promise.all([loadJSON(`data/rosters-${config.season}.json`), loadJSON('data/scores.json')]);
+    const pool = new Map(snapshot.teams.flatMap(t => t.players.map(p => [String(p.id), p])));
+    const compatible = scores.season === config.season && scores.week === config.week && scores.leagueId === config.leagueId;
+    document.title = `Madison Fantasy Pro Bowl • ${config.season}`;
+    document.getElementById('week-info').textContent = `${config.season} Season • ${config.week ? `Week ${config.week}` : 'Week TBD'}`;
+    for (const key of ['west', 'east']) {
+      let actual = 0, initial = 0, actualComplete = true, initialComplete = true;
+      document.getElementById(`${key}-players`).innerHTML = config.sides[key].players.map(selection => {
+        const player = pool.get(String(selection.id));
+        const score = compatible && player ? scores.players[String(selection.id)] : null;
+        if (!score || !Number.isFinite(score.actual)) actualComplete = false;
+        else actual += score.actual;
+        if (!score || !Number.isFinite(score.initialProjection)) initialComplete = false;
+        else initial += score.initialProjection;
+        const rowClass = score?.state === 'post' ? 'is-complete' : score?.state === 'in' ? 'is-playing' : '';
+        const detail = score?.game?.detail || (score?.state === 'bye' ? 'No game this week' : '');
+        return `<div class="player-row ${rowClass}"><span class="position ${escapeHTML(selection.slot)}">${escapeHTML(selection.slot)}</span><div><div class="player-name">${escapeHTML(player?.name || 'Player TBD')}</div><div class="owner">${escapeHTML(player?.ownerTeamName || 'Fantasy team TBD')}</div><div class="game-detail">${escapeHTML(detail)}${score?.injuryStatus ? ` • ${escapeHTML(score.injuryStatus)}` : ''}</div></div><div class="points-actual">${points(score?.actual)}</div><div class="points-projected" title="ESPN weekly projection; frozen at kickoff when available">${points(score?.initialProjection)}</div></div>`;
+      }).join('');
+      document.getElementById(`${key}-actual`).textContent = actualComplete ? points(actual) : '—';
+      document.getElementById(`${key}-projected`).textContent = initialComplete ? points(initial) : '—';
+    }
+    let message = snapshot.capturedAt ? `Roster snapshot: ${new Date(snapshot.capturedAt).toLocaleDateString()}.` : 'Annual fantasy roster snapshot has not been loaded yet.';
+    if (!config.enabled) message += ' Pro Bowl setup is pending; score refreshes are paused.';
+    else if (compatible && scores.updatedAt) {
+      const age = Date.now() - Date.parse(scores.updatedAt);
+      message += ` Scores updated ${new Date(scores.updatedAt).toLocaleString()}.`;
+      if (age > 10 * 60 * 1000) message += ' Updates are delayed; showing the last successful refresh.';
+      if (Object.values(scores.players).some(p => p.initialProjection !== null && !p.capturedBeforeKickoff && p.state !== 'bye')) message += ' Some ESPN baselines were first captured after kickoff.';
+    } else message += ' Waiting for the first score update for this matchup.';
+    document.getElementById('status').textContent = message;
+    const gameContainer = document.getElementById('games-grid');
+    gameContainer.innerHTML = compatible && scores.games?.length ? scores.games.map(game => `<article class="game-card ${game.state === 'in' ? 'live' : ''}"><div class="game-time">${escapeHTML(game.detail)}</div>${game.teams.map(t => `<div class="game-team"><span>${escapeHTML(t.name)}</span><strong>${game.state === 'pre' ? '—' : escapeHTML(t.score)}</strong></div>`).join('')}</article>`).join('') : '<p>Games will appear when the matchup is enabled.</p>';
+  } catch (error) {
+    document.getElementById('status').textContent = `${error.message} Showing the last loaded scoreboard. Retrying automatically.`;
+  } finally { refreshing = false; }
+}
+document.getElementById('refresh').addEventListener('click', refresh);
+refresh();
+setInterval(refresh, 60000);

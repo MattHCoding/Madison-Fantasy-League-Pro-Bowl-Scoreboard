@@ -1,0 +1,6 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Annual Pro Bowl Setup</title><link rel="stylesheet" href="styles.css"></head>
+<body><main class="container"><h1>Annual Pro Bowl setup</h1><nav class="toolbar"><a href="index.html">Scoreboard</a></nav>
+<div class="notice" id="status" role="status">Loading the annual roster snapshot…</div>
+<form id="setup"><label>Matchup week <input id="week" type="number" min="1" max="18"></label><fieldset><legend>Split the league into two sides</legend><div id="teams"></div></fieldset><div class="setup-grid"><fieldset><legend>Team West selections</legend><div id="west"></div></fieldset><fieldset><legend>Team East selections</legend><div id="east"></div></fieldset></div><label><input type="checkbox" id="enabled"> Enable score refreshes once all selections are complete</label><button type="submit">Export annual setup</button></form>
+<p class="notice">Export saves a setup file to your device. It does not change the shared scoreboard. Import it with the “ESPN Pro Bowl data” action, using “configure” and the file contents. You can save the team split now and choose Pro Bowl players later.</p></main><script src="setup.js"></script></body></html>
