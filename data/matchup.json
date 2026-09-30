@@ -1,0 +1,101 @@
+{
+  "season": 2026,
+  "leagueId": 1297942157,
+  "week": null,
+  "enabled": false,
+  "slots": [
+    "QB",
+    "RB",
+    "RB",
+    "WR",
+    "WR",
+    "TE",
+    "FLEX",
+    "FLEX",
+    "DEF"
+  ],
+  "sides": {
+    "west": {
+      "teamIds": [],
+      "players": [
+        {
+          "slot": "QB",
+          "id": null
+        },
+        {
+          "slot": "RB",
+          "id": null
+        },
+        {
+          "slot": "RB",
+          "id": null
+        },
+        {
+          "slot": "WR",
+          "id": null
+        },
+        {
+          "slot": "WR",
+          "id": null
+        },
+        {
+          "slot": "TE",
+          "id": null
+        },
+        {
+          "slot": "FLEX",
+          "id": null
+        },
+        {
+          "slot": "FLEX",
+          "id": null
+        },
+        {
+          "slot": "DEF",
+          "id": null
+        }
+      ]
+    },
+    "east": {
+      "teamIds": [],
+      "players": [
+        {
+          "slot": "QB",
+          "id": null
+        },
+        {
+          "slot": "RB",
+          "id": null
+        },
+        {
+          "slot": "RB",
+          "id": null
+        },
+        {
+          "slot": "WR",
+          "id": null
+        },
+        {
+          "slot": "WR",
+          "id": null
+        },
+        {
+          "slot": "TE",
+          "id": null
+        },
+        {
+          "slot": "FLEX",
+          "id": null
+        },
+        {
+          "slot": "FLEX",
+          "id": null
+        },
+        {
+          "slot": "DEF",
+          "id": null
+        }
+      ]
+    }
+  }
+}

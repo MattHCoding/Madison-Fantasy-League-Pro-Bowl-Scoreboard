@@ -1,0 +1,496 @@
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    
+    body { 
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background: #f5f5f5;
+      color: #1d1d1f;
+      min-height: 100vh;
+      padding: 20px 0;
+    }
+    
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+    
+    .header {
+      position: relative;
+      text-align: center;
+      padding: 60px 0 70px;              /* taller so the image shows */
+      margin: -20px -20px 20px;
+      background:
+        linear-gradient(rgba(0,0,0,.35), rgba(0,0,0,.35)),  /* darken for legibility */
+        url("./westWinsPhoto.jpg") center/cover no-repeat;  /* image in same folder */
+      color: #fff;                                          /* make text white */
+      box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+    }
+
+    .header h1 {
+      font-size: 28px;
+      font-weight: 600;
+      margin-bottom: 5px;
+      color: inherit;                                       /* inherit white */
+      text-shadow: 0 2px 4px rgba(0,0,0,.35);
+    }
+
+    .week-info {
+      color: rgba(255,255,255,.9);                          /* lighter subtitle */
+      font-size: 14px;
+    }
+
+    
+    .matchup-container {
+      display: grid;
+      grid-template-columns: 1fr 100px 1fr;
+      gap: 15px;
+      margin-bottom: 40px;
+    }
+    
+    .team-column {
+      background: white;
+      border-radius: 8px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+      overflow: hidden;
+    }
+    
+    .team-header {
+      padding: 20px;
+      background: linear-gradient(to bottom, #f8f9fa, #ffffff);
+      border-bottom: 1px solid #e9ecef;
+    }
+    
+    .team-header-content {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+    }
+    
+    .team-name {
+      font-size: 20px;
+      font-weight: 600;
+      color: #1d1d1f;
+    }
+    
+    .team-score {
+      text-align: right;
+      min-width: 180px;
+    }
+    
+    .actual-score {
+      font-size: 32px;
+      font-weight: 700;
+      line-height: 1;
+      color: #1d1d1f;
+    }
+    
+    .projected-score {
+      font-size: 12px;
+      color: #6c757d;
+      margin-top: 4px;
+    }
+    
+    .projected-score span {
+      font-weight: 600;
+    }
+
+    /* Expected miles + status bar */
+    .expected-miles {
+      font-size: 12px;
+      color: #6c757d;
+      margin-top: 6px;
+      font-weight: 600;
+    }
+    .expected-miles-value {
+      font-weight: 700;
+      color: #1d1d1f;
+      margin-left: 4px;
+    }
+    .status-bar {
+      width: 180px;
+      height: 8px;
+      background: #eef2f7;
+      border: 1px solid #e3e7ee;
+      border-radius: 999px;
+      overflow: hidden;
+      margin-top: 6px;
+    }
+    .status-fill {
+      height: 100%;
+      width: 0%;
+      transition: width 300ms ease;
+    }
+    .status-fill.high {
+      background: linear-gradient(90deg, #22c55e, #86efac);
+    }
+    .status-fill.neutral {
+      background: linear-gradient(90deg, #3b82f6, #93c5fd);
+    }
+    .status-fill.low {
+      background: linear-gradient(90deg, #ef4444, #fecaca);
+    }
+    
+    .win-probability {
+      font-size: 11px;
+      color: #6c757d;
+      margin-top: 2px;
+    }
+    
+    .win-probability .prob-value {
+      font-weight: 600;
+      font-size: 13px;
+    }
+    
+    .win-probability .prob-value.high {
+      color: #22c55e;
+    }
+    
+    .win-probability .prob-value.low {
+      color: #ef4444;
+    }
+    
+    .projection-up {
+      color: #22c55e;
+    }
+    
+    .projection-down {
+      color: #ef4444;
+    }
+    
+    .vs-divider {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      padding-top: 80px;
+    }
+    
+    .vs-text {
+      background: rgba(182, 179, 179, 0.397);
+      border: 2px solid #e9ecef;
+      border-radius: 50%;
+      width: 60px;
+      height: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+      font-weight: 600;
+      color: #6c757d;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.06);
+    }
+    
+    .player-list {
+      padding: 8px;
+    }
+    
+    .player-row {
+      display: grid;
+      grid-template-columns: 40px 40px 1fr auto auto;
+      gap: 10px;
+      padding: 10px;
+      margin-bottom: 4px;
+      border-radius: 6px;
+      align-items: center;
+      transition: all 0.2s;
+      position: relative;
+    }
+    
+    .player-row:hover {
+      background: #f8f9fa;
+    }
+    
+    .player-row.is-playing {
+      background: #fff3cd;
+      border: 1px solid #ffc107;
+      box-shadow: 0 2px 4px rgba(255, 193, 7, 0.2);
+      animation: pulse 2s ease-in-out infinite;
+    }
+
+    .player-row.is-complete {
+      background: #cfd2d4d0;              /* dark grey */
+      border: 1px solid #212529;
+      box-shadow: 0 2px 4px rgba(43, 48, 53, 0.041);
+      animation: none;
+    }
+    .player-row.is-complete .player-name,
+    .player-row.is-complete .points-actual,
+    .player-row.is-complete .points-projected,
+    .player-row.is-complete .position {
+      color: #5e5d5d;
+    }
+    .player-row.is-complete .position {
+      background: #7d848bdc;
+    }
+    .player-row.is-complete:hover {      /* keep hover from lightening it */
+      background: #7f848a;
+    }
+    
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.01); }
+    }
+    
+    .player-photo {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 2px solid #e9ecef;
+      background: white;
+    }
+    
+    .player-photo.placeholder {
+      background: linear-gradient(135deg, #e9ecef, #dee2e6);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #6c757d;
+      font-size: 14px;
+      font-weight: 600;
+    }
+    
+    .position {
+      background: #e9ecef;
+      padding: 4px 8px;
+      border-radius: 4px;
+      font-size: 11px;
+      text-align: center;
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+    
+    .position.QB { background: #dc3545; color: white; }
+    .position.RB { background: #28a745; color: white; }
+    .position.WR { background: #007bff; color: white; }
+    .position.TE { background: #fd7e14; color: white; }
+    .position.FLEX { background: #6610f2; color: white; }
+    .position.DEF { background: #6c757d; color: white; }
+    
+    .player-name {
+      font-weight: 500;
+      font-size: 14px;
+      color: #1d1d1f;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    
+    .points-actual {
+      font-weight: 700;
+      font-size: 16px;
+      min-width: 60px;
+      text-align: right;
+      color: #1d1d1f;
+    }
+    
+    .points-actual.not-started {
+      color: #adb5bd;
+      font-size: 14px;
+    }
+    
+    .points-projected {
+      font-size: 13px;
+      min-width: 50px;
+      text-align: right;
+      font-weight: 600;
+    }
+    
+    .game-status {
+      font-size: 11px;
+      font-weight: 600;
+      min-width: 50px;
+      text-align: right;
+      text-transform: uppercase;
+    }
+    
+    .game-status.live {
+      color: #ffc107;
+    }
+    
+    .game-status.final {
+      color: #6c757d;
+    }
+    
+    .game-status.not-started {
+      color: #adb5bd;
+    }
+    
+    /* Game Scores Section */
+    .games-section {
+      margin-top: 40px;
+    }
+    
+    .games-header {
+      font-size: 18px;
+      font-weight: 600;
+      color: #1d1d1f;
+      margin-bottom: 15px;
+      padding-left: 5px;
+    }
+    
+    .games-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 12px;
+    }
+    
+    .game-card {
+      background: white;
+      border-radius: 8px;
+      padding: 12px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+      border: 1px solid #e9ecef;
+    }
+    
+    .game-card.live {
+      border-color: #ffc107;
+      background: linear-gradient(to bottom, #fffdf7, #ffffff);
+    }
+    
+    .game-status-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid #e9ecef;
+    }
+    
+    .game-time {
+      font-size: 12px;
+      font-weight: 600;
+      color: #6c757d;
+    }
+    
+    .game-time.live {
+      color: #dc3545;
+    }
+    
+    .game-quarter {
+      font-size: 11px;
+      color: #6c757d;
+      font-weight: 500;
+    }
+    
+    .game-teams {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    
+    .game-team {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    
+    .team-info {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    
+    .team-logo {
+      width: 24px;
+      height: 24px;
+      object-fit: contain;
+    }
+    
+    .team-abbr {
+      font-size: 14px;
+      font-weight: 500;
+      color: #1d1d1f;
+    }
+    
+    .possession-indicator {
+      display: inline-block;
+      width: 6px;
+      height: 6px;
+      background: #22c55e;
+      border-radius: 50%;
+      margin-left: 4px;
+      animation: blink 1.5s ease-in-out infinite;
+    }
+    
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.3; }
+    }
+    
+    .team-score-display {
+      font-size: 18px;
+      font-weight: 700;
+      color: #1d1d1f;
+    }
+    
+    .loading {
+      text-align: center;
+      padding: 40px;
+      color: #6c757d;
+    }
+    
+    .loading-spinner {
+      width: 40px;
+      height: 40px;
+      border: 3px solid #e9ecef;
+      border-top-color: #007bff;
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+      margin: 20px auto;
+    }
+    
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+    
+    .error {
+      background: #f8d7da;
+      border: 1px solid #f5c6cb;
+      color: #721c24;
+      padding: 15px;
+      border-radius: 8px;
+      margin: 20px 0;
+      text-align: center;
+    }
+
+    @media (max-width: 768px) {
+      .matchup-container {
+        grid-template-columns: 1fr;
+        gap: 10px;
+      }
+      
+      .vs-divider {
+        height: 50px;
+        padding-top: 0;
+      }
+      
+      .player-row {
+        grid-template-columns: 36px 36px 1fr 55px 55px;
+        padding: 8px;
+      }
+
+      .player-name {
+        white-space: normal;
+        word-break: break-word;
+      }
+      
+      .games-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  
+.toolbar {display:flex;gap:16px;align-items:center;flex-wrap:wrap;margin:16px 0;}
+a {color:#1766a8;} .notice {padding:16px;background:white;border-radius:8px;margin-bottom:16px;line-height:1.5;}
+.owner,.game-detail {font-size:12px;color:#6c757d;margin-top:4px;}
+.player-heading {display:flex;justify-content:flex-end;gap:20px;padding:8px 18px;color:#6c757d;font-size:12px;}
+.player-row {grid-template-columns:40px 1fr 65px 65px;}
+fieldset {margin:20px 0;padding:16px;border:1px solid #ccc;border-radius:8px;}
+label {display:block;margin:12px 0;} select,input,button {font:inherit;padding:8px;max-width:100%;} button {cursor:pointer;}
+.setup-grid {display:grid;grid-template-columns:1fr 1fr;gap:20px;}
+@media(max-width:768px){.team-header-content{flex-wrap:wrap}.team-score{min-width:0}.setup-grid{grid-template-columns:1fr}.player-row{grid-template-columns:36px 1fr 55px 55px;gap:6px}}
+/* Native dropdowns must not force the setup grid beyond the viewport. */
+.setup-grid > fieldset { min-width: 0; }
+.setup-grid select { width: 100%; }
