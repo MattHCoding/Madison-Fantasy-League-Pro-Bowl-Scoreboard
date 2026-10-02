@@ -1,7 +1,7 @@
 'use strict';
 const dataBase = location.hostname.endsWith('.github.io')
   ? 'https://raw.githubusercontent.com/MattHCoding/Madison-Fantasy-League-Pro-Bowl-Scoreboard/main/' : './';
-let config, snapshot;
+let config, snapshot, originalConfig, saving = false;
 const escapeHTML = value => String(value ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 async function load(path) {
   const response = await fetch(dataBase + path, {cache:'no-store'});
@@ -25,7 +25,8 @@ function populatePlayers() {
 }
 async function init() {
   try {
-    config = await load('data/matchup.json');
+    config = location.hostname.endsWith('.github.io') ? (await setupStore.read()).config : await load('data/matchup.json');
+    originalConfig = structuredClone(config);
     snapshot = await load(`data/rosters-${config.season}.json`);
     document.getElementById('week').value = config.week || '';
     document.getElementById('enabled').checked = config.enabled;
@@ -46,20 +47,37 @@ async function init() {
     document.getElementById('status').textContent = snapshot.capturedAt ? `Using the ${config.season} roster snapshot captured ${new Date(snapshot.capturedAt).toLocaleString()}. Ownership stays fixed until the snapshot is explicitly replaced.` : (Object.keys(config.selectedPlayers || {}).length ? 'Selected Pro Bowl lineups are loaded. Run the annual roster query to link fantasy owners and assign the six-team sides.' : 'The annual roster query needs to run before teams or players can be selected. Pro Bowl players can remain TBD.');
   } catch(error) { document.getElementById('status').textContent = error.message; }
 }
-document.getElementById('setup').addEventListener('submit',event=>{
+document.getElementById('setup').addEventListener('submit',async event=>{
   event.preventDefault();
-  if (!config || !snapshot) return;
+  if (!config || !snapshot || saving) return;
+  const draft = structuredClone(config);
   const week = document.getElementById('week').value;
-  config.week = week ? Number(week) : null;
-  config.enabled = document.getElementById('enabled').checked;
-  const selected = Object.values(config.sides).flatMap(s=>s.players).map(p=>p.id).filter(Boolean);
-  let error = '';
-  if (new Set(selected).size !== selected.length) error = 'A player can only be selected once.';
-  if (Object.values(config.sides).some(s=>s.teamIds.length>6)) error = 'Each side can contain at most six teams.';
-  if (config.enabled && (!config.week || Object.values(config.sides).some(s=>s.teamIds.length!==6 || s.players.some(p=>!p.id)))) error = 'Choose a week, six teams per side, and every player before enabling score refreshes.';
-  if (error) {document.getElementById('status').textContent=error;return;}
-  const url = URL.createObjectURL(new Blob([JSON.stringify(config,null,2)+'\n'],{type:'application/json'}));
-  const link = document.createElement('a');link.href=url;link.download=`pro-bowl-setup-${config.season}.json`;link.click();setTimeout(()=>URL.revokeObjectURL(url),1000);
-  document.getElementById('status').textContent = 'Setup exported. Import the file to apply it to the shared scoreboard.';
+  draft.week = week ? Number(week) : null;
+  draft.enabled = document.getElementById('enabled').checked;
+  const status = document.getElementById('status');
+  const tokenInput = document.getElementById('github-token');
+  const token = tokenInput.value.trim();
+  try {
+    setupStore.validate(draft,snapshot);
+    if (!token) {
+      document.getElementById('connection').open = true;
+      tokenInput.focus();
+      throw new Error('Connect GitHub below before submitting.');
+    }
+    saving = true;
+    const controls = [...document.querySelectorAll('#setup input, #setup select, #setup button')];
+    controls.forEach(control=>{control.disabled=true;});
+    status.textContent = 'Saving selections to the shared scoreboard…';
+    try {
+      await setupStore.save(draft,originalConfig,token);
+      config.week = draft.week;config.enabled = draft.enabled;
+      originalConfig = structuredClone(draft);
+      status.textContent = 'Saved to GitHub. The live scoreboard will pick up these selections on its next refresh (within about a minute).';
+      document.getElementById('view-scoreboard').hidden = false;
+    } finally {
+      controls.forEach(control=>{control.disabled=false;});
+      saving = false;
+    }
+  } catch(error) {status.textContent=error.message;}
 });
 init();

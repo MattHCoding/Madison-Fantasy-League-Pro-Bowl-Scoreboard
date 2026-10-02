@@ -16,9 +16,20 @@ The original 2025 scoreboard is preserved at `archive-2025.html`.
    It will not overwrite an existing snapshot unless `replace_snapshot` is checked.
 3. Open **Annual roster setup** on the scoreboard. Assign six fantasy teams to
    each side. Players may remain TBD until the Pro Bowl selections are known.
-4. Choose the matchup week and players when ready. Export the setup, then run
-   **ESPN Pro Bowl data → configure**, pasting the exported file contents into
-   `setup_json`. Enable score refreshes only after selections are complete.
+4. Connect GitHub on the setup page with a fine-grained token restricted to this
+   repository, with **Contents: Read and write** permission. The token stays only
+   in the open page: it is never written to browser storage, the config, or logs.
+5. Choose the matchup week and players, then hit **Submit**. The page validates
+   the selections and updates `data/matchup.json` on `main` using GitHub's Contents
+   API. The scoreboard reads that shared file on its next refresh (about a minute).
+   Enable score refreshes only after selections are complete and ownership is linked.
+
+A newer shared setup is never silently overwritten: reload if another editor has
+saved since the page loaded. Network and permission errors are shown on the page.
+The existing **configure** Actions operation remains available for manual imports.
+The public scoreboard needs no token. A token permits repository writes, so use
+only a repository-scoped token with an appropriate expiry; it is sent only to
+`api.github.com`. GitHub Pages has no server to implement a GitHub sign-in session.
 
 The snapshot contains ESPN player IDs, positions, NFL team IDs, and the owning
 fantasy team's name and ID. Ownership is frozen at snapshot time. Later trades
@@ -85,9 +96,10 @@ python scripts/update_rosters.py
 python scripts/configure_matchup.py pro-bowl-setup-2026.json
 python scripts/update_scores.py
 python -m unittest discover -s tests
+node --test tests/test_setup_store.cjs
 python -m http.server 8000
 ```
 
-Open `http://localhost:8000` to preview. The setup page exports a local file; it
-cannot write the shared configuration directly. Querying rosters/scores does not
+Open `http://localhost:8000` to preview. Submitting setup also writes the shared
+GitHub configuration from local previews; leave the token blank for read-only use. Querying rosters/scores does not
 change anyone's ESPN lineup or make fantasy transactions.
