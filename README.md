@@ -1,7 +1,10 @@
 # Madison Fantasy League Pro Bowl Scoreboard
 
 A custom East/West matchup built from six ESPN fantasy rosters on each side.
-The 2026 setup starts with no selected players and no assumed matchup week.
+The 2026 Pro Bowl lineups are loaded from the supplied team lists. The matchup
+week and private fantasy ownership are not assumed. Selected player metadata
+is kept in `data/matchup.json` separately from the annual fantasy roster snapshot.
+When a snapshot is available, its ownership labels take precedence.
 The original 2025 scoreboard is preserved at `archive-2025.html`.
 
 ## Annual roster setup

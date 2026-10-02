@@ -15,8 +15,9 @@ function populatePlayers() {
       const previous = select.value || selection.id;
       const allowed = selection.slot === 'FLEX' ? ['RB','WR','TE'] : [selection.slot];
       const owners = new Set(config.sides[side].teamIds.map(String));
-      const players = snapshot.teams.filter(t => owners.has(String(t.id))).flatMap(t => t.players).filter(p => allowed.includes(p.position));
-      select.innerHTML = '<option value="">Player TBD</option>' + players.sort((a,b)=>a.name.localeCompare(b.name)).map(p=>`<option value="${escapeHTML(p.id)}">${escapeHTML(p.name)} — ${escapeHTML(p.ownerTeamName)}</option>`).join('');
+      const source = snapshot.teams.length ? snapshot.teams.filter(t => owners.has(String(t.id))).flatMap(t => t.players) : config.sides[side].players.map(p => config.selectedPlayers?.[String(p.id)]).filter(Boolean);
+      const players = source.filter(p => allowed.includes(p.position));
+      select.innerHTML = '<option value="">Player TBD</option>' + players.sort((a,b)=>a.name.localeCompare(b.name)).map(p=>`<option value="${escapeHTML(p.id)}">${escapeHTML(p.name)} — ${escapeHTML(p.ownerTeamName || 'Owner not yet linked')}</option>`).join('');
       select.value = players.some(p => String(p.id) === String(previous)) ? String(previous) : '';
       selection.id = select.value || null;
     });
@@ -28,7 +29,7 @@ async function init() {
     snapshot = await load(`data/rosters-${config.season}.json`);
     document.getElementById('week').value = config.week || '';
     document.getElementById('enabled').checked = config.enabled;
-    document.getElementById('teams').innerHTML = snapshot.teams.map(t => `<label>${escapeHTML(t.name)} <select data-team="${escapeHTML(t.id)}"><option value="">Unassigned</option><option value="west">West</option><option value="east">East</option></select></label>`).join('');
+    document.getElementById('teams').innerHTML = snapshot.teams.map(t => `<label>${escapeHTML(t.name)} <select data-team="${escapeHTML(t.id)}"><option value="">Unassigned</option><option value="west">${escapeHTML(config.sides.west.name || 'West')}</option><option value="east">${escapeHTML(config.sides.east.name || 'East')}</option></select></label>`).join('');
     document.querySelectorAll('[data-team]').forEach(select => {
       select.value = ['west','east'].find(side => config.sides[side].teamIds.map(String).includes(select.dataset.team)) || '';
       select.addEventListener('change', () => {
@@ -37,11 +38,12 @@ async function init() {
       });
     });
     for (const side of ['west','east']) {
+      document.getElementById(side).closest('fieldset').querySelector('legend').textContent = `${config.sides[side].name || (side === 'west' ? 'Team West' : 'Team East')} selections`;
       document.getElementById(side).innerHTML = config.sides[side].players.map((p,i)=>`<label>${escapeHTML(p.slot)} <select id="${side}-${i}"></select></label>`).join('');
       config.sides[side].players.forEach((p,i) => document.getElementById(`${side}-${i}`).addEventListener('change',event=>{p.id=event.target.value || null;}));
     }
     populatePlayers();
-    document.getElementById('status').textContent = snapshot.capturedAt ? `Using the ${config.season} roster snapshot captured ${new Date(snapshot.capturedAt).toLocaleString()}. Ownership stays fixed until the snapshot is explicitly replaced.` : 'The annual roster query needs to run before teams or players can be selected. Pro Bowl players can remain TBD.';
+    document.getElementById('status').textContent = snapshot.capturedAt ? `Using the ${config.season} roster snapshot captured ${new Date(snapshot.capturedAt).toLocaleString()}. Ownership stays fixed until the snapshot is explicitly replaced.` : (Object.keys(config.selectedPlayers || {}).length ? 'Selected Pro Bowl lineups are loaded. Run the annual roster query to link fantasy owners and assign the six-team sides.' : 'The annual roster query needs to run before teams or players can be selected. Pro Bowl players can remain TBD.');
   } catch(error) { document.getElementById('status').textContent = error.message; }
 }
 document.getElementById('setup').addEventListener('submit',event=>{

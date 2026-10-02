@@ -81,6 +81,9 @@ def validate(config, snapshot, complete=False):
         raise ValueError('Set the matchup week before enabling refreshes.')
     teams = {str(t['id']): t for t in snapshot['teams']}
     players = {str(p['id']): (p, str(t['id'])) for t in snapshot['teams'] for p in t['players']}
+    if not complete:
+        for pid, player in config.get('selectedPlayers', {}).items():
+            players.setdefault(str(pid), (player, None))
     used_teams, used_players = set(), set()
     for key in ('west', 'east'):
         side = config['sides'][key]
@@ -103,7 +106,7 @@ def validate(config, snapshot, complete=False):
                 raise ValueError('Unknown or duplicate Pro Bowl player.')
             player, owner = players[pid]
             allowed = ('RB', 'WR', 'TE') if selection['slot'] == 'FLEX' else (selection['slot'],)
-            if owner not in team_ids or player['position'] not in allowed:
+            if (owner is not None and owner not in team_ids) or player['position'] not in allowed:
                 raise ValueError('Player must belong to this side and be eligible for the slot.')
             used_players.add(pid)
     return players

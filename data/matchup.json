@@ -1,8 +1,6 @@
 {
   "season": 2026,
   "leagueId": 1297942157,
-  "week": null,
-  "enabled": false,
   "slots": [
     "QB",
     "RB",
@@ -14,88 +12,220 @@
     "FLEX",
     "DEF"
   ],
+  "week": null,
+  "enabled": false,
   "sides": {
     "west": {
       "teamIds": [],
       "players": [
         {
           "slot": "QB",
-          "id": null
+          "id": "3918298"
         },
         {
           "slot": "RB",
-          "id": null
+          "id": "4241416"
         },
         {
           "slot": "RB",
-          "id": null
+          "id": "4569987"
         },
         {
           "slot": "WR",
-          "id": null
+          "id": "4361370"
         },
         {
           "slot": "WR",
-          "id": null
+          "id": "4429615"
         },
         {
           "slot": "TE",
-          "id": null
+          "id": "4361307"
         },
         {
           "slot": "FLEX",
-          "id": null
+          "id": "4248528"
         },
         {
           "slot": "FLEX",
-          "id": null
+          "id": "4569618"
         },
         {
           "slot": "DEF",
-          "id": null
+          "id": "-16018"
         }
-      ]
+      ],
+      "name": "Team Nick"
     },
     "east": {
       "teamIds": [],
       "players": [
         {
           "slot": "QB",
-          "id": null
+          "id": "3916387"
         },
         {
           "slot": "RB",
-          "id": null
+          "id": "4870808"
         },
         {
           "slot": "RB",
-          "id": null
+          "id": "4430737"
         },
         {
           "slot": "WR",
-          "id": null
+          "id": "16800"
         },
         {
           "slot": "WR",
-          "id": null
+          "id": "4685472"
         },
         {
           "slot": "TE",
-          "id": null
+          "id": "4432665"
         },
         {
           "slot": "FLEX",
-          "id": null
+          "id": "4696981"
         },
         {
           "slot": "FLEX",
-          "id": null
+          "id": "4259545"
         },
         {
           "slot": "DEF",
-          "id": null
+          "id": "-16016"
         }
-      ]
+      ],
+      "name": "Opponent"
+    }
+  },
+  "selectedPlayers": {
+    "3918298": {
+      "id": "3918298",
+      "name": "Josh Allen",
+      "position": "QB",
+      "proTeamId": 2,
+      "ownerTeamName": null
+    },
+    "4241416": {
+      "id": "4241416",
+      "name": "Chuba Hubbard",
+      "position": "RB",
+      "proTeamId": 29,
+      "ownerTeamName": null
+    },
+    "4569987": {
+      "id": "4569987",
+      "name": "Jaylen Warren",
+      "position": "RB",
+      "proTeamId": 23,
+      "ownerTeamName": null
+    },
+    "4361370": {
+      "id": "4361370",
+      "name": "Chris Olave",
+      "position": "WR",
+      "proTeamId": 18,
+      "ownerTeamName": null
+    },
+    "4429615": {
+      "id": "4429615",
+      "name": "Zay Flowers",
+      "position": "WR",
+      "proTeamId": 33,
+      "ownerTeamName": null
+    },
+    "4361307": {
+      "id": "4361307",
+      "name": "Trey McBride",
+      "position": "TE",
+      "proTeamId": 22,
+      "ownerTeamName": null
+    },
+    "4248528": {
+      "id": "4248528",
+      "name": "Christian Watson",
+      "position": "WR",
+      "proTeamId": 9,
+      "ownerTeamName": null
+    },
+    "4569618": {
+      "id": "4569618",
+      "name": "Garrett Wilson",
+      "position": "WR",
+      "proTeamId": 20,
+      "ownerTeamName": null
+    },
+    "-16018": {
+      "id": "-16018",
+      "name": "Saints D/ST",
+      "position": "DEF",
+      "proTeamId": 18,
+      "ownerTeamName": null
+    },
+    "3916387": {
+      "id": "3916387",
+      "name": "Lamar Jackson",
+      "position": "QB",
+      "proTeamId": 33,
+      "ownerTeamName": null
+    },
+    "4870808": {
+      "id": "4870808",
+      "name": "Jeremiyah Love",
+      "position": "RB",
+      "proTeamId": 22,
+      "ownerTeamName": null
+    },
+    "4430737": {
+      "id": "4430737",
+      "name": "Kyren Williams",
+      "position": "RB",
+      "proTeamId": 14,
+      "ownerTeamName": null
+    },
+    "16800": {
+      "id": "16800",
+      "name": "Davante Adams",
+      "position": "WR",
+      "proTeamId": 14,
+      "ownerTeamName": null
+    },
+    "4685472": {
+      "id": "4685472",
+      "name": "Tetairoa McMillan",
+      "position": "WR",
+      "proTeamId": 29,
+      "ownerTeamName": null
+    },
+    "4432665": {
+      "id": "4432665",
+      "name": "Brock Bowers",
+      "position": "TE",
+      "proTeamId": 13,
+      "ownerTeamName": null
+    },
+    "4696981": {
+      "id": "4696981",
+      "name": "Cam Skattebo",
+      "position": "RB",
+      "proTeamId": 19,
+      "ownerTeamName": null
+    },
+    "4259545": {
+      "id": "4259545",
+      "name": "D'Andre Swift",
+      "position": "RB",
+      "proTeamId": 3,
+      "ownerTeamName": null
+    },
+    "-16016": {
+      "id": "-16016",
+      "name": "Vikings D/ST",
+      "position": "DEF",
+      "proTeamId": 16,
+      "ownerTeamName": null
     }
   }
 }

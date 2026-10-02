@@ -15,11 +15,12 @@ async function refresh() {
   try {
     const config = await loadJSON('data/matchup.json');
     const [snapshot, scores] = await Promise.all([loadJSON(`data/rosters-${config.season}.json`), loadJSON('data/scores.json')]);
-    const pool = new Map(snapshot.teams.flatMap(t => t.players.map(p => [String(p.id), p])));
+    const pool = new Map([...Object.entries(config.selectedPlayers || {}), ...snapshot.teams.flatMap(t => t.players.map(p => [String(p.id), p]))]);
     const compatible = scores.season === config.season && scores.week === config.week && scores.leagueId === config.leagueId;
     document.title = `Madison Fantasy Pro Bowl • ${config.season}`;
     document.getElementById('week-info').textContent = `${config.season} Season • ${config.week ? `Week ${config.week}` : 'Week TBD'}`;
     for (const key of ['west', 'east']) {
+      document.getElementById(`${key}-players`).closest('.team-column').querySelector('.team-name').textContent = config.sides[key].name || (key === 'west' ? 'Team West' : 'Team East');
       let actual = 0, initial = 0, actualComplete = true, initialComplete = true;
       document.getElementById(`${key}-players`).innerHTML = config.sides[key].players.map(selection => {
         const player = pool.get(String(selection.id));
@@ -30,13 +31,13 @@ async function refresh() {
         else initial += score.initialProjection;
         const rowClass = score?.state === 'post' ? 'is-complete' : score?.state === 'in' ? 'is-playing' : '';
         const detail = score?.game?.detail || (score?.state === 'bye' ? 'No game this week' : '');
-        return `<div class="player-row ${rowClass}"><span class="position ${escapeHTML(selection.slot)}">${escapeHTML(selection.slot)}</span><div><div class="player-name">${escapeHTML(player?.name || 'Player TBD')}</div><div class="owner">${escapeHTML(player?.ownerTeamName || 'Fantasy team TBD')}</div><div class="game-detail">${escapeHTML(detail)}${score?.injuryStatus ? ` • ${escapeHTML(score.injuryStatus)}` : ''}</div></div><div class="points-actual">${points(score?.actual)}</div><div class="points-projected" title="ESPN weekly projection; frozen at kickoff when available">${points(score?.initialProjection)}</div></div>`;
+        return `<div class="player-row ${rowClass}"><span class="position ${escapeHTML(selection.slot)}">${escapeHTML(selection.slot)}</span><div><div class="player-name">${escapeHTML(player?.name || 'Player TBD')}</div><div class="owner">${escapeHTML(player?.ownerTeamName || 'Fantasy owner not yet linked')}</div><div class="game-detail">${escapeHTML(detail)}${score?.injuryStatus ? ` • ${escapeHTML(score.injuryStatus)}` : ''}</div></div><div class="points-actual">${points(score?.actual)}</div><div class="points-projected" title="ESPN weekly projection; frozen at kickoff when available">${points(score?.initialProjection)}</div></div>`;
       }).join('');
       document.getElementById(`${key}-actual`).textContent = actualComplete ? points(actual) : '—';
       document.getElementById(`${key}-projected`).textContent = initialComplete ? points(initial) : '—';
     }
-    let message = snapshot.capturedAt ? `Roster snapshot: ${new Date(snapshot.capturedAt).toLocaleDateString()}.` : 'Annual fantasy roster snapshot has not been loaded yet.';
-    if (!config.enabled) message += ' Pro Bowl setup is pending; score refreshes are paused.';
+    let message = snapshot.capturedAt ? `Roster snapshot: ${new Date(snapshot.capturedAt).toLocaleDateString()}.` : (Object.keys(config.selectedPlayers || {}).length ? 'Pro Bowl lineups loaded. Fantasy owners have not been linked yet.' : 'Annual fantasy roster snapshot has not been loaded yet.');
+    if (!config.enabled) message += ' Matchup week and ESPN connection are pending; score refreshes are paused.';
     else if (compatible && scores.updatedAt) {
       const age = Date.now() - Date.parse(scores.updatedAt);
       message += ` Scores updated ${new Date(scores.updatedAt).toLocaleString()}.`;
