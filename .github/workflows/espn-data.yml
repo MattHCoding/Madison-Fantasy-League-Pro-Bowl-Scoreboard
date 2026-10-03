@@ -1,5 +1,8 @@
 name: ESPN Pro Bowl data
 on:
+  push:
+    branches: [main]
+    paths: [data/matchup.json]
   workflow_dispatch:
     inputs:
       operation:
@@ -57,6 +60,17 @@ jobs:
               python scripts/configure_matchup.py /tmp/pro-bowl-setup.json
               ;;
             scores)
+              if ! python - <<'PY'
+          import json
+          from pathlib import Path
+          config = json.loads(Path('data/matchup.json').read_text())
+          snapshot = json.loads(Path(f"data/rosters-{config['season']}.json").read_text())
+          needs_rosters = config.get('enabled') and not snapshot.get('capturedAt')
+          raise SystemExit(1 if needs_rosters else 0)
+          PY
+              then
+                python scripts/update_rosters.py
+              fi
               if [ "$EVENT_NAME" = "schedule" ]; then
                 python scripts/update_scores.py --scheduled
               else
@@ -66,6 +80,7 @@ jobs:
             *) exit 1 ;;
           esac
       - name: Publish only sanitized data
+        if: success() || failure()
         run: |
           git add data
           if ! git diff --cached --quiet; then

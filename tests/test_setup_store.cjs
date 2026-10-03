@@ -42,10 +42,11 @@ test('permission, racing write, and network failures do not report success',asyn
   const api=store(async(url,options)=>{if(options.method)throw Error('network');return file(config);});
   await assert.rejects(api.save(config,config,'token'),/Could not confirm/);
 });
-test('invalid week, duplicate players, wrong position, or unlinked live scoring rejected',()=>{
+test('invalid week, duplicate players, wrong position, rejected; manual ownership is unnecessary',()=>{
   const api=store(()=>{});api.validate(config,snapshot);
   let draft=structuredClone(config);draft.week=19;assert.throws(()=>api.validate(draft,snapshot),/week/);
   draft=structuredClone(config);draft.sides.west.players[2].id=draft.sides.west.players[1].id;assert.throws(()=>api.validate(draft,snapshot),/once/);
   draft=structuredClone(config);draft.sides.west.players[0].id=draft.sides.west.players[1].id;assert.throws(()=>api.validate(draft,snapshot),/eligible/);
-  draft=structuredClone(config);draft.week=4;draft.enabled=true;assert.throws(()=>api.validate(draft,snapshot),/six fantasy teams/);
+  draft=structuredClone(config);draft.week=4;draft.enabled=true;api.validate(draft,snapshot);
+  draft.sides.west.players[0].id=null;assert.throws(()=>api.validate(draft,snapshot),/every player/);
 });

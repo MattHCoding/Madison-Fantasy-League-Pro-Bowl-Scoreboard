@@ -37,13 +37,13 @@ async function refresh() {
       document.getElementById(`${key}-projected`).textContent = initialComplete ? points(initial) : '—';
     }
     let message = snapshot.capturedAt ? `Roster snapshot: ${new Date(snapshot.capturedAt).toLocaleDateString()}.` : (Object.keys(config.selectedPlayers || {}).length ? 'Pro Bowl lineups loaded. Fantasy owners have not been linked yet.' : 'Annual fantasy roster snapshot has not been loaded yet.');
-    if (!config.enabled) message += ' Matchup week and ESPN connection are pending; score refreshes are paused.';
+    if (!config.enabled) message += ' Score refreshes are paused.';
     else if (compatible && scores.updatedAt) {
       const age = Date.now() - Date.parse(scores.updatedAt);
       message += ` Scores updated ${new Date(scores.updatedAt).toLocaleString()}.`;
       if (age > 10 * 60 * 1000) message += ' Updates are delayed; showing the last successful refresh.';
       if (Object.values(scores.players).some(p => p.initialProjection !== null && !p.capturedBeforeKickoff && p.state !== 'bye')) message += ' Some ESPN baselines were first captured after kickoff.';
-    } else message += ' Waiting for the first score update for this matchup.';
+    } else message += ' Waiting for the first ESPN score update; the refresh workflow must have valid ESPN credentials.';
     document.getElementById('status').textContent = message;
     const gameContainer = document.getElementById('games-grid');
     gameContainer.innerHTML = compatible && scores.games?.length ? scores.games.map(game => `<article class="game-card ${game.state === 'in' ? 'live' : ''}"><div class="game-time">${escapeHTML(game.detail)}</div>${game.teams.map(t => `<div class="game-team"><span>${escapeHTML(t.name)}</span><strong>${game.state === 'pre' ? '—' : escapeHTML(t.score)}</strong></div>`).join('')}</article>`).join('') : '<p>Games will appear when the matchup is enabled.</p>';

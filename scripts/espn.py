@@ -79,20 +79,11 @@ def validate(config, snapshot, complete=False):
         raise ValueError('Choose an NFL regular-season week from 1 to 18.')
     if complete and week is None:
         raise ValueError('Set the matchup week before enabling refreshes.')
-    teams = {str(t['id']): t for t in snapshot['teams']}
-    players = {str(p['id']): (p, str(t['id'])) for t in snapshot['teams'] for p in t['players']}
-    if not complete:
-        for pid, player in config.get('selectedPlayers', {}).items():
-            players.setdefault(str(pid), (player, None))
-    used_teams, used_players = set(), set()
+    players = {str(pid): (player, None) for pid, player in config.get('selectedPlayers', {}).items()}
+    players.update({str(p['id']): (p, str(t['id'])) for t in snapshot['teams'] for p in t['players']})
+    used_players = set()
     for key in ('west', 'east'):
         side = config['sides'][key]
-        team_ids = list(map(str, side['teamIds']))
-        if len(set(team_ids)) != len(team_ids) or any(i not in teams or i in used_teams for i in team_ids):
-            raise ValueError('Each fantasy team must belong to just one side.')
-        if len(team_ids) > 6 or (complete and len(team_ids) != 6):
-            raise ValueError('Each side must have six fantasy teams.')
-        used_teams.update(team_ids)
         if [p['slot'] for p in side['players']] != config['slots']:
             raise ValueError('Selections must match the configured lineup slots.')
         for selection in side['players']:
@@ -106,7 +97,7 @@ def validate(config, snapshot, complete=False):
                 raise ValueError('Unknown or duplicate Pro Bowl player.')
             player, owner = players[pid]
             allowed = ('RB', 'WR', 'TE') if selection['slot'] == 'FLEX' else (selection['slot'],)
-            if (owner is not None and owner not in team_ids) or player['position'] not in allowed:
-                raise ValueError('Player must belong to this side and be eligible for the slot.')
+            if player['position'] not in allowed:
+                raise ValueError('Player must be eligible for the slot.')
             used_players.add(pid)
     return players

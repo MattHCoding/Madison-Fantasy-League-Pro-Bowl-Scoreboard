@@ -13,7 +13,7 @@
     "DEF"
   ],
   "week": 4,
-  "enabled": false,
+  "enabled": true,
   "sides": {
     "west": {
       "teamIds": [],

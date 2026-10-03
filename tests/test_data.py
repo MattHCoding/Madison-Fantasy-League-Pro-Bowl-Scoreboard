@@ -72,12 +72,28 @@ class DataTests(unittest.TestCase):
         data['players'][0]['player']['stats'].pop(0)
         self.assertIsNone(build_scores(config,snapshot,data,board,{})['players']['101']['actual'])
 
-    def test_eligibility_and_split(self):
+    def test_ownership_does_not_require_manual_side_assignment(self):
+        config,snapshot,data,board=fixture()
+        for side in config['sides'].values():side['teamIds']=[]
+        self.assertEqual(build_scores(config,snapshot,data,board,{})['players']['101']['actual'],30)
+        config['sides']['west']['players'][0]['id']='102'
+        config['sides']['east']['players'][0]['id']='101'
+        validate(config,snapshot,True)
+
+    def test_selected_metadata_can_enable_before_snapshot_capture(self):
+        config,snapshot,_,_=fixture()
+        config['selectedPlayers']={p['id']:p for t in snapshot['teams'] for p in t['players']}
+        snapshot['teams']=[]
+        validate(config,snapshot,True)
+        config['sides']['west']['players'][0]['id']='unknown'
+        with self.assertRaises(ValueError):validate(config,snapshot,True)
+
+    def test_duplicate_and_wrong_position_still_rejected(self):
         config,snapshot,_,_=fixture()
         config['sides']['west']['players'][0]['id']='102'
         with self.assertRaises(ValueError):validate(config,snapshot,True)
         config,snapshot,_,_=fixture()
-        config['sides']['east']['teamIds'][0]=1
+        snapshot['teams'][0]['players'][0]['position']='WR'
         with self.assertRaises(ValueError):validate(config,snapshot,True)
 
     def test_snapshot_omits_private_fields(self):

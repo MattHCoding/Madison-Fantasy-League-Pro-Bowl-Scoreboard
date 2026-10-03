@@ -14,15 +14,20 @@ The original 2025 scoreboard is preserved at `archive-2025.html`.
 2. Run **ESPN Pro Bowl data → rosters** once when ownership should be captured.
    It stores the twelve sanitized rosters in `data/rosters-2026.json`.
    It will not overwrite an existing snapshot unless `replace_snapshot` is checked.
-3. Open **Annual roster setup** on the scoreboard. Assign six fantasy teams to
-   each side. Players may remain TBD until the Pro Bowl selections are known.
+3. Open **Annual roster setup** on the scoreboard. Choose Pro Bowl players for
+   each side. ESPN supplies their fantasy-team ownership; no manual fantasy-team
+   assignment is required. Players may remain TBD until the selections are known.
 4. Connect GitHub on the setup page with a fine-grained token restricted to this
    repository, with **Contents: Read and write** permission. The token stays only
    in the open page: it is never written to browser storage, the config, or logs.
 5. Choose the matchup week and players, then hit **Submit**. The page validates
    the selections and updates `data/matchup.json` on `main` using GitHub's Contents
    API. The scoreboard reads that shared file on its next refresh (about a minute).
-   Enable score refreshes only after selections are complete and ownership is linked.
+   Enable score refreshes once the matchup week and player selections are complete.
+   Saving the setup triggers a refresh. If the annual snapshot is empty, the
+   workflow captures it first with a separate ESPN roster query, then queries
+   selected-player scores and projections. A successful roster capture is
+   published even if the subsequent score request fails.
 
 A newer shared setup is never silently overwritten: reload if another editor has
 saved since the page loaded. Network and permission errors are shown on the page.
@@ -32,7 +37,7 @@ only a repository-scoped token with an appropriate expiry; it is sent only to
 `api.github.com`. GitHub Pages has no server to implement a GitHub sign-in session.
 
 The snapshot contains ESPN player IDs, positions, NFL team IDs, and the owning
-fantasy team's name and ID. Ownership is frozen at snapshot time. Later trades
+fantasy team's name and ID. Ownership labels come directly from ESPN and are frozen at snapshot time. Later trades
 or weekly roster refreshes do not move players between Pro Bowl sides.
 No fantasy owner names, member records, email addresses, or cookies are published.
 Division IDs are retained as a reference; they are not assumed to define East/West.
@@ -41,7 +46,8 @@ Division IDs are retained as a reference; they are not assumed to define East/We
 
 `update_scores.py` queries only the selected IDs with `kona_playercard` and
 uses weekly `appliedTotal`: source 0 for actual scoring, source 1 for projections.
-It never requests `mRoster` or rewrites the roster snapshot or matchup selections.
+The score query never requests `mRoster` or rewrites the roster snapshot or matchup selections.
+The workflow separately bootstraps an empty annual snapshot before the first score query.
 This uses your ESPN league's scoring rules, including D/ST.
 
 Before kickoff, ESPN weekly projections can update. At kickoff, the last stored
