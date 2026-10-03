@@ -12,7 +12,7 @@
     "FLEX",
     "DEF"
   ],
-  "week": null,
+  "week": 4,
   "enabled": false,
   "sides": {
     "west": {
@@ -101,6 +101,20 @@
     }
   },
   "selectedPlayers": {
+    "16800": {
+      "id": "16800",
+      "name": "Davante Adams",
+      "position": "WR",
+      "proTeamId": 14,
+      "ownerTeamName": null
+    },
+    "3916387": {
+      "id": "3916387",
+      "name": "Lamar Jackson",
+      "position": "QB",
+      "proTeamId": 33,
+      "ownerTeamName": null
+    },
     "3918298": {
       "id": "3918298",
       "name": "Josh Allen",
@@ -115,11 +129,25 @@
       "proTeamId": 29,
       "ownerTeamName": null
     },
-    "4569987": {
-      "id": "4569987",
-      "name": "Jaylen Warren",
+    "4248528": {
+      "id": "4248528",
+      "name": "Christian Watson",
+      "position": "WR",
+      "proTeamId": 9,
+      "ownerTeamName": null
+    },
+    "4259545": {
+      "id": "4259545",
+      "name": "D'Andre Swift",
       "position": "RB",
-      "proTeamId": 23,
+      "proTeamId": 3,
+      "ownerTeamName": null
+    },
+    "4361307": {
+      "id": "4361307",
+      "name": "Trey McBride",
+      "position": "TE",
+      "proTeamId": 22,
       "ownerTeamName": null
     },
     "4361370": {
@@ -136,67 +164,11 @@
       "proTeamId": 33,
       "ownerTeamName": null
     },
-    "4361307": {
-      "id": "4361307",
-      "name": "Trey McBride",
-      "position": "TE",
-      "proTeamId": 22,
-      "ownerTeamName": null
-    },
-    "4248528": {
-      "id": "4248528",
-      "name": "Christian Watson",
-      "position": "WR",
-      "proTeamId": 9,
-      "ownerTeamName": null
-    },
-    "4569618": {
-      "id": "4569618",
-      "name": "Garrett Wilson",
-      "position": "WR",
-      "proTeamId": 20,
-      "ownerTeamName": null
-    },
-    "-16018": {
-      "id": "-16018",
-      "name": "Saints D/ST",
-      "position": "DEF",
-      "proTeamId": 18,
-      "ownerTeamName": null
-    },
-    "3916387": {
-      "id": "3916387",
-      "name": "Lamar Jackson",
-      "position": "QB",
-      "proTeamId": 33,
-      "ownerTeamName": null
-    },
-    "4870808": {
-      "id": "4870808",
-      "name": "Jeremiyah Love",
-      "position": "RB",
-      "proTeamId": 22,
-      "ownerTeamName": null
-    },
     "4430737": {
       "id": "4430737",
       "name": "Kyren Williams",
       "position": "RB",
       "proTeamId": 14,
-      "ownerTeamName": null
-    },
-    "16800": {
-      "id": "16800",
-      "name": "Davante Adams",
-      "position": "WR",
-      "proTeamId": 14,
-      "ownerTeamName": null
-    },
-    "4685472": {
-      "id": "4685472",
-      "name": "Tetairoa McMillan",
-      "position": "WR",
-      "proTeamId": 29,
       "ownerTeamName": null
     },
     "4432665": {
@@ -206,6 +178,27 @@
       "proTeamId": 13,
       "ownerTeamName": null
     },
+    "4569618": {
+      "id": "4569618",
+      "name": "Garrett Wilson",
+      "position": "WR",
+      "proTeamId": 20,
+      "ownerTeamName": null
+    },
+    "4569987": {
+      "id": "4569987",
+      "name": "Jaylen Warren",
+      "position": "RB",
+      "proTeamId": 23,
+      "ownerTeamName": null
+    },
+    "4685472": {
+      "id": "4685472",
+      "name": "Tetairoa McMillan",
+      "position": "WR",
+      "proTeamId": 29,
+      "ownerTeamName": null
+    },
     "4696981": {
       "id": "4696981",
       "name": "Cam Skattebo",
@@ -213,11 +206,18 @@
       "proTeamId": 19,
       "ownerTeamName": null
     },
-    "4259545": {
-      "id": "4259545",
-      "name": "D'Andre Swift",
+    "4870808": {
+      "id": "4870808",
+      "name": "Jeremiyah Love",
       "position": "RB",
-      "proTeamId": 3,
+      "proTeamId": 22,
+      "ownerTeamName": null
+    },
+    "-16018": {
+      "id": "-16018",
+      "name": "Saints D/ST",
+      "position": "DEF",
+      "proTeamId": 18,
       "ownerTeamName": null
     },
     "-16016": {
