@@ -74,6 +74,9 @@ def stat_points(player, season, week, source):
 def validate(config, snapshot, complete=False):
     if config['season'] != snapshot['season'] or config['leagueId'] != snapshot['leagueId']:
         raise ValueError('Roster snapshot does not match this season and league.')
+    exponent = config.get('pointsRemainingExponent', 1)
+    if type(exponent) not in (int, float) or not math.isfinite(exponent) or exponent <= 0:
+        raise ValueError('Points remaining exponent must be a positive finite number.')
     week = config.get('week')
     if week is not None and (type(week) is not int or not 1 <= week <= 18):
         raise ValueError('Choose an NFL regular-season week from 1 to 18.')

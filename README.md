@@ -74,14 +74,21 @@ is still required: the saved cookies were not accessible in this session and an
 unauthenticated league request returned HTTP 401.
 
 The site displays a simple **projected score**: actual points plus the fraction
-of regulation remaining multiplied by the frozen ESPN initial projection.
+of projected points remaining multiplied by the frozen ESPN initial projection.
+A shared power curve maps regulation time remaining r to points remaining r^b.
+`pointsRemainingExponent` in `data/matchup.json` sets b for every position; the
+starting value is 1, matching 30% played -> 70% expected points remaining.
+Values above 1 assume more points arrive earlier; values below 1 assume more
+points arrive later. The same curve drives displayed means and simulations.
 Each player uses their own NFL game clock, then the site sums those estimates.
 Final and bye projections equal actual points. Unknown clocks or missing inputs
 remain unavailable. Overtime has zero regulation remaining, so this basic model
 uses current actual points during overtime. Initial projections remain visible.
 Win probabilities use 20,000 independent Monte Carlo trials in the browser.
 For each player with expected remaining points mu > 0, remaining points follow
-Gamma(shape=2, scale=mu/2). Actual points are fixed and zero remaining expectations
+Gamma(shape=2, scale=mu/2). For negative mu, sample
+Gamma(shape=2, scale=-mu/2) + 2*mu. This keeps expectation mu and positive skew.
+Actual points are fixed and zero remaining expectations
 are deterministic. Players are independent; wins and ties are counted separately.
 The random seed is fixed so unchanged inputs produce identical displayed results.
 Missing required scores, projections, or clocks leave probabilities unavailable.

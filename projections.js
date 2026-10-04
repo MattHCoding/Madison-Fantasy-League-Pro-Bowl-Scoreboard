@@ -1,11 +1,16 @@
 'use strict';
-function projectedPoints(score) {
+function pointsRemainingFraction(timeRemaining, exponent = 1) {
+  if (!Number.isFinite(timeRemaining) || !Number.isFinite(exponent) || exponent <= 0) return null;
+  return Math.pow(Math.max(0,Math.min(1,timeRemaining)),exponent);
+}
+function projectedPoints(score, exponent = 1) {
   if (!score || !Number.isFinite(score.actual)) return null;
   if (score.state === 'post' || score.state === 'bye') return score.actual;
   const remaining = score.state === 'pre' ? 1 : score.timeRemainingFraction;
   if (remaining === 0) return score.actual;
   if (!Number.isFinite(remaining) || !Number.isFinite(score.initialProjection)) return null;
-  return score.actual + Math.max(0,Math.min(1,remaining)) * score.initialProjection;
+  const fraction = pointsRemainingFraction(remaining,exponent);
+  return fraction === null ? null : score.actual + fraction * score.initialProjection;
 }
 
 const WIN_SIMULATIONS = 20000;
@@ -18,18 +23,20 @@ function simulationRandom(seed = 20261004) {
   };
 }
 function gammaRemaining(mean, random) {
+  if (mean === 0) return 0;
   // Shape 2 is the sum of two independent unit-rate exponentials.
-  return -mean / 2 * (Math.log(1 - random()) + Math.log(1 - random()));
+  const draw = -Math.abs(mean) / 2 * (Math.log(1 - random()) + Math.log(1 - random()));
+  return mean < 0 ? draw + 2 * mean : draw;
 }
-function simulateWinProbability(west, east) {
+function simulateWinProbability(west, east, exponent = 1) {
   if (!west.length || !east.length) return null;
   const sides = [west, east].map(rows => rows.map(score => {
-    const projected = projectedPoints(score);
+    const projected = projectedPoints(score,exponent);
     return projected === null ? null : {actual:score.actual,mean:projected-score.actual};
   }));
-  if (sides.flat().some(p => !p || !Number.isFinite(p.mean) || p.mean < 0)) return null;
+  if (sides.flat().some(p => !p || !Number.isFinite(p.mean))) return null;
   const actualMargin = sides[0].reduce((sum,p)=>sum+p.actual,0) - sides[1].reduce((sum,p)=>sum+p.actual,0);
-  const remaining = sides.flatMap((players,side)=>players.filter(p=>p.mean>0).map(p=>({mean:p.mean,sign:side===0?1:-1})));
+  const remaining = sides.flatMap((players,side)=>players.filter(p=>p.mean!==0).map(p=>({mean:p.mean,sign:side===0?1:-1})));
   const random = simulationRandom(); // Stable results when the same score data is refreshed.
   let westWins=0,eastWins=0,ties=0;
   for (let trial=0;trial<WIN_SIMULATIONS;trial++) {
@@ -41,4 +48,4 @@ function simulateWinProbability(west, east) {
   }
   return {west:westWins/WIN_SIMULATIONS,east:eastWins/WIN_SIMULATIONS,tie:ties/WIN_SIMULATIONS,simulations:WIN_SIMULATIONS};
 }
-if (typeof module !== 'undefined') module.exports = {projectedPoints,simulateWinProbability,gammaRemaining,simulationRandom};
+if (typeof module !== 'undefined') module.exports = {pointsRemainingFraction,projectedPoints,simulateWinProbability,gammaRemaining,simulationRandom};

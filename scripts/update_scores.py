@@ -31,6 +31,10 @@ def time_remaining(status):
     return ((4 - period) * 900 + remaining) / 3600
 
 
+def points_remaining_fraction(remaining, exponent=1):
+    return None if remaining is None else max(0.0, min(1.0, remaining)) ** exponent
+
+
 def projected_points(actual, initial, remaining):
     if actual is None or remaining is None:
         return None
@@ -76,8 +80,9 @@ def build_scores(config, snapshot, data, board, previous):
             initial = old.get('initialProjection') if state != 'pre' and old.get('initialProjection') is not None else projection
             captured_before_kickoff = state == 'pre' or (bool(old.get('capturedBeforeKickoff')) and old.get('initialProjection') is not None)
             remaining = 0.0 if state == 'bye' else game['timeRemainingFraction']
-            rows[pid] = {'actual': actual, 'initialProjection': initial, 'capturedBeforeKickoff': captured_before_kickoff, 'espnWeeklyProjection': projection, 'liveProjection': projected_points(actual, initial, remaining), 'timeRemainingFraction': remaining, 'state': state, 'game': game, 'injuryStatus': player.get('injuryStatus')}
-    return {'season': config['season'], 'leagueId': config['leagueId'], 'week': config['week'], 'updatedAt': now(), 'projectionSource': 'ESPN fantasy weekly appliedTotal', 'liveProjectionModel': 'actual + regulation time remaining * initialProjection', 'players': rows, 'games': games}
+            points_fraction = points_remaining_fraction(remaining, config.get('pointsRemainingExponent', 1))
+            rows[pid] = {'actual': actual, 'initialProjection': initial, 'capturedBeforeKickoff': captured_before_kickoff, 'espnWeeklyProjection': projection, 'liveProjection': projected_points(actual, initial, points_fraction), 'pointsRemainingFraction': points_fraction, 'timeRemainingFraction': remaining, 'state': state, 'game': game, 'injuryStatus': player.get('injuryStatus')}
+    return {'season': config['season'], 'leagueId': config['leagueId'], 'week': config['week'], 'updatedAt': now(), 'projectionSource': 'ESPN fantasy weekly appliedTotal', 'liveProjectionModel': 'actual + timeRemainingFraction ** pointsRemainingExponent * initialProjection', 'pointsRemainingExponent': config.get('pointsRemainingExponent', 1), 'players': rows, 'games': games}
 
 
 def main():

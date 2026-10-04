@@ -6,7 +6,7 @@ import unittest
 from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / 'scripts'))
 from espn import stat_points, validate, league_query
-from update_scores import build_scores, time_remaining, projected_points
+from update_scores import build_scores, time_remaining, projected_points, points_remaining_fraction
 from update_rosters import build_snapshot
 
 
@@ -81,6 +81,17 @@ class DataTests(unittest.TestCase):
         self.assertEqual(result['players']['101']['timeRemainingFraction'],0.5)
         self.assertEqual(result['players']['101']['liveProjection'],35)
         self.assertEqual(result['players']['101']['initialProjection'],10)
+
+    def test_shared_curve_matches_browser_means(self):
+        self.assertEqual(points_remaining_fraction(0.7),0.7)
+        self.assertEqual(points_remaining_fraction(0.5,2),0.25)
+        config,snapshot,data,board=fixture()
+        config['pointsRemainingExponent']=2
+        board['events'][0]['competitions'][0]['status'].update(type={'state':'in','completed':False},period=3,displayClock='15:00')
+        data['players'][0]['player']['stats'][1]['appliedTotal']=-20
+        result=build_scores(config,snapshot,data,board,{})
+        self.assertEqual(result['players']['101']['pointsRemainingFraction'],0.25)
+        self.assertEqual(result['players']['101']['liveProjection'],25)
 
     def test_partial_response_fails(self):
         config,snapshot,data,board=fixture()

@@ -14,6 +14,7 @@ def main():
         raise ValueError('Setup must match the configured season and league.')
     config = {k: current[k] for k in ('season', 'leagueId', 'slots')}
     config.update(week=incoming.get('week'), enabled=incoming.get('enabled') is True, sides={key: {'teamIds': incoming['sides'][key]['teamIds'], 'players': [{'slot': p['slot'], 'id': str(p['id']) if p['id'] is not None else None} for p in incoming['sides'][key]['players']]} for key in ('west', 'east')})
+    config['pointsRemainingExponent'] = current.get('pointsRemainingExponent', 1)
     config['selectedPlayers'] = current.get('selectedPlayers', {})
     for key in ('west', 'east'):
         if current['sides'][key].get('name'):

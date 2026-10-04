@@ -14,6 +14,8 @@ async function refresh() {
   refreshing = true;
   try {
     const config = await loadJSON('data/matchup.json');
+    const exampleFraction = pointsRemainingFraction(0.7,config.pointsRemainingExponent ?? 1);
+    document.getElementById('points-curve-description').textContent = exampleFraction === null ? 'The points remaining curve is unavailable.' : `All positions use the same curve: 30% of the game played means ${(100*exampleFraction).toFixed(0)}% of projected points remain.`;
     const [snapshot, scores] = await Promise.all([loadJSON(`data/rosters-${config.season}.json`), loadJSON('data/scores.json')]);
     const pool = new Map([...Object.entries(config.selectedPlayers || {}), ...snapshot.teams.flatMap(t => t.players.map(p => [String(p.id), p]))]);
     const compatible = scores.season === config.season && scores.week === config.week && scores.leagueId === config.leagueId;
@@ -29,12 +31,12 @@ async function refresh() {
         else actual += score.actual;
         if (!score || !Number.isFinite(score.initialProjection)) initialComplete = false;
         else initial += score.initialProjection;
-        const estimate = projectedPoints(score);
+        const estimate = projectedPoints(score,config.pointsRemainingExponent ?? 1);
         if (!Number.isFinite(estimate)) projectedComplete = false;
         else projected += estimate;
         const rowClass = score?.state === 'post' ? 'is-complete' : score?.state === 'in' ? 'is-playing' : '';
         const detail = score?.game?.detail || (score?.state === 'bye' ? 'No game this week' : '');
-        return `<div class="player-row ${rowClass}"><span class="position ${escapeHTML(selection.slot)}">${escapeHTML(selection.slot)}</span><div><div class="player-name">${escapeHTML(player?.name || 'Player TBD')}</div><div class="owner">${escapeHTML(player?.ownerTeamName || 'Fantasy owner not yet linked')}</div><div class="game-detail">Initial: ${points(score?.initialProjection)}</div><div class="game-detail">${escapeHTML(detail)}${score?.injuryStatus ? ` • ${escapeHTML(score.injuryStatus)}` : ''}</div></div><div class="points-actual">${points(score?.actual)}</div><div class="points-projected" title="Actual points + game time remaining × ESPN initial projection">${points(estimate)}</div></div>`;
+        return `<div class="player-row ${rowClass}"><span class="position ${escapeHTML(selection.slot)}">${escapeHTML(selection.slot)}</span><div><div class="player-name">${escapeHTML(player?.name || 'Player TBD')}</div><div class="owner">${escapeHTML(player?.ownerTeamName || 'Fantasy owner not yet linked')}</div><div class="game-detail">Initial: ${points(score?.initialProjection)}</div><div class="game-detail">${escapeHTML(detail)}${score?.injuryStatus ? ` • ${escapeHTML(score.injuryStatus)}` : ''}</div></div><div class="points-actual">${points(score?.actual)}</div><div class="points-projected" title="Actual points + estimated fraction of points remaining × ESPN initial projection">${points(estimate)}</div></div>`;
       }).join('');
       document.getElementById(`${key}-actual`).textContent = actualComplete ? points(actual) : '—';
       document.getElementById(`${key}-initial`).textContent = initialComplete ? points(initial) : '—';
@@ -42,7 +44,8 @@ async function refresh() {
     }
     const probabilities = compatible ? simulateWinProbability(
       config.sides.west.players.map(p=>scores.players[String(p.id)]),
-      config.sides.east.players.map(p=>scores.players[String(p.id)])
+      config.sides.east.players.map(p=>scores.players[String(p.id)]),
+      config.pointsRemainingExponent ?? 1
     ) : null;
     for (const side of ['west','east']) document.getElementById(`${side}-win-probability`).textContent = probabilities ? `${(100*probabilities[side]).toFixed(1)}%` : '—';
     const probabilityBar = document.getElementById('header-probability-bar');

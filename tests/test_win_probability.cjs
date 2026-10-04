@@ -27,3 +27,18 @@ test('remaining mean uses the live clock; missing data stays unavailable',()=>{
  assert.equal(simulateWinProbability([null],[pre(10)]),null);
  assert.equal(simulateWinProbability([{actual:1,initialProjection:10,state:'in'}],[pre(10)]),null);
 });
+test('negative gamma expectations retain the mean and positive skew',()=>{
+ const random=simulationRandom(321);let sum=0,square=0,cube=0;const n=100000;
+ for(let i=0;i<n;i++){const x=gammaRemaining(-10,random);assert.ok(x>=-20);sum+=x;square+=x*x;cube+=(x+10)**3;}
+ assert.ok(Math.abs(sum/n+10)<0.1);assert.ok(Math.abs(square/n-(sum/n)**2-50)<1.5);assert.ok(cube/n>0);
+ const p=simulateWinProbability([pre(-10)],[final(0)]);
+ assert.ok(Math.abs(p.west-5*Math.exp(-4))<0.015);assert.equal(p.west+p.east+p.tie,1);
+});
+test('one curve applies to means and simulations for either sign',()=>{
+ const {pointsRemainingFraction,projectedPoints}=require('../projections.js');
+ assert.ok(Math.abs(pointsRemainingFraction(0.7)-0.7)<1e-12);
+ assert.equal(pointsRemainingFraction(1,2),1);assert.equal(pointsRemainingFraction(0,2),0);
+ const live={actual:0,initialProjection:-20,state:'in',timeRemainingFraction:0.5};
+ assert.equal(projectedPoints(live,2),-5);
+ assert.deepEqual(simulateWinProbability([live],[final(0)],2),simulateWinProbability([pre(-5)],[final(0)]));
+});

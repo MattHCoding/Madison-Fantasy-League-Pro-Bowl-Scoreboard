@@ -227,5 +227,6 @@
       "proTeamId": 16,
       "ownerTeamName": null
     }
-  }
+  },
+  "pointsRemainingExponent": 1
 }
