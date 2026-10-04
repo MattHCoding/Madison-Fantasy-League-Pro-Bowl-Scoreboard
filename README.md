@@ -127,3 +127,12 @@ python -m http.server 8000
 Open `http://localhost:8000` to preview. Submitting setup also writes the shared
 GitHub configuration from local previews; leave the token blank for read-only use. Querying rosters/scores does not
 change anyone's ESPN lineup or make fantasy transactions.
+
+
+## Live score backend
+
+The public scoreboard now reads `https://madison-pro-bowl-api.hebertcorp-l-3281.chatgpt.site/api/scores` on load, on Refresh, and every 60 seconds while open. The backend uses server-side ESPN secrets and shares a 60-second durable cache across visitors. Concurrent refreshes share a database lease; failures preserve the last successful response. It only queries the 18 selected players from this repository's matchup configuration. Initial projections are frozen at kickoff and stored with the cached scores.
+
+The separate annual roster snapshot remains the source of fantasy team affiliation. Roster edits remain in `data/matchup.json`. GitHub Actions is retained as a backup data publisher; if the live service fails, the browser labels and displays the saved repository scores.
+
+Backend source is maintained in the Sites source repository for project `appgprj_6ac26e8e5d308191a3d5648c819de760`, with secret environment variables `ESPN_SWID` and `ESPN_S2`, and D1 binding `DB`. No cookie values are stored in this repository or sent to browsers.

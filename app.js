@@ -8,13 +8,32 @@ async function loadJSON(path) {
   if (!response.ok) throw new Error('Could not load scoreboard data.');
   return response.json();
 }
+
+const liveScoresURL = 'https://madison-pro-bowl-api.hebertcorp-l-3281.chatgpt.site/api/scores';
+async function loadScoreboard() {
+  try {
+    const response = await fetch(liveScoresURL, {cache:'no-store', signal:AbortSignal.timeout(45000)});
+    if (!response.ok) throw new Error('Live refresh unavailable');
+    const bundle = await response.json();
+    if (!bundle.config || !bundle.snapshot || !bundle.scores) throw new Error('Incomplete live data');
+    return {...bundle, source:'live'};
+  } catch {
+    const config = await loadJSON('data/matchup.json');
+    const [snapshot, scores] = await Promise.all([loadJSON(`data/rosters-${config.season}.json`), loadJSON('data/scores.json')]);
+    return {config, snapshot, scores, source:'saved', stale:true};
+  }
+}
+
 let refreshing = false;
 async function refresh() {
   if (refreshing) return;
   refreshing = true;
+  const button = document.getElementById('refresh');
+  button.disabled = true;
+  button.textContent = 'Refreshing…';
+  button.setAttribute('aria-busy','true');
   try {
-    const config = await loadJSON('data/matchup.json');
-    const [snapshot, scores] = await Promise.all([loadJSON(`data/rosters-${config.season}.json`), loadJSON('data/scores.json')]);
+    const {config, snapshot, scores, source, stale} = await loadScoreboard();
     const pool = new Map([...Object.entries(config.selectedPlayers || {}), ...snapshot.teams.flatMap(t => t.players.map(p => [String(p.id), p]))]);
     const compatible = scores.season === config.season && scores.week === config.week && scores.leagueId === config.leagueId;
     document.title = `Madison Fantasy Pro Bowl • ${config.season}`;
@@ -69,12 +88,19 @@ async function refresh() {
       message += ` Scores updated ${new Date(scores.updatedAt).toLocaleString()}.`;
       if (age > 10 * 60 * 1000) message += ' Updates are delayed; showing the last successful refresh.';
     } else message += ' Waiting for the first ESPN score update; the refresh workflow must have valid ESPN credentials.';
+    if (source === 'saved') message += ' Live service unavailable; showing saved scores.';
+    else if (stale) message += ' Live refresh delayed; showing the last successful scores.';
     document.getElementById('status').textContent = message;
     const gameContainer = document.getElementById('games-grid');
     gameContainer.innerHTML = compatible && scores.games?.length ? scores.games.map(game => `<article class="game-card ${game.state === 'in' ? 'live' : ''}"><div class="game-time">${escapeHTML(game.detail)}</div>${game.teams.map(t => `<div class="game-team"><span>${escapeHTML(t.name)}</span><strong>${game.state === 'pre' ? '—' : escapeHTML(t.score)}</strong></div>`).join('')}</article>`).join('') : '<p>Games will appear when the matchup is enabled.</p>';
   } catch (error) {
     document.getElementById('status').textContent = `${error.message} Showing the last loaded scoreboard. Retrying automatically.`;
-  } finally { refreshing = false; }
+  } finally {
+    refreshing = false;
+    button.disabled = false;
+    button.textContent = 'Refresh';
+    button.removeAttribute('aria-busy');
+  }
 }
 document.getElementById('refresh').addEventListener('click', refresh);
 refresh();
