@@ -2,15 +2,19 @@
   "season": 2026,
   "leagueId": 1297942157,
   "week": 4,
-  "updatedAt": "2026-10-04T00:39:10.453317+00:00",
+  "updatedAt": "2026-10-04T14:10:16.712783+00:00",
   "projectionSource": "ESPN fantasy weekly appliedTotal",
+  "liveProjectionModel": "actual + timeRemainingFraction ** pointsRemainingExponent * initialProjection",
+  "pointsRemainingExponent": 1,
   "players": {
     "3918298": {
       "actual": 0.0,
       "initialProjection": 22.21869456,
       "capturedBeforeKickoff": true,
       "espnWeeklyProjection": 22.21869456,
-      "liveProjection": null,
+      "liveProjection": 22.21869456,
+      "pointsRemainingFraction": 1.0,
+      "timeRemainingFraction": 1.0,
       "state": "pre",
       "game": {
         "id": "401872971",
@@ -31,7 +35,10 @@
             "score": "0",
             "homeAway": "away"
           }
-        ]
+        ],
+        "period": 0,
+        "displayClock": "0:00",
+        "timeRemainingFraction": 1.0
       },
       "injuryStatus": "ACTIVE"
     },
@@ -40,7 +47,9 @@
       "initialProjection": 15.06579166,
       "capturedBeforeKickoff": true,
       "espnWeeklyProjection": 15.06579166,
-      "liveProjection": null,
+      "liveProjection": 15.06579166,
+      "pointsRemainingFraction": 1.0,
+      "timeRemainingFraction": 1.0,
       "state": "pre",
       "game": {
         "id": "401872978",
@@ -61,7 +70,10 @@
             "score": "0",
             "homeAway": "away"
           }
-        ]
+        ],
+        "period": 0,
+        "displayClock": "0:00",
+        "timeRemainingFraction": 1.0
       },
       "injuryStatus": "ACTIVE"
     },
@@ -70,7 +82,9 @@
       "initialProjection": 15.39681941,
       "capturedBeforeKickoff": false,
       "espnWeeklyProjection": 15.39681941,
-      "liveProjection": null,
+      "liveProjection": 14.1,
+      "pointsRemainingFraction": 0.0,
+      "timeRemainingFraction": 0.0,
       "state": "post",
       "game": {
         "id": "401872964",
@@ -91,7 +105,10 @@
             "score": "24",
             "homeAway": "away"
           }
-        ]
+        ],
+        "period": 4,
+        "displayClock": "0:00",
+        "timeRemainingFraction": 0.0
       },
       "injuryStatus": "ACTIVE"
     },
@@ -100,7 +117,9 @@
       "initialProjection": 15.0488946,
       "capturedBeforeKickoff": true,
       "espnWeeklyProjection": 15.0488946,
-      "liveProjection": null,
+      "liveProjection": 15.0488946,
+      "pointsRemainingFraction": 1.0,
+      "timeRemainingFraction": 1.0,
       "state": "pre",
       "game": {
         "id": "401872979",
@@ -121,7 +140,10 @@
             "score": "0",
             "homeAway": "away"
           }
-        ]
+        ],
+        "period": 0,
+        "displayClock": "0:00",
+        "timeRemainingFraction": 1.0
       },
       "injuryStatus": "ACTIVE"
     },
@@ -130,7 +152,9 @@
       "initialProjection": 12.97743737,
       "capturedBeforeKickoff": true,
       "espnWeeklyProjection": 12.97743737,
-      "liveProjection": null,
+      "liveProjection": 12.97743737,
+      "pointsRemainingFraction": 1.0,
+      "timeRemainingFraction": 1.0,
       "state": "pre",
       "game": {
         "id": "401872973",
@@ -151,7 +175,10 @@
             "score": "0",
             "homeAway": "away"
           }
-        ]
+        ],
+        "period": 0,
+        "displayClock": "0:00",
+        "timeRemainingFraction": 1.0
       },
       "injuryStatus": "QUESTIONABLE"
     },
@@ -160,7 +187,9 @@
       "initialProjection": 13.73831165,
       "capturedBeforeKickoff": true,
       "espnWeeklyProjection": 13.73831165,
-      "liveProjection": null,
+      "liveProjection": 13.73831165,
+      "pointsRemainingFraction": 1.0,
+      "timeRemainingFraction": 1.0,
       "state": "pre",
       "game": {
         "id": "401872966",
@@ -181,7 +210,10 @@
             "score": "0",
             "homeAway": "away"
           }
-        ]
+        ],
+        "period": 0,
+        "displayClock": "0:00",
+        "timeRemainingFraction": 1.0
       },
       "injuryStatus": "ACTIVE"
     },
@@ -190,7 +222,9 @@
       "initialProjection": 12.06223957,
       "capturedBeforeKickoff": true,
       "espnWeeklyProjection": 12.06223957,
-      "liveProjection": null,
+      "liveProjection": 12.06223957,
+      "pointsRemainingFraction": 1.0,
+      "timeRemainingFraction": 1.0,
       "state": "pre",
       "game": {
         "id": "401872968",
@@ -211,7 +245,10 @@
             "score": "0",
             "homeAway": "away"
           }
-        ]
+        ],
+        "period": 0,
+        "displayClock": "0:00",
+        "timeRemainingFraction": 1.0
       },
       "injuryStatus": "ACTIVE"
     },
@@ -220,7 +257,9 @@
       "initialProjection": 13.24245955,
       "capturedBeforeKickoff": true,
       "espnWeeklyProjection": 13.24245955,
-      "liveProjection": null,
+      "liveProjection": 13.24245955,
+      "pointsRemainingFraction": 1.0,
+      "timeRemainingFraction": 1.0,
       "state": "pre",
       "game": {
         "id": "401872972",
@@ -241,7 +280,10 @@
             "score": "0",
             "homeAway": "away"
           }
-        ]
+        ],
+        "period": 0,
+        "displayClock": "0:00",
+        "timeRemainingFraction": 1.0
       },
       "injuryStatus": "ACTIVE"
     },
@@ -250,7 +292,9 @@
       "initialProjection": 5.12091827,
       "capturedBeforeKickoff": true,
       "espnWeeklyProjection": 5.12091827,
-      "liveProjection": null,
+      "liveProjection": 5.12091827,
+      "pointsRemainingFraction": 1.0,
+      "timeRemainingFraction": 1.0,
       "state": "pre",
       "game": {
         "id": "401872979",
@@ -271,7 +315,10 @@
             "score": "0",
             "homeAway": "away"
           }
-        ]
+        ],
+        "period": 0,
+        "displayClock": "0:00",
+        "timeRemainingFraction": 1.0
       },
       "injuryStatus": null
     },
@@ -280,7 +327,9 @@
       "initialProjection": 21.17648851,
       "capturedBeforeKickoff": true,
       "espnWeeklyProjection": 21.17648851,
-      "liveProjection": null,
+      "liveProjection": 21.17648851,
+      "pointsRemainingFraction": 1.0,
+      "timeRemainingFraction": 1.0,
       "state": "pre",
       "game": {
         "id": "401872973",
@@ -301,7 +350,10 @@
             "score": "0",
             "homeAway": "away"
           }
-        ]
+        ],
+        "period": 0,
+        "displayClock": "0:00",
+        "timeRemainingFraction": 1.0
       },
       "injuryStatus": "ACTIVE"
     },
@@ -310,7 +362,9 @@
       "initialProjection": 14.1651661,
       "capturedBeforeKickoff": true,
       "espnWeeklyProjection": 14.1651661,
-      "liveProjection": null,
+      "liveProjection": 14.1651661,
+      "pointsRemainingFraction": 1.0,
+      "timeRemainingFraction": 1.0,
       "state": "pre",
       "game": {
         "id": "401872966",
@@ -331,7 +385,10 @@
             "score": "0",
             "homeAway": "away"
           }
-        ]
+        ],
+        "period": 0,
+        "displayClock": "0:00",
+        "timeRemainingFraction": 1.0
       },
       "injuryStatus": "ACTIVE"
     },
@@ -340,7 +397,9 @@
       "initialProjection": 11.88136156,
       "capturedBeforeKickoff": true,
       "espnWeeklyProjection": 11.88136156,
-      "liveProjection": null,
+      "liveProjection": 11.88136156,
+      "pointsRemainingFraction": 1.0,
+      "timeRemainingFraction": 1.0,
       "state": "pre",
       "game": {
         "id": "401872970",
@@ -361,7 +420,10 @@
             "score": "0",
             "homeAway": "away"
           }
-        ]
+        ],
+        "period": 0,
+        "displayClock": "0:00",
+        "timeRemainingFraction": 1.0
       },
       "injuryStatus": "ACTIVE"
     },
@@ -370,7 +432,9 @@
       "initialProjection": 13.18903898,
       "capturedBeforeKickoff": true,
       "espnWeeklyProjection": 13.18903898,
-      "liveProjection": null,
+      "liveProjection": 13.18903898,
+      "pointsRemainingFraction": 1.0,
+      "timeRemainingFraction": 1.0,
       "state": "pre",
       "game": {
         "id": "401872970",
@@ -391,7 +455,10 @@
             "score": "0",
             "homeAway": "away"
           }
-        ]
+        ],
+        "period": 0,
+        "displayClock": "0:00",
+        "timeRemainingFraction": 1.0
       },
       "injuryStatus": "ACTIVE"
     },
@@ -400,7 +467,9 @@
       "initialProjection": 13.4952167,
       "capturedBeforeKickoff": true,
       "espnWeeklyProjection": 13.4952167,
-      "liveProjection": null,
+      "liveProjection": 13.4952167,
+      "pointsRemainingFraction": 1.0,
+      "timeRemainingFraction": 1.0,
       "state": "pre",
       "game": {
         "id": "401872978",
@@ -421,7 +490,10 @@
             "score": "0",
             "homeAway": "away"
           }
-        ]
+        ],
+        "period": 0,
+        "displayClock": "0:00",
+        "timeRemainingFraction": 1.0
       },
       "injuryStatus": "ACTIVE"
     },
@@ -430,7 +502,9 @@
       "initialProjection": 12.65450492,
       "capturedBeforeKickoff": true,
       "espnWeeklyProjection": 12.65450492,
-      "liveProjection": null,
+      "liveProjection": 12.65450492,
+      "pointsRemainingFraction": 1.0,
+      "timeRemainingFraction": 1.0,
       "state": "pre",
       "game": {
         "id": "401872976",
@@ -451,7 +525,10 @@
             "score": "0",
             "homeAway": "away"
           }
-        ]
+        ],
+        "period": 0,
+        "displayClock": "0:00",
+        "timeRemainingFraction": 1.0
       },
       "injuryStatus": "ACTIVE"
     },
@@ -460,7 +537,9 @@
       "initialProjection": 14.93077448,
       "capturedBeforeKickoff": true,
       "espnWeeklyProjection": 14.93077448,
-      "liveProjection": null,
+      "liveProjection": 14.93077448,
+      "pointsRemainingFraction": 1.0,
+      "timeRemainingFraction": 1.0,
       "state": "pre",
       "game": {
         "id": "401872966",
@@ -481,7 +560,10 @@
             "score": "0",
             "homeAway": "away"
           }
-        ]
+        ],
+        "period": 0,
+        "displayClock": "0:00",
+        "timeRemainingFraction": 1.0
       },
       "injuryStatus": "ACTIVE"
     },
@@ -490,7 +572,9 @@
       "initialProjection": 13.3910162,
       "capturedBeforeKickoff": true,
       "espnWeeklyProjection": 13.3910162,
-      "liveProjection": null,
+      "liveProjection": 13.3910162,
+      "pointsRemainingFraction": 1.0,
+      "timeRemainingFraction": 1.0,
       "state": "pre",
       "game": {
         "id": "401872972",
@@ -511,7 +595,10 @@
             "score": "0",
             "homeAway": "away"
           }
-        ]
+        ],
+        "period": 0,
+        "displayClock": "0:00",
+        "timeRemainingFraction": 1.0
       },
       "injuryStatus": "ACTIVE"
     },
@@ -520,7 +607,9 @@
       "initialProjection": 8.19466731,
       "capturedBeforeKickoff": true,
       "espnWeeklyProjection": 8.19466731,
-      "liveProjection": null,
+      "liveProjection": 8.19466731,
+      "pointsRemainingFraction": 1.0,
+      "timeRemainingFraction": 1.0,
       "state": "pre",
       "game": {
         "id": "401872974",
@@ -541,44 +630,26 @@
             "score": "0",
             "homeAway": "away"
           }
-        ]
+        ],
+        "period": 0,
+        "displayClock": "0:00",
+        "timeRemainingFraction": 1.0
       },
       "injuryStatus": null
     }
   },
   "games": [
     {
-      "id": "401872964",
-      "state": "post",
-      "completed": true,
-      "detail": "Final",
-      "date": "2026-10-02T00:15Z",
-      "teams": [
-        {
-          "id": "5",
-          "name": "CLE",
-          "score": "27",
-          "homeAway": "home"
-        },
-        {
-          "id": "23",
-          "name": "PIT",
-          "score": "24",
-          "homeAway": "away"
-        }
-      ]
-    },
-    {
       "id": "401872965",
-      "state": "pre",
+      "state": "in",
       "completed": false,
-      "detail": "10/4 - 9:30 AM EDT",
+      "detail": "0:20 - 1st",
       "date": "2026-10-04T13:30Z",
       "teams": [
         {
           "id": "28",
           "name": "WSH",
-          "score": "0",
+          "score": "6",
           "homeAway": "home"
         },
         {
@@ -587,7 +658,10 @@
           "score": "0",
           "homeAway": "away"
         }
-      ]
+      ],
+      "period": 1,
+      "displayClock": "0:20",
+      "timeRemainingFraction": 0.7555555555555555
     },
     {
       "id": "401872971",
@@ -608,7 +682,10 @@
           "score": "0",
           "homeAway": "away"
         }
-      ]
+      ],
+      "period": 0,
+      "displayClock": "0:00",
+      "timeRemainingFraction": 1.0
     },
     {
       "id": "401872972",
@@ -629,7 +706,10 @@
           "score": "0",
           "homeAway": "away"
         }
-      ]
+      ],
+      "period": 0,
+      "displayClock": "0:00",
+      "timeRemainingFraction": 1.0
     },
     {
       "id": "401872969",
@@ -650,7 +730,10 @@
           "score": "0",
           "homeAway": "away"
         }
-      ]
+      ],
+      "period": 0,
+      "displayClock": "0:00",
+      "timeRemainingFraction": 1.0
     },
     {
       "id": "401872966",
@@ -671,7 +754,10 @@
           "score": "0",
           "homeAway": "away"
         }
-      ]
+      ],
+      "period": 0,
+      "displayClock": "0:00",
+      "timeRemainingFraction": 1.0
     },
     {
       "id": "401872970",
@@ -692,7 +778,10 @@
           "score": "0",
           "homeAway": "away"
         }
-      ]
+      ],
+      "period": 0,
+      "displayClock": "0:00",
+      "timeRemainingFraction": 1.0
     },
     {
       "id": "401872968",
@@ -713,7 +802,10 @@
           "score": "0",
           "homeAway": "away"
         }
-      ]
+      ],
+      "period": 0,
+      "displayClock": "0:00",
+      "timeRemainingFraction": 1.0
     },
     {
       "id": "401872973",
@@ -734,7 +826,10 @@
           "score": "0",
           "homeAway": "away"
         }
-      ]
+      ],
+      "period": 0,
+      "displayClock": "0:00",
+      "timeRemainingFraction": 1.0
     },
     {
       "id": "401872967",
@@ -755,7 +850,10 @@
           "score": "0",
           "homeAway": "away"
         }
-      ]
+      ],
+      "period": 0,
+      "displayClock": "0:00",
+      "timeRemainingFraction": 1.0
     },
     {
       "id": "401872974",
@@ -776,7 +874,10 @@
           "score": "0",
           "homeAway": "away"
         }
-      ]
+      ],
+      "period": 0,
+      "displayClock": "0:00",
+      "timeRemainingFraction": 1.0
     },
     {
       "id": "401872976",
@@ -797,7 +898,10 @@
           "score": "0",
           "homeAway": "away"
         }
-      ]
+      ],
+      "period": 0,
+      "displayClock": "0:00",
+      "timeRemainingFraction": 1.0
     },
     {
       "id": "401872975",
@@ -818,7 +922,10 @@
           "score": "0",
           "homeAway": "away"
         }
-      ]
+      ],
+      "period": 0,
+      "displayClock": "0:00",
+      "timeRemainingFraction": 1.0
     },
     {
       "id": "401872977",
@@ -839,7 +946,10 @@
           "score": "0",
           "homeAway": "away"
         }
-      ]
+      ],
+      "period": 0,
+      "displayClock": "0:00",
+      "timeRemainingFraction": 1.0
     },
     {
       "id": "401872978",
@@ -860,7 +970,34 @@
           "score": "0",
           "homeAway": "away"
         }
-      ]
+      ],
+      "period": 0,
+      "displayClock": "0:00",
+      "timeRemainingFraction": 1.0
+    },
+    {
+      "id": "401872964",
+      "state": "post",
+      "completed": true,
+      "detail": "Final",
+      "date": "2026-10-02T00:15Z",
+      "teams": [
+        {
+          "id": "5",
+          "name": "CLE",
+          "score": "27",
+          "homeAway": "home"
+        },
+        {
+          "id": "23",
+          "name": "PIT",
+          "score": "24",
+          "homeAway": "away"
+        }
+      ],
+      "period": 4,
+      "displayClock": "0:00",
+      "timeRemainingFraction": 0.0
     },
     {
       "id": "401872979",
@@ -881,7 +1018,10 @@
           "score": "0",
           "homeAway": "away"
         }
-      ]
+      ],
+      "period": 0,
+      "displayClock": "0:00",
+      "timeRemainingFraction": 1.0
     }
   ]
 }
