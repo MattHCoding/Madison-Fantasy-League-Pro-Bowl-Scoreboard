@@ -2,45 +2,45 @@
   "season": 2026,
   "leagueId": 1297942157,
   "week": 4,
-  "updatedAt": "2026-10-04T14:10:16.712783+00:00",
+  "updatedAt": "2026-10-04T14:14:09.956457+00:00",
   "projectionSource": "ESPN fantasy weekly appliedTotal",
   "liveProjectionModel": "actual + timeRemainingFraction ** pointsRemainingExponent * initialProjection",
   "pointsRemainingExponent": 1,
   "players": {
-    "3918298": {
-      "actual": 0.0,
-      "initialProjection": 22.21869456,
-      "capturedBeforeKickoff": true,
-      "espnWeeklyProjection": 22.21869456,
-      "liveProjection": 22.21869456,
-      "pointsRemainingFraction": 1.0,
-      "timeRemainingFraction": 1.0,
-      "state": "pre",
+    "2576980": {
+      "actual": 5.34,
+      "initialProjection": 18.56041647,
+      "capturedBeforeKickoff": false,
+      "espnWeeklyProjection": 18.56041647,
+      "liveProjection": 19.2603123525,
+      "pointsRemainingFraction": 0.75,
+      "timeRemainingFraction": 0.75,
+      "state": "in",
       "game": {
-        "id": "401872971",
-        "state": "pre",
+        "id": "401872965",
+        "state": "in",
         "completed": false,
-        "detail": "10/4 - 1:00 PM EDT",
-        "date": "2026-10-04T17:00Z",
+        "detail": "15:00 - 2nd",
+        "date": "2026-10-04T13:30Z",
         "teams": [
           {
-            "id": "2",
-            "name": "BUF",
-            "score": "0",
+            "id": "28",
+            "name": "WSH",
+            "score": "6",
             "homeAway": "home"
           },
           {
-            "id": "17",
-            "name": "NE",
+            "id": "11",
+            "name": "IND",
             "score": "0",
             "homeAway": "away"
           }
         ],
-        "period": 0,
-        "displayClock": "0:00",
-        "timeRemainingFraction": 1.0
+        "period": 2,
+        "displayClock": "15:00",
+        "timeRemainingFraction": 0.75
       },
-      "injuryStatus": "ACTIVE"
+      "injuryStatus": "QUESTIONABLE"
     },
     "4241416": {
       "actual": 0.0,
@@ -643,7 +643,7 @@
       "id": "401872965",
       "state": "in",
       "completed": false,
-      "detail": "0:20 - 1st",
+      "detail": "15:00 - 2nd",
       "date": "2026-10-04T13:30Z",
       "teams": [
         {
@@ -659,9 +659,9 @@
           "homeAway": "away"
         }
       ],
-      "period": 1,
-      "displayClock": "0:20",
-      "timeRemainingFraction": 0.7555555555555555
+      "period": 2,
+      "displayClock": "15:00",
+      "timeRemainingFraction": 0.75
     },
     {
       "id": "401872971",
