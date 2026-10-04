@@ -22,7 +22,7 @@ The original 2025 scoreboard is preserved at `archive-2025.html`.
    in the open page: it is never written to browser storage, the config, or logs.
 5. Choose the matchup week and players, then hit **Submit**. The page validates
    the selections and updates `data/matchup.json` on `main` using GitHub's Contents
-   API. The scoreboard reads that shared file on its next refresh (about a minute).
+   API. The scoreboard reads that shared file on its next refresh (about five minutes).
    Enable score refreshes once the matchup week and player selections are complete.
    Saving the setup triggers a refresh. If the annual snapshot is empty, the
    workflow captures it first with a separate ESPN roster query, then queries
@@ -55,7 +55,7 @@ baseline is frozen. A baseline first obtained after kickoff is explicitly marked
 Missing stats stay missing rather than silently becoming zero for live/final games.
 Network or partial-response failures preserve the last successful score file.
 
-The browser reloads public data every minute. On GitHub Pages it reads sanitized
+The browser reloads public data every five minutes. On GitHub Pages it reads sanitized
 JSON directly from the repository so workflow data commits do not depend on a
 second Pages build. Local previews read their local JSON files. The Actions workflow requests
 updates approximately every five minutes on NFL game days (UTC); GitHub may delay
@@ -131,7 +131,7 @@ change anyone's ESPN lineup or make fantasy transactions.
 
 ## Live score backend
 
-The public scoreboard now reads `https://madison-pro-bowl-api.hebertcorp-l-3281.chatgpt.site/api/scores` on load, on Refresh, and every 60 seconds while open. The backend uses server-side ESPN secrets and shares a 60-second durable cache across visitors. Concurrent refreshes share a database lease; failures preserve the last successful response. It only queries the 18 selected players from this repository's matchup configuration. Initial projections are frozen at kickoff and stored with the cached scores.
+The public scoreboard now reads `https://madison-pro-bowl-api.hebertcorp-l-3281.chatgpt.site/api/scores` on load, on Refresh, and every five minutes while open. The backend uses server-side ESPN secrets and shares a 60-second durable cache across visitors. Concurrent refreshes share a database lease; failures preserve the last successful response. It only queries the 18 selected players from this repository's matchup configuration. Initial projections are frozen at kickoff and stored with the cached scores.
 
 The separate annual roster snapshot remains the source of fantasy team affiliation. Roster edits remain in `data/matchup.json`. GitHub Actions is retained as a backup data publisher; if the live service fails, the browser labels and displays the saved repository scores.
 

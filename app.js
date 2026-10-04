@@ -104,4 +104,4 @@ async function refresh() {
 }
 document.getElementById('refresh').addEventListener('click', refresh);
 refresh();
-setInterval(refresh, 60000);
+setInterval(refresh, 5 * 60 * 1000);
