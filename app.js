@@ -21,23 +21,20 @@ async function refresh() {
     document.getElementById('week-info').textContent = `${config.season} Season • ${config.week ? `Week ${config.week}` : 'Week TBD'}`;
     for (const key of ['west', 'east']) {
       document.getElementById(`${key}-players`).closest('.team-column').querySelector('.team-name').textContent = config.sides[key].name || (key === 'west' ? 'Team West' : 'Team East');
-      let actual = 0, initial = 0, projected = 0, actualComplete = true, initialComplete = true, projectedComplete = true;
+      let actual = 0, projected = 0, actualComplete = true, projectedComplete = true;
       document.getElementById(`${key}-players`).innerHTML = config.sides[key].players.map(selection => {
         const player = pool.get(String(selection.id));
         const score = compatible && player ? scores.players[String(selection.id)] : null;
         if (!score || !Number.isFinite(score.actual)) actualComplete = false;
         else actual += score.actual;
-        if (!score || !Number.isFinite(score.initialProjection)) initialComplete = false;
-        else initial += score.initialProjection;
         const estimate = projectedPoints(score,config.pointsRemainingExponent ?? 1);
         if (!Number.isFinite(estimate)) projectedComplete = false;
         else projected += estimate;
         const rowClass = score?.state === 'post' ? 'is-complete' : score?.state === 'in' ? 'is-playing' : '';
         const detail = score?.game?.detail || (score?.state === 'bye' ? 'No game this week' : '');
-        return `<div class="player-row ${rowClass}"><span class="position ${escapeHTML(selection.slot)}">${escapeHTML(selection.slot)}</span><div><div class="player-name">${escapeHTML(player?.name || 'Player TBD')}</div><div class="owner">${escapeHTML(player?.ownerTeamName || 'Fantasy owner not yet linked')}</div><div class="game-detail">Initial: ${points(score?.initialProjection)}</div><div class="game-detail">${escapeHTML(detail)}${score?.injuryStatus ? ` • ${escapeHTML(score.injuryStatus)}` : ''}</div></div><div class="points-actual">${points(score?.actual)}</div><div class="points-projected" title="Actual points + estimated fraction of points remaining × ESPN initial projection">${points(estimate)}</div></div>`;
+        return `<div class="player-row ${rowClass}"><span class="position ${escapeHTML(selection.slot)}">${escapeHTML(selection.slot)}</span><div><div class="player-name">${escapeHTML(player?.name || 'Player TBD')}</div><div class="owner">${escapeHTML(player?.ownerTeamName || 'Fantasy owner not yet linked')}</div><div class="game-detail">${escapeHTML(detail)}${score?.injuryStatus ? ` • ${escapeHTML(score.injuryStatus)}` : ''}</div></div><div class="points-actual">${points(score?.actual)}</div><div class="points-projected" title="Projected final fantasy score">${points(estimate)}</div></div>`;
       }).join('');
       document.getElementById(`${key}-actual`).textContent = actualComplete ? points(actual) : '—';
-      document.getElementById(`${key}-initial`).textContent = initialComplete ? points(initial) : '—';
       document.getElementById(`${key}-projected`).textContent = projectedComplete ? points(projected) : '—';
     }
     const probabilities = compatible ? simulateWinProbability(
@@ -71,7 +68,6 @@ async function refresh() {
       const age = Date.now() - Date.parse(scores.updatedAt);
       message += ` Scores updated ${new Date(scores.updatedAt).toLocaleString()}.`;
       if (age > 10 * 60 * 1000) message += ' Updates are delayed; showing the last successful refresh.';
-      if (Object.values(scores.players).some(p => p.initialProjection !== null && !p.capturedBeforeKickoff && p.state !== 'bye')) message += ' Some ESPN baselines were first captured after kickoff.';
     } else message += ' Waiting for the first ESPN score update; the refresh workflow must have valid ESPN credentials.';
     document.getElementById('status').textContent = message;
     const gameContainer = document.getElementById('games-grid');
