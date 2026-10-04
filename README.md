@@ -73,9 +73,15 @@ combined into a new Pro Bowl lineup. Authenticated validation against this leagu
 is still required: the saved cookies were not accessible in this session and an
 unauthenticated league request returned HTTP 401.
 
-Until a player-level live endpoint is verified or a model is chosen, the site
-shows actual points and ESPN **initial** projections. It does not label weekly
-projections as live forecasts or display the old uncalibrated win probabilities.
+The site displays a simple **projected score**: actual points plus the fraction
+of regulation remaining multiplied by the frozen ESPN initial projection.
+Each player uses their own NFL game clock, then the site sums those estimates.
+Final and bye projections equal actual points. Unknown clocks or missing inputs
+remain unavailable. Overtime has zero regulation remaining, so this basic model
+uses current actual points during overtime. Initial projections remain visible.
+The win probability is fixed at **50% per side**, explicitly labeled a placeholder;
+it is not an estimated probability. Automatic score/clock queries still require
+ESPN credentials saved as GitHub Actions secrets.
 
 Possible home-grown live models, in increasing complexity:
 

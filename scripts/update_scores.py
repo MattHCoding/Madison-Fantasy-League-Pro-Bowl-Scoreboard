@@ -4,6 +4,41 @@ from datetime import datetime, timezone, timedelta
 from espn import ROOT, get_json, league_query, now, read, stat_points, unpack, validate, write
 
 
+def time_remaining(status):
+    """Fraction of regulation remaining from ESPN's game clock; no wall-clock guessing."""
+    state = status.get('type', {}).get('state')
+    if status.get('type', {}).get('completed') or state == 'post':
+        return 0.0
+    if state == 'pre':
+        return 1.0
+    period = status.get('period')
+    if state != 'in' or type(period) is not int or period < 1:
+        return None
+    if period > 4:
+        return 0.0  # Regulation is over; the simple model adds no overtime baseline.
+    clock = status.get('displayClock')
+    try:
+        minutes, seconds = map(int, clock.split(':'))
+        if not 0 <= minutes <= 15 or not 0 <= seconds < 60:
+            return None
+        remaining = minutes * 60 + seconds
+        if remaining > 900:
+            return None
+    except (AttributeError, TypeError, ValueError):
+        remaining = status.get('clock')
+        if type(remaining) not in (int, float) or not 0 <= remaining <= 900:
+            return None
+    return ((4 - period) * 900 + remaining) / 3600
+
+
+def projected_points(actual, initial, remaining):
+    if actual is None or remaining is None:
+        return None
+    if remaining == 0:
+        return actual
+    return None if initial is None else actual + remaining * initial
+
+
 def game_map(board):
     result, games = {}, []
     for event in board.get('events', []):
@@ -11,6 +46,7 @@ def game_map(board):
         status = comp.get('status', event.get('status', {}))
         state = status.get('type', {}).get('state', 'unknown')
         game = {'id': str(event['id']), 'state': state, 'completed': bool(status.get('type', {}).get('completed')), 'detail': status.get('type', {}).get('shortDetail', ''), 'date': event.get('date'), 'teams': [{'id': str(t['team']['id']), 'name': t['team']['abbreviation'], 'score': t.get('score'), 'homeAway': t.get('homeAway')} for t in comp['competitors']]}
+        game.update(period=status.get('period'), displayClock=status.get('displayClock'), timeRemainingFraction=time_remaining(status))
         games.append(game)
         for team in game['teams']:
             result[team['id']] = game
@@ -39,8 +75,9 @@ def build_scores(config, snapshot, data, board, previous):
             # Update pregame projections, then freeze the last captured baseline at kickoff.
             initial = old.get('initialProjection') if state != 'pre' and old.get('initialProjection') is not None else projection
             captured_before_kickoff = state == 'pre' or (bool(old.get('capturedBeforeKickoff')) and old.get('initialProjection') is not None)
-            rows[pid] = {'actual': actual, 'initialProjection': initial, 'capturedBeforeKickoff': captured_before_kickoff, 'espnWeeklyProjection': projection, 'liveProjection': None, 'state': state, 'game': game, 'injuryStatus': player.get('injuryStatus')}
-    return {'season': config['season'], 'leagueId': config['leagueId'], 'week': config['week'], 'updatedAt': now(), 'projectionSource': 'ESPN fantasy weekly appliedTotal', 'players': rows, 'games': games}
+            remaining = 0.0 if state == 'bye' else game['timeRemainingFraction']
+            rows[pid] = {'actual': actual, 'initialProjection': initial, 'capturedBeforeKickoff': captured_before_kickoff, 'espnWeeklyProjection': projection, 'liveProjection': projected_points(actual, initial, remaining), 'timeRemainingFraction': remaining, 'state': state, 'game': game, 'injuryStatus': player.get('injuryStatus')}
+    return {'season': config['season'], 'leagueId': config['leagueId'], 'week': config['week'], 'updatedAt': now(), 'projectionSource': 'ESPN fantasy weekly appliedTotal', 'liveProjectionModel': 'actual + regulation time remaining * initialProjection', 'players': rows, 'games': games}
 
 
 def main():

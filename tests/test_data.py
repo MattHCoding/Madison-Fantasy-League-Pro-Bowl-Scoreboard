@@ -6,7 +6,7 @@ import unittest
 from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / 'scripts'))
 from espn import stat_points, validate, league_query
-from update_scores import build_scores
+from update_scores import build_scores, time_remaining, projected_points
 from update_rosters import build_snapshot
 
 
@@ -45,7 +45,7 @@ class DataTests(unittest.TestCase):
         result=build_scores(config,snapshot,data,board,{})
         self.assertEqual(result['players']['101']['actual'],30)
         self.assertEqual(result['players']['102']['actual'],31)
-        self.assertIsNone(result['players']['101']['liveProjection'])
+        self.assertEqual(result['players']['101']['liveProjection'],30)
         self.assertEqual(snapshot,untouched)
 
     def test_baseline_freezes_after_kickoff(self):
@@ -61,6 +61,26 @@ class DataTests(unittest.TestCase):
         for p in data['players']:
             for stat in p['player']['stats']:stat['scoringPeriodId']=5
         self.assertEqual(build_scores(config,snapshot,data,board,before)['players']['101']['initialProjection'],50)
+
+    def test_clock_projection_lifecycle(self):
+        self.assertEqual(time_remaining({'type':{'state':'pre'}}),1)
+        self.assertEqual(time_remaining({'type':{'state':'in'},'period':2,'displayClock':'0:00'}),0.5)
+        self.assertEqual(time_remaining({'type':{'state':'in'},'period':4,'displayClock':'15:00'}),0.25)
+        self.assertEqual(time_remaining({'type':{'state':'post','completed':True}}),0)
+        self.assertEqual(time_remaining({'type':{'state':'in'},'period':5}),0)
+        self.assertIsNone(time_remaining({'type':{'state':'in'},'period':2}))
+        self.assertEqual(projected_points(10,20,0.5),20)
+        self.assertEqual(projected_points(-3,10,0),-3)
+        self.assertEqual(projected_points(5,None,0),5)
+        self.assertIsNone(projected_points(None,20,0.5))
+
+    def test_score_rows_use_the_clock_and_preserve_initial(self):
+        config,snapshot,data,board=fixture()
+        board['events'][0]['competitions'][0]['status'].update(type={'state':'in','completed':False},period=3,displayClock='15:00')
+        result=build_scores(config,snapshot,data,board,{})
+        self.assertEqual(result['players']['101']['timeRemainingFraction'],0.5)
+        self.assertEqual(result['players']['101']['liveProjection'],35)
+        self.assertEqual(result['players']['101']['initialProjection'],10)
 
     def test_partial_response_fails(self):
         config,snapshot,data,board=fixture()
