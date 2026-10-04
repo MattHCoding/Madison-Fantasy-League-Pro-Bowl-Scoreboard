@@ -4,7 +4,7 @@ const dataBase = location.hostname.endsWith('.github.io')
 const escapeHTML = value => String(value ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const points = value => Number.isFinite(value) ? value.toFixed(2) : '—';
 async function loadJSON(path) {
-  const response = await fetch(dataBase + path, {cache: 'no-store'});
+  const response = await fetch(`${dataBase}${path}?refresh=${Date.now()}`, {cache: 'no-store'});
   if (!response.ok) throw new Error('Could not load scoreboard data.');
   return response.json();
 }
