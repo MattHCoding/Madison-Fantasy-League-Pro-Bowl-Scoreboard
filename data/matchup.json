@@ -20,7 +20,7 @@
       "players": [
         {
           "slot": "QB",
-          "id": "3918298"
+          "id": "2576980"
         },
         {
           "slot": "RB",
@@ -106,6 +106,13 @@
       "name": "Davante Adams",
       "position": "WR",
       "proTeamId": 14,
+      "ownerTeamName": null
+    },
+    "2576980": {
+      "id": "2576980",
+      "name": "Marcus Mariota",
+      "position": "QB",
+      "proTeamId": 28,
       "ownerTeamName": null
     },
     "3916387": {
