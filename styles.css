@@ -494,3 +494,19 @@ label {display:block;margin:12px 0;} select,input,button {font:inherit;padding:8
 /* Native dropdowns must not force the setup grid beyond the viewport. */
 .setup-grid > fieldset { min-width: 0; }
 .setup-grid select { width: 100%; }
+
+.header {padding-bottom:32px;}
+.header-probability {max-width:640px;margin:22px auto 0;padding:0 20px;}
+.probability-caption {font-size:12px;margin:6px 0;color:rgba(255,255,255,.9);}
+.probability-labels {display:flex;justify-content:space-between;gap:16px;margin:8px 0;font-size:14px;font-weight:600;text-shadow:0 1px 3px rgba(0,0,0,.8);}
+.probability-labels > span {max-width:50%;overflow-wrap:anywhere;}
+.probability-west-label {text-align:left;}
+.probability-east-label {text-align:right;}
+.probability-west-label::before,.probability-east-label::before {content:'';display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:6px;}
+.probability-west-label::before,.probability-west-fill {background:#2dd4bf;}
+.probability-east-label::before,.probability-east-fill {background:#fb923c;}
+.probability-track {display:flex;height:14px;overflow:hidden;border-radius:999px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.5);}
+.probability-track > span {width:0;flex-shrink:0;transition:width .35s ease;}
+.probability-tie-fill {background:#cbd5e1;}
+.probability-track.is-unavailable {opacity:.5;}
+@media(prefers-reduced-motion:reduce){.probability-track > span {transition:none;}}

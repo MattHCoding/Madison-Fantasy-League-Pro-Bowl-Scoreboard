@@ -45,6 +45,22 @@ async function refresh() {
       config.sides.east.players.map(p=>scores.players[String(p.id)])
     ) : null;
     for (const side of ['west','east']) document.getElementById(`${side}-win-probability`).textContent = probabilities ? `${(100*probabilities[side]).toFixed(1)}%` : '—';
+    const probabilityBar = document.getElementById('header-probability-bar');
+    const headerLabels = {};
+    for (const side of ['west','east']) {
+      const name = config.sides[side].name || (side === 'west' ? 'Team West' : 'Team East');
+      headerLabels[side] = `${name} ${probabilities ? `${(100*probabilities[side]).toFixed(1)}%` : '—'}`;
+      document.getElementById(`header-${side}-probability`).textContent = headerLabels[side];
+      document.getElementById(`header-${side}-fill`).style.width = probabilities ? `${100*probabilities[side]}%` : '0%';
+    }
+    document.getElementById('header-tie-fill').style.width = probabilities ? `${100*probabilities.tie}%` : '0%';
+    const tieLabel = document.getElementById('header-tie-probability');
+    tieLabel.hidden = !probabilities || probabilities.tie === 0;
+    tieLabel.textContent = probabilities ? `Tie ${(100*probabilities.tie).toFixed(1)}%` : '';
+    probabilityBar.classList.toggle('is-unavailable',!probabilities);
+    probabilityBar.setAttribute('aria-label',probabilities
+      ? `${headerLabels.west}; ${headerLabels.east}; tie ${(100*probabilities.tie).toFixed(1)}%`
+      : 'Win probabilities unavailable');
     document.getElementById('win-model-status').textContent = probabilities
       ? (probabilities.tie > 0 ? ` Tie probability: ${(100*probabilities.tie).toFixed(1)}%.` : '')
       : ' Win probabilities require scores, initial projections, and game clocks for all selected players.';
