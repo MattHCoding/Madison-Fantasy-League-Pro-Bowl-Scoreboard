@@ -79,8 +79,13 @@ Each player uses their own NFL game clock, then the site sums those estimates.
 Final and bye projections equal actual points. Unknown clocks or missing inputs
 remain unavailable. Overtime has zero regulation remaining, so this basic model
 uses current actual points during overtime. Initial projections remain visible.
-The win probability is fixed at **50% per side**, explicitly labeled a placeholder;
-it is not an estimated probability. Automatic score/clock queries still require
+Win probabilities use 20,000 independent Monte Carlo trials in the browser.
+For each player with expected remaining points mu > 0, remaining points follow
+Gamma(shape=2, scale=mu/2). Actual points are fixed and zero remaining expectations
+are deterministic. Players are independent; wins and ties are counted separately.
+The random seed is fixed so unchanged inputs produce identical displayed results.
+Missing required scores, projections, or clocks leave probabilities unavailable.
+These probabilities describe the chosen model and have not been calibrated. Automatic score/clock queries still require
 ESPN credentials saved as GitHub Actions secrets.
 
 Possible home-grown live models, in increasing complexity:
@@ -108,7 +113,7 @@ python scripts/update_rosters.py
 python scripts/configure_matchup.py pro-bowl-setup-2026.json
 python scripts/update_scores.py
 python -m unittest discover -s tests
-node --test tests/test_setup_store.cjs
+node --test tests/test_setup_store.cjs tests/test_projections.cjs tests/test_win_probability.cjs
 python -m http.server 8000
 ```
 

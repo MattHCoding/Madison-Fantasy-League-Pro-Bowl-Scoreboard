@@ -40,6 +40,14 @@ async function refresh() {
       document.getElementById(`${key}-initial`).textContent = initialComplete ? points(initial) : '—';
       document.getElementById(`${key}-projected`).textContent = projectedComplete ? points(projected) : '—';
     }
+    const probabilities = compatible ? simulateWinProbability(
+      config.sides.west.players.map(p=>scores.players[String(p.id)]),
+      config.sides.east.players.map(p=>scores.players[String(p.id)])
+    ) : null;
+    for (const side of ['west','east']) document.getElementById(`${side}-win-probability`).textContent = probabilities ? `${(100*probabilities[side]).toFixed(1)}%` : '—';
+    document.getElementById('win-model-status').textContent = probabilities
+      ? (probabilities.tie > 0 ? ` Tie probability: ${(100*probabilities.tie).toFixed(1)}%.` : '')
+      : ' Win probabilities require scores, initial projections, and game clocks for all selected players.';
     let message = snapshot.capturedAt ? `Roster snapshot: ${new Date(snapshot.capturedAt).toLocaleDateString()}.` : (Object.keys(config.selectedPlayers || {}).length ? 'Pro Bowl lineups loaded. Fantasy owners have not been linked yet.' : 'Annual fantasy roster snapshot has not been loaded yet.');
     if (!config.enabled) message += ' Score refreshes are paused.';
     else if (compatible && scores.updatedAt) {
