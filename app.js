@@ -14,8 +14,6 @@ async function refresh() {
   refreshing = true;
   try {
     const config = await loadJSON('data/matchup.json');
-    const exampleFraction = pointsRemainingFraction(0.7,config.pointsRemainingExponent ?? 1);
-    document.getElementById('points-curve-description').textContent = exampleFraction === null ? 'The points remaining curve is unavailable.' : `All positions use the same curve: 30% of the game played means ${(100*exampleFraction).toFixed(0)}% of projected points remain.`;
     const [snapshot, scores] = await Promise.all([loadJSON(`data/rosters-${config.season}.json`), loadJSON('data/scores.json')]);
     const pool = new Map([...Object.entries(config.selectedPlayers || {}), ...snapshot.teams.flatMap(t => t.players.map(p => [String(p.id), p]))]);
     const compatible = scores.season === config.season && scores.week === config.week && scores.leagueId === config.leagueId;
@@ -47,7 +45,10 @@ async function refresh() {
       config.sides.east.players.map(p=>scores.players[String(p.id)]),
       config.pointsRemainingExponent ?? 1
     ) : null;
-    for (const side of ['west','east']) document.getElementById(`${side}-win-probability`).textContent = probabilities ? `${(100*probabilities[side]).toFixed(1)}%` : '—';
+    for (const side of ['west','east']) {
+      document.getElementById(`${side}-win-probability`).textContent = probabilities ? `${(100*probabilities[side]).toFixed(1)}%` : '—';
+      document.getElementById(`${side}-miles`).textContent = probabilities ? String(Math.round((1-probabilities[side])*100)) : '—';
+    }
     const probabilityBar = document.getElementById('header-probability-bar');
     const headerLabels = {};
     for (const side of ['west','east']) {
@@ -64,9 +65,6 @@ async function refresh() {
     probabilityBar.setAttribute('aria-label',probabilities
       ? `${headerLabels.west}; ${headerLabels.east}; tie ${(100*probabilities.tie).toFixed(1)}%`
       : 'Win probabilities unavailable');
-    document.getElementById('win-model-status').textContent = probabilities
-      ? (probabilities.tie > 0 ? ` Tie probability: ${(100*probabilities.tie).toFixed(1)}%.` : '')
-      : ' Win probabilities require scores, initial projections, and game clocks for all selected players.';
     let message = snapshot.capturedAt ? `Roster snapshot: ${new Date(snapshot.capturedAt).toLocaleDateString()}.` : (Object.keys(config.selectedPlayers || {}).length ? 'Pro Bowl lineups loaded. Fantasy owners have not been linked yet.' : 'Annual fantasy roster snapshot has not been loaded yet.');
     if (!config.enabled) message += ' Score refreshes are paused.';
     else if (compatible && scores.updatedAt) {
