@@ -1,6 +1,887 @@
 {
   "season": 2026,
-  "week": null,
-  "updatedAt": null,
-  "players": {}
+  "leagueId": 1297942157,
+  "week": 4,
+  "updatedAt": "2026-10-04T00:39:10.453317+00:00",
+  "projectionSource": "ESPN fantasy weekly appliedTotal",
+  "players": {
+    "3918298": {
+      "actual": 0.0,
+      "initialProjection": 22.21869456,
+      "capturedBeforeKickoff": true,
+      "espnWeeklyProjection": 22.21869456,
+      "liveProjection": null,
+      "state": "pre",
+      "game": {
+        "id": "401872971",
+        "state": "pre",
+        "completed": false,
+        "detail": "10/4 - 1:00 PM EDT",
+        "date": "2026-10-04T17:00Z",
+        "teams": [
+          {
+            "id": "2",
+            "name": "BUF",
+            "score": "0",
+            "homeAway": "home"
+          },
+          {
+            "id": "17",
+            "name": "NE",
+            "score": "0",
+            "homeAway": "away"
+          }
+        ]
+      },
+      "injuryStatus": "ACTIVE"
+    },
+    "4241416": {
+      "actual": 0.0,
+      "initialProjection": 15.06579166,
+      "capturedBeforeKickoff": true,
+      "espnWeeklyProjection": 15.06579166,
+      "liveProjection": null,
+      "state": "pre",
+      "game": {
+        "id": "401872978",
+        "state": "pre",
+        "completed": false,
+        "detail": "10/4 - 8:20 PM EDT",
+        "date": "2026-10-05T00:20Z",
+        "teams": [
+          {
+            "id": "29",
+            "name": "CAR",
+            "score": "0",
+            "homeAway": "home"
+          },
+          {
+            "id": "8",
+            "name": "DET",
+            "score": "0",
+            "homeAway": "away"
+          }
+        ]
+      },
+      "injuryStatus": "ACTIVE"
+    },
+    "4569987": {
+      "actual": 14.1,
+      "initialProjection": 15.39681941,
+      "capturedBeforeKickoff": false,
+      "espnWeeklyProjection": 15.39681941,
+      "liveProjection": null,
+      "state": "post",
+      "game": {
+        "id": "401872964",
+        "state": "post",
+        "completed": true,
+        "detail": "Final",
+        "date": "2026-10-02T00:15Z",
+        "teams": [
+          {
+            "id": "5",
+            "name": "CLE",
+            "score": "27",
+            "homeAway": "home"
+          },
+          {
+            "id": "23",
+            "name": "PIT",
+            "score": "24",
+            "homeAway": "away"
+          }
+        ]
+      },
+      "injuryStatus": "ACTIVE"
+    },
+    "4361370": {
+      "actual": 0.0,
+      "initialProjection": 15.0488946,
+      "capturedBeforeKickoff": true,
+      "espnWeeklyProjection": 15.0488946,
+      "liveProjection": null,
+      "state": "pre",
+      "game": {
+        "id": "401872979",
+        "state": "pre",
+        "completed": false,
+        "detail": "10/5 - 8:15 PM EDT",
+        "date": "2026-10-06T00:15Z",
+        "teams": [
+          {
+            "id": "18",
+            "name": "NO",
+            "score": "0",
+            "homeAway": "home"
+          },
+          {
+            "id": "1",
+            "name": "ATL",
+            "score": "0",
+            "homeAway": "away"
+          }
+        ]
+      },
+      "injuryStatus": "ACTIVE"
+    },
+    "4429615": {
+      "actual": 0.0,
+      "initialProjection": 12.97743737,
+      "capturedBeforeKickoff": true,
+      "espnWeeklyProjection": 12.97743737,
+      "liveProjection": null,
+      "state": "pre",
+      "game": {
+        "id": "401872973",
+        "state": "pre",
+        "completed": false,
+        "detail": "10/4 - 1:00 PM EDT",
+        "date": "2026-10-04T17:00Z",
+        "teams": [
+          {
+            "id": "33",
+            "name": "BAL",
+            "score": "0",
+            "homeAway": "home"
+          },
+          {
+            "id": "10",
+            "name": "TEN",
+            "score": "0",
+            "homeAway": "away"
+          }
+        ]
+      },
+      "injuryStatus": "QUESTIONABLE"
+    },
+    "4361307": {
+      "actual": 0.0,
+      "initialProjection": 13.73831165,
+      "capturedBeforeKickoff": true,
+      "espnWeeklyProjection": 13.73831165,
+      "liveProjection": null,
+      "state": "pre",
+      "game": {
+        "id": "401872966",
+        "state": "pre",
+        "completed": false,
+        "detail": "10/4 - 1:00 PM EDT",
+        "date": "2026-10-04T17:00Z",
+        "teams": [
+          {
+            "id": "19",
+            "name": "NYG",
+            "score": "0",
+            "homeAway": "home"
+          },
+          {
+            "id": "22",
+            "name": "ARI",
+            "score": "0",
+            "homeAway": "away"
+          }
+        ]
+      },
+      "injuryStatus": "ACTIVE"
+    },
+    "4248528": {
+      "actual": 0.0,
+      "initialProjection": 12.06223957,
+      "capturedBeforeKickoff": true,
+      "espnWeeklyProjection": 12.06223957,
+      "liveProjection": null,
+      "state": "pre",
+      "game": {
+        "id": "401872968",
+        "state": "pre",
+        "completed": false,
+        "detail": "10/4 - 1:00 PM EDT",
+        "date": "2026-10-04T17:00Z",
+        "teams": [
+          {
+            "id": "27",
+            "name": "TB",
+            "score": "0",
+            "homeAway": "home"
+          },
+          {
+            "id": "9",
+            "name": "GB",
+            "score": "0",
+            "homeAway": "away"
+          }
+        ]
+      },
+      "injuryStatus": "ACTIVE"
+    },
+    "4569618": {
+      "actual": 0.0,
+      "initialProjection": 13.24245955,
+      "capturedBeforeKickoff": true,
+      "espnWeeklyProjection": 13.24245955,
+      "liveProjection": null,
+      "state": "pre",
+      "game": {
+        "id": "401872972",
+        "state": "pre",
+        "completed": false,
+        "detail": "10/4 - 1:00 PM EDT",
+        "date": "2026-10-04T17:00Z",
+        "teams": [
+          {
+            "id": "3",
+            "name": "CHI",
+            "score": "0",
+            "homeAway": "home"
+          },
+          {
+            "id": "20",
+            "name": "NYJ",
+            "score": "0",
+            "homeAway": "away"
+          }
+        ]
+      },
+      "injuryStatus": "ACTIVE"
+    },
+    "-16018": {
+      "actual": 0.0,
+      "initialProjection": 5.12091827,
+      "capturedBeforeKickoff": true,
+      "espnWeeklyProjection": 5.12091827,
+      "liveProjection": null,
+      "state": "pre",
+      "game": {
+        "id": "401872979",
+        "state": "pre",
+        "completed": false,
+        "detail": "10/5 - 8:15 PM EDT",
+        "date": "2026-10-06T00:15Z",
+        "teams": [
+          {
+            "id": "18",
+            "name": "NO",
+            "score": "0",
+            "homeAway": "home"
+          },
+          {
+            "id": "1",
+            "name": "ATL",
+            "score": "0",
+            "homeAway": "away"
+          }
+        ]
+      },
+      "injuryStatus": null
+    },
+    "3916387": {
+      "actual": 0.0,
+      "initialProjection": 21.17648851,
+      "capturedBeforeKickoff": true,
+      "espnWeeklyProjection": 21.17648851,
+      "liveProjection": null,
+      "state": "pre",
+      "game": {
+        "id": "401872973",
+        "state": "pre",
+        "completed": false,
+        "detail": "10/4 - 1:00 PM EDT",
+        "date": "2026-10-04T17:00Z",
+        "teams": [
+          {
+            "id": "33",
+            "name": "BAL",
+            "score": "0",
+            "homeAway": "home"
+          },
+          {
+            "id": "10",
+            "name": "TEN",
+            "score": "0",
+            "homeAway": "away"
+          }
+        ]
+      },
+      "injuryStatus": "ACTIVE"
+    },
+    "4870808": {
+      "actual": 0.0,
+      "initialProjection": 14.1651661,
+      "capturedBeforeKickoff": true,
+      "espnWeeklyProjection": 14.1651661,
+      "liveProjection": null,
+      "state": "pre",
+      "game": {
+        "id": "401872966",
+        "state": "pre",
+        "completed": false,
+        "detail": "10/4 - 1:00 PM EDT",
+        "date": "2026-10-04T17:00Z",
+        "teams": [
+          {
+            "id": "19",
+            "name": "NYG",
+            "score": "0",
+            "homeAway": "home"
+          },
+          {
+            "id": "22",
+            "name": "ARI",
+            "score": "0",
+            "homeAway": "away"
+          }
+        ]
+      },
+      "injuryStatus": "ACTIVE"
+    },
+    "4430737": {
+      "actual": 0.0,
+      "initialProjection": 11.88136156,
+      "capturedBeforeKickoff": true,
+      "espnWeeklyProjection": 11.88136156,
+      "liveProjection": null,
+      "state": "pre",
+      "game": {
+        "id": "401872970",
+        "state": "pre",
+        "completed": false,
+        "detail": "10/4 - 1:00 PM EDT",
+        "date": "2026-10-04T17:00Z",
+        "teams": [
+          {
+            "id": "21",
+            "name": "PHI",
+            "score": "0",
+            "homeAway": "home"
+          },
+          {
+            "id": "14",
+            "name": "LAR",
+            "score": "0",
+            "homeAway": "away"
+          }
+        ]
+      },
+      "injuryStatus": "ACTIVE"
+    },
+    "16800": {
+      "actual": 0.0,
+      "initialProjection": 13.18903898,
+      "capturedBeforeKickoff": true,
+      "espnWeeklyProjection": 13.18903898,
+      "liveProjection": null,
+      "state": "pre",
+      "game": {
+        "id": "401872970",
+        "state": "pre",
+        "completed": false,
+        "detail": "10/4 - 1:00 PM EDT",
+        "date": "2026-10-04T17:00Z",
+        "teams": [
+          {
+            "id": "21",
+            "name": "PHI",
+            "score": "0",
+            "homeAway": "home"
+          },
+          {
+            "id": "14",
+            "name": "LAR",
+            "score": "0",
+            "homeAway": "away"
+          }
+        ]
+      },
+      "injuryStatus": "ACTIVE"
+    },
+    "4685472": {
+      "actual": 0.0,
+      "initialProjection": 13.4952167,
+      "capturedBeforeKickoff": true,
+      "espnWeeklyProjection": 13.4952167,
+      "liveProjection": null,
+      "state": "pre",
+      "game": {
+        "id": "401872978",
+        "state": "pre",
+        "completed": false,
+        "detail": "10/4 - 8:20 PM EDT",
+        "date": "2026-10-05T00:20Z",
+        "teams": [
+          {
+            "id": "29",
+            "name": "CAR",
+            "score": "0",
+            "homeAway": "home"
+          },
+          {
+            "id": "8",
+            "name": "DET",
+            "score": "0",
+            "homeAway": "away"
+          }
+        ]
+      },
+      "injuryStatus": "ACTIVE"
+    },
+    "4432665": {
+      "actual": 0.0,
+      "initialProjection": 12.65450492,
+      "capturedBeforeKickoff": true,
+      "espnWeeklyProjection": 12.65450492,
+      "liveProjection": null,
+      "state": "pre",
+      "game": {
+        "id": "401872976",
+        "state": "pre",
+        "completed": false,
+        "detail": "10/4 - 4:25 PM EDT",
+        "date": "2026-10-04T20:25Z",
+        "teams": [
+          {
+            "id": "13",
+            "name": "LV",
+            "score": "0",
+            "homeAway": "home"
+          },
+          {
+            "id": "12",
+            "name": "KC",
+            "score": "0",
+            "homeAway": "away"
+          }
+        ]
+      },
+      "injuryStatus": "ACTIVE"
+    },
+    "4696981": {
+      "actual": 0.0,
+      "initialProjection": 14.93077448,
+      "capturedBeforeKickoff": true,
+      "espnWeeklyProjection": 14.93077448,
+      "liveProjection": null,
+      "state": "pre",
+      "game": {
+        "id": "401872966",
+        "state": "pre",
+        "completed": false,
+        "detail": "10/4 - 1:00 PM EDT",
+        "date": "2026-10-04T17:00Z",
+        "teams": [
+          {
+            "id": "19",
+            "name": "NYG",
+            "score": "0",
+            "homeAway": "home"
+          },
+          {
+            "id": "22",
+            "name": "ARI",
+            "score": "0",
+            "homeAway": "away"
+          }
+        ]
+      },
+      "injuryStatus": "ACTIVE"
+    },
+    "4259545": {
+      "actual": 0.0,
+      "initialProjection": 13.3910162,
+      "capturedBeforeKickoff": true,
+      "espnWeeklyProjection": 13.3910162,
+      "liveProjection": null,
+      "state": "pre",
+      "game": {
+        "id": "401872972",
+        "state": "pre",
+        "completed": false,
+        "detail": "10/4 - 1:00 PM EDT",
+        "date": "2026-10-04T17:00Z",
+        "teams": [
+          {
+            "id": "3",
+            "name": "CHI",
+            "score": "0",
+            "homeAway": "home"
+          },
+          {
+            "id": "20",
+            "name": "NYJ",
+            "score": "0",
+            "homeAway": "away"
+          }
+        ]
+      },
+      "injuryStatus": "ACTIVE"
+    },
+    "-16016": {
+      "actual": 0.0,
+      "initialProjection": 8.19466731,
+      "capturedBeforeKickoff": true,
+      "espnWeeklyProjection": 8.19466731,
+      "liveProjection": null,
+      "state": "pre",
+      "game": {
+        "id": "401872974",
+        "state": "pre",
+        "completed": false,
+        "detail": "10/4 - 4:05 PM EDT",
+        "date": "2026-10-04T20:05Z",
+        "teams": [
+          {
+            "id": "16",
+            "name": "MIN",
+            "score": "0",
+            "homeAway": "home"
+          },
+          {
+            "id": "15",
+            "name": "MIA",
+            "score": "0",
+            "homeAway": "away"
+          }
+        ]
+      },
+      "injuryStatus": null
+    }
+  },
+  "games": [
+    {
+      "id": "401872964",
+      "state": "post",
+      "completed": true,
+      "detail": "Final",
+      "date": "2026-10-02T00:15Z",
+      "teams": [
+        {
+          "id": "5",
+          "name": "CLE",
+          "score": "27",
+          "homeAway": "home"
+        },
+        {
+          "id": "23",
+          "name": "PIT",
+          "score": "24",
+          "homeAway": "away"
+        }
+      ]
+    },
+    {
+      "id": "401872965",
+      "state": "pre",
+      "completed": false,
+      "detail": "10/4 - 9:30 AM EDT",
+      "date": "2026-10-04T13:30Z",
+      "teams": [
+        {
+          "id": "28",
+          "name": "WSH",
+          "score": "0",
+          "homeAway": "home"
+        },
+        {
+          "id": "11",
+          "name": "IND",
+          "score": "0",
+          "homeAway": "away"
+        }
+      ]
+    },
+    {
+      "id": "401872971",
+      "state": "pre",
+      "completed": false,
+      "detail": "10/4 - 1:00 PM EDT",
+      "date": "2026-10-04T17:00Z",
+      "teams": [
+        {
+          "id": "2",
+          "name": "BUF",
+          "score": "0",
+          "homeAway": "home"
+        },
+        {
+          "id": "17",
+          "name": "NE",
+          "score": "0",
+          "homeAway": "away"
+        }
+      ]
+    },
+    {
+      "id": "401872972",
+      "state": "pre",
+      "completed": false,
+      "detail": "10/4 - 1:00 PM EDT",
+      "date": "2026-10-04T17:00Z",
+      "teams": [
+        {
+          "id": "3",
+          "name": "CHI",
+          "score": "0",
+          "homeAway": "home"
+        },
+        {
+          "id": "20",
+          "name": "NYJ",
+          "score": "0",
+          "homeAway": "away"
+        }
+      ]
+    },
+    {
+      "id": "401872969",
+      "state": "pre",
+      "completed": false,
+      "detail": "10/4 - 1:00 PM EDT",
+      "date": "2026-10-04T17:00Z",
+      "teams": [
+        {
+          "id": "4",
+          "name": "CIN",
+          "score": "0",
+          "homeAway": "home"
+        },
+        {
+          "id": "30",
+          "name": "JAX",
+          "score": "0",
+          "homeAway": "away"
+        }
+      ]
+    },
+    {
+      "id": "401872966",
+      "state": "pre",
+      "completed": false,
+      "detail": "10/4 - 1:00 PM EDT",
+      "date": "2026-10-04T17:00Z",
+      "teams": [
+        {
+          "id": "19",
+          "name": "NYG",
+          "score": "0",
+          "homeAway": "home"
+        },
+        {
+          "id": "22",
+          "name": "ARI",
+          "score": "0",
+          "homeAway": "away"
+        }
+      ]
+    },
+    {
+      "id": "401872970",
+      "state": "pre",
+      "completed": false,
+      "detail": "10/4 - 1:00 PM EDT",
+      "date": "2026-10-04T17:00Z",
+      "teams": [
+        {
+          "id": "21",
+          "name": "PHI",
+          "score": "0",
+          "homeAway": "home"
+        },
+        {
+          "id": "14",
+          "name": "LAR",
+          "score": "0",
+          "homeAway": "away"
+        }
+      ]
+    },
+    {
+      "id": "401872968",
+      "state": "pre",
+      "completed": false,
+      "detail": "10/4 - 1:00 PM EDT",
+      "date": "2026-10-04T17:00Z",
+      "teams": [
+        {
+          "id": "27",
+          "name": "TB",
+          "score": "0",
+          "homeAway": "home"
+        },
+        {
+          "id": "9",
+          "name": "GB",
+          "score": "0",
+          "homeAway": "away"
+        }
+      ]
+    },
+    {
+      "id": "401872973",
+      "state": "pre",
+      "completed": false,
+      "detail": "10/4 - 1:00 PM EDT",
+      "date": "2026-10-04T17:00Z",
+      "teams": [
+        {
+          "id": "33",
+          "name": "BAL",
+          "score": "0",
+          "homeAway": "home"
+        },
+        {
+          "id": "10",
+          "name": "TEN",
+          "score": "0",
+          "homeAway": "away"
+        }
+      ]
+    },
+    {
+      "id": "401872967",
+      "state": "pre",
+      "completed": false,
+      "detail": "10/4 - 1:00 PM EDT",
+      "date": "2026-10-04T17:00Z",
+      "teams": [
+        {
+          "id": "34",
+          "name": "HOU",
+          "score": "0",
+          "homeAway": "home"
+        },
+        {
+          "id": "6",
+          "name": "DAL",
+          "score": "0",
+          "homeAway": "away"
+        }
+      ]
+    },
+    {
+      "id": "401872974",
+      "state": "pre",
+      "completed": false,
+      "detail": "10/4 - 4:05 PM EDT",
+      "date": "2026-10-04T20:05Z",
+      "teams": [
+        {
+          "id": "16",
+          "name": "MIN",
+          "score": "0",
+          "homeAway": "home"
+        },
+        {
+          "id": "15",
+          "name": "MIA",
+          "score": "0",
+          "homeAway": "away"
+        }
+      ]
+    },
+    {
+      "id": "401872976",
+      "state": "pre",
+      "completed": false,
+      "detail": "10/4 - 4:25 PM EDT",
+      "date": "2026-10-04T20:25Z",
+      "teams": [
+        {
+          "id": "13",
+          "name": "LV",
+          "score": "0",
+          "homeAway": "home"
+        },
+        {
+          "id": "12",
+          "name": "KC",
+          "score": "0",
+          "homeAway": "away"
+        }
+      ]
+    },
+    {
+      "id": "401872975",
+      "state": "pre",
+      "completed": false,
+      "detail": "10/4 - 4:25 PM EDT",
+      "date": "2026-10-04T20:25Z",
+      "teams": [
+        {
+          "id": "25",
+          "name": "SF",
+          "score": "0",
+          "homeAway": "home"
+        },
+        {
+          "id": "7",
+          "name": "DEN",
+          "score": "0",
+          "homeAway": "away"
+        }
+      ]
+    },
+    {
+      "id": "401872977",
+      "state": "pre",
+      "completed": false,
+      "detail": "10/4 - 4:25 PM EDT",
+      "date": "2026-10-04T20:25Z",
+      "teams": [
+        {
+          "id": "26",
+          "name": "SEA",
+          "score": "0",
+          "homeAway": "home"
+        },
+        {
+          "id": "24",
+          "name": "LAC",
+          "score": "0",
+          "homeAway": "away"
+        }
+      ]
+    },
+    {
+      "id": "401872978",
+      "state": "pre",
+      "completed": false,
+      "detail": "10/4 - 8:20 PM EDT",
+      "date": "2026-10-05T00:20Z",
+      "teams": [
+        {
+          "id": "29",
+          "name": "CAR",
+          "score": "0",
+          "homeAway": "home"
+        },
+        {
+          "id": "8",
+          "name": "DET",
+          "score": "0",
+          "homeAway": "away"
+        }
+      ]
+    },
+    {
+      "id": "401872979",
+      "state": "pre",
+      "completed": false,
+      "detail": "10/5 - 8:15 PM EDT",
+      "date": "2026-10-06T00:15Z",
+      "teams": [
+        {
+          "id": "18",
+          "name": "NO",
+          "score": "0",
+          "homeAway": "home"
+        },
+        {
+          "id": "1",
+          "name": "ATL",
+          "score": "0",
+          "homeAway": "away"
+        }
+      ]
+    }
+  ]
 }

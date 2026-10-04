@@ -1,6 +1,236 @@
 {
   "season": 2026,
   "leagueId": 1297942157,
-  "capturedAt": null,
-  "teams": []
+  "capturedAt": "2026-10-04T00:38:33.964866+00:00",
+  "teams": [
+    {
+      "id": 1,
+      "name": "The People's Champion",
+      "divisionId": 0,
+      "players": [
+        {
+          "id": "4569618",
+          "name": "Garrett Wilson",
+          "position": "WR",
+          "proTeamId": 20,
+          "ownerTeamId": 1,
+          "ownerTeamName": "The People's Champion"
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "name": "Bergh, I'm JAY-len Off \ud83c\udfc6",
+      "divisionId": 0,
+      "players": [
+        {
+          "id": "4569987",
+          "name": "Jaylen Warren",
+          "position": "RB",
+          "proTeamId": 23,
+          "ownerTeamId": 2,
+          "ownerTeamName": "Bergh, I'm JAY-len Off \ud83c\udfc6"
+        },
+        {
+          "id": "4361370",
+          "name": "Chris Olave",
+          "position": "WR",
+          "proTeamId": 18,
+          "ownerTeamId": 2,
+          "ownerTeamName": "Bergh, I'm JAY-len Off \ud83c\udfc6"
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "name": "Harlen's Hogs",
+      "divisionId": 0,
+      "players": [
+        {
+          "id": "4870808",
+          "name": "Jeremiyah Love",
+          "position": "RB",
+          "proTeamId": 22,
+          "ownerTeamId": 3,
+          "ownerTeamName": "Harlen's Hogs"
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "name": "McConkey's Balls Deep",
+      "divisionId": 0,
+      "players": [
+        {
+          "id": "4248528",
+          "name": "Christian Watson",
+          "position": "WR",
+          "proTeamId": 9,
+          "ownerTeamId": 4,
+          "ownerTeamName": "McConkey's Balls Deep"
+        }
+      ]
+    },
+    {
+      "id": 5,
+      "name": "Kenny 3 Dream Team",
+      "divisionId": 0,
+      "players": [
+        {
+          "id": "-16018",
+          "name": "Saints D/ST",
+          "position": "DEF",
+          "proTeamId": 18,
+          "ownerTeamId": 5,
+          "ownerTeamName": "Kenny 3 Dream Team"
+        }
+      ]
+    },
+    {
+      "id": 6,
+      "name": "Heebie Jeebies",
+      "divisionId": 0,
+      "players": [
+        {
+          "id": "4361307",
+          "name": "Trey McBride",
+          "position": "TE",
+          "proTeamId": 22,
+          "ownerTeamId": 6,
+          "ownerTeamName": "Heebie Jeebies"
+        }
+      ]
+    },
+    {
+      "id": 7,
+      "name": "achane but i got me a  few on",
+      "divisionId": 0,
+      "players": [
+        {
+          "id": "-16016",
+          "name": "Vikings D/ST",
+          "position": "DEF",
+          "proTeamId": 16,
+          "ownerTeamId": 7,
+          "ownerTeamName": "achane but i got me a  few on"
+        }
+      ]
+    },
+    {
+      "id": 8,
+      "name": "My Whole Team Is Injured",
+      "divisionId": 0,
+      "players": [
+        {
+          "id": "4259545",
+          "name": "D'Andre Swift",
+          "position": "RB",
+          "proTeamId": 3,
+          "ownerTeamId": 8,
+          "ownerTeamName": "My Whole Team Is Injured"
+        },
+        {
+          "id": "16800",
+          "name": "Davante Adams",
+          "position": "WR",
+          "proTeamId": 14,
+          "ownerTeamId": 8,
+          "ownerTeamName": "My Whole Team Is Injured"
+        }
+      ]
+    },
+    {
+      "id": 9,
+      "name": "MILK MAN",
+      "divisionId": 0,
+      "players": [
+        {
+          "id": "4430737",
+          "name": "Kyren Williams",
+          "position": "RB",
+          "proTeamId": 14,
+          "ownerTeamId": 9,
+          "ownerTeamName": "MILK MAN"
+        },
+        {
+          "id": "3916387",
+          "name": "Lamar Jackson",
+          "position": "QB",
+          "proTeamId": 33,
+          "ownerTeamId": 9,
+          "ownerTeamName": "MILK MAN"
+        },
+        {
+          "id": "4696981",
+          "name": "Cam Skattebo",
+          "position": "RB",
+          "proTeamId": 19,
+          "ownerTeamId": 9,
+          "ownerTeamName": "MILK MAN"
+        }
+      ]
+    },
+    {
+      "id": 10,
+      "name": "Bower Ranger",
+      "divisionId": 0,
+      "players": [
+        {
+          "id": "4432665",
+          "name": "Brock Bowers",
+          "position": "TE",
+          "proTeamId": 13,
+          "ownerTeamId": 10,
+          "ownerTeamName": "Bower Ranger"
+        }
+      ]
+    },
+    {
+      "id": 11,
+      "name": "Pissin' on my Nabers Flowers",
+      "divisionId": 0,
+      "players": [
+        {
+          "id": "4429615",
+          "name": "Zay Flowers",
+          "position": "WR",
+          "proTeamId": 33,
+          "ownerTeamId": 11,
+          "ownerTeamName": "Pissin' on my Nabers Flowers"
+        },
+        {
+          "id": "3918298",
+          "name": "Josh Allen",
+          "position": "QB",
+          "proTeamId": 2,
+          "ownerTeamId": 11,
+          "ownerTeamName": "Pissin' on my Nabers Flowers"
+        },
+        {
+          "id": "4241416",
+          "name": "Chuba Hubbard",
+          "position": "RB",
+          "proTeamId": 29,
+          "ownerTeamId": 11,
+          "ownerTeamName": "Pissin' on my Nabers Flowers"
+        }
+      ]
+    },
+    {
+      "id": 12,
+      "name": "All hope is gone",
+      "divisionId": 0,
+      "players": [
+        {
+          "id": "4685472",
+          "name": "Tetairoa McMillan",
+          "position": "WR",
+          "proTeamId": 29,
+          "ownerTeamId": 12,
+          "ownerTeamName": "All hope is gone"
+        }
+      ]
+    }
+  ],
+  "scope": "selectedProBowlPlayers"
 }
