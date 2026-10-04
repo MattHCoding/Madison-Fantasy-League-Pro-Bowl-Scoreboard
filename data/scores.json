@@ -2,7 +2,7 @@
   "season": 2026,
   "leagueId": 1297942157,
   "week": 4,
-  "updatedAt": "2026-10-04T14:21:08.199470+00:00",
+  "updatedAt": "2026-10-04T14:48:10.882581+00:00",
   "projectionSource": "ESPN fantasy weekly appliedTotal",
   "liveProjectionModel": "actual + timeRemainingFraction ** pointsRemainingExponent * initialProjection",
   "pointsRemainingExponent": 1,
@@ -643,7 +643,7 @@
       "id": "401872965",
       "state": "in",
       "completed": false,
-      "detail": "12:36 - 2nd",
+      "detail": "2:00 - 2nd",
       "date": "2026-10-04T13:30Z",
       "teams": [
         {
@@ -655,13 +655,13 @@
         {
           "id": "11",
           "name": "IND",
-          "score": "0",
+          "score": "7",
           "homeAway": "away"
         }
       ],
       "period": 2,
-      "displayClock": "12:36",
-      "timeRemainingFraction": 0.71
+      "displayClock": "2:00",
+      "timeRemainingFraction": 0.5333333333333333
     },
     {
       "id": "401872971",
