@@ -2,7 +2,7 @@
   "season": 2026,
   "leagueId": 1297942157,
   "week": 4,
-  "updatedAt": "2026-10-05T14:55:28.864389+00:00",
+  "updatedAt": "2026-10-05T21:49:24.836979+00:00",
   "projectionSource": "ESPN fantasy weekly appliedTotal",
   "liveProjectionModel": "actual + timeRemainingFraction ** pointsRemainingExponent * initialProjection",
   "pointsRemainingExponent": 1,
