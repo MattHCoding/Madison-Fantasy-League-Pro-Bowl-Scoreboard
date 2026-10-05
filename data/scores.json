@@ -2,7 +2,7 @@
   "season": 2026,
   "leagueId": 1297942157,
   "week": 4,
-  "updatedAt": "2026-10-05T00:42:33.047338+00:00",
+  "updatedAt": "2026-10-05T06:16:12.671322+00:00",
   "projectionSource": "ESPN fantasy weekly appliedTotal",
   "liveProjectionModel": "actual + timeRemainingFraction ** pointsRemainingExponent * initialProjection",
   "pointsRemainingExponent": 1,
@@ -43,37 +43,37 @@
       "injuryStatus": "ACTIVE"
     },
     "4241416": {
-      "actual": -0.3,
+      "actual": 25.4,
       "initialProjection": 15.06569643,
       "capturedBeforeKickoff": true,
       "espnWeeklyProjection": 15.06569643,
-      "liveProjection": 12.928518448675,
-      "pointsRemainingFraction": 0.8780555555555556,
-      "timeRemainingFraction": 0.8780555555555556,
-      "state": "in",
+      "liveProjection": 25.4,
+      "pointsRemainingFraction": 0.0,
+      "timeRemainingFraction": 0.0,
+      "state": "post",
       "game": {
         "id": "401872978",
-        "state": "in",
-        "completed": false,
-        "detail": "7:41 - 1st",
+        "state": "post",
+        "completed": true,
+        "detail": "Final",
         "date": "2026-10-05T00:20Z",
         "teams": [
           {
             "id": "29",
             "name": "CAR",
-            "score": "0",
+            "score": "32",
             "homeAway": "home"
           },
           {
             "id": "8",
             "name": "DET",
-            "score": "3",
+            "score": "26",
             "homeAway": "away"
           }
         ],
-        "period": 1,
-        "displayClock": "7:41",
-        "timeRemainingFraction": 0.8780555555555556
+        "period": 4,
+        "displayClock": "0:00",
+        "timeRemainingFraction": 0.0
       },
       "injuryStatus": "ACTIVE"
     },
@@ -463,37 +463,37 @@
       "injuryStatus": "ACTIVE"
     },
     "4685472": {
-      "actual": 3.2,
+      "actual": 38.2,
       "initialProjection": 13.49521535,
       "capturedBeforeKickoff": true,
       "espnWeeklyProjection": 13.49521535,
-      "liveProjection": 15.049548811486112,
-      "pointsRemainingFraction": 0.8780555555555556,
-      "timeRemainingFraction": 0.8780555555555556,
-      "state": "in",
+      "liveProjection": 38.2,
+      "pointsRemainingFraction": 0.0,
+      "timeRemainingFraction": 0.0,
+      "state": "post",
       "game": {
         "id": "401872978",
-        "state": "in",
-        "completed": false,
-        "detail": "7:41 - 1st",
+        "state": "post",
+        "completed": true,
+        "detail": "Final",
         "date": "2026-10-05T00:20Z",
         "teams": [
           {
             "id": "29",
             "name": "CAR",
-            "score": "0",
+            "score": "32",
             "homeAway": "home"
           },
           {
             "id": "8",
             "name": "DET",
-            "score": "3",
+            "score": "26",
             "homeAway": "away"
           }
         ],
-        "period": 1,
-        "displayClock": "7:41",
-        "timeRemainingFraction": 0.8780555555555556
+        "period": 4,
+        "displayClock": "0:00",
+        "timeRemainingFraction": 0.0
       },
       "injuryStatus": "ACTIVE"
     },
@@ -640,28 +640,52 @@
   },
   "games": [
     {
-      "id": "401872978",
-      "state": "in",
+      "id": "401872979",
+      "state": "pre",
       "completed": false,
-      "detail": "7:41 - 1st",
-      "date": "2026-10-05T00:20Z",
+      "detail": "10/5 - 8:15 PM EDT",
+      "date": "2026-10-06T00:15Z",
       "teams": [
         {
-          "id": "29",
-          "name": "CAR",
+          "id": "18",
+          "name": "NO",
           "score": "0",
           "homeAway": "home"
         },
         {
-          "id": "8",
-          "name": "DET",
-          "score": "3",
+          "id": "1",
+          "name": "ATL",
+          "score": "0",
           "homeAway": "away"
         }
       ],
-      "period": 1,
-      "displayClock": "7:41",
-      "timeRemainingFraction": 0.8780555555555556
+      "period": 0,
+      "displayClock": "0:00",
+      "timeRemainingFraction": 1.0
+    },
+    {
+      "id": "401872964",
+      "state": "post",
+      "completed": true,
+      "detail": "Final",
+      "date": "2026-10-02T00:15Z",
+      "teams": [
+        {
+          "id": "5",
+          "name": "CLE",
+          "score": "27",
+          "homeAway": "home"
+        },
+        {
+          "id": "23",
+          "name": "PIT",
+          "score": "24",
+          "homeAway": "away"
+        }
+      ],
+      "period": 4,
+      "displayClock": "0:00",
+      "timeRemainingFraction": 0.0
     },
     {
       "id": "401872965",
@@ -976,52 +1000,28 @@
       "timeRemainingFraction": 0.0
     },
     {
-      "id": "401872964",
+      "id": "401872978",
       "state": "post",
       "completed": true,
       "detail": "Final",
-      "date": "2026-10-02T00:15Z",
+      "date": "2026-10-05T00:20Z",
       "teams": [
         {
-          "id": "5",
-          "name": "CLE",
-          "score": "27",
+          "id": "29",
+          "name": "CAR",
+          "score": "32",
           "homeAway": "home"
         },
         {
-          "id": "23",
-          "name": "PIT",
-          "score": "24",
+          "id": "8",
+          "name": "DET",
+          "score": "26",
           "homeAway": "away"
         }
       ],
       "period": 4,
       "displayClock": "0:00",
       "timeRemainingFraction": 0.0
-    },
-    {
-      "id": "401872979",
-      "state": "pre",
-      "completed": false,
-      "detail": "10/5 - 8:15 PM EDT",
-      "date": "2026-10-06T00:15Z",
-      "teams": [
-        {
-          "id": "18",
-          "name": "NO",
-          "score": "0",
-          "homeAway": "home"
-        },
-        {
-          "id": "1",
-          "name": "ATL",
-          "score": "0",
-          "homeAway": "away"
-        }
-      ],
-      "period": 0,
-      "displayClock": "0:00",
-      "timeRemainingFraction": 1.0
     }
   ]
 }
