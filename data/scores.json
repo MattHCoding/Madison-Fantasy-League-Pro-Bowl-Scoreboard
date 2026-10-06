@@ -2,7 +2,7 @@
   "season": 2026,
   "leagueId": 1297942157,
   "week": 4,
-  "updatedAt": "2026-10-05T21:49:24.836979+00:00",
+  "updatedAt": "2026-10-06T01:56:56.615042+00:00",
   "projectionSource": "ESPN fantasy weekly appliedTotal",
   "liveProjectionModel": "actual + timeRemainingFraction ** pointsRemainingExponent * initialProjection",
   "pointsRemainingExponent": 1,
@@ -113,37 +113,37 @@
       "injuryStatus": "ACTIVE"
     },
     "4361370": {
-      "actual": 0.0,
+      "actual": 7.7,
       "initialProjection": 15.04889542,
       "capturedBeforeKickoff": true,
       "espnWeeklyProjection": 15.04889542,
-      "liveProjection": 15.04889542,
-      "pointsRemainingFraction": 1.0,
-      "timeRemainingFraction": 1.0,
-      "state": "pre",
+      "liveProjection": 15.22444771,
+      "pointsRemainingFraction": 0.5,
+      "timeRemainingFraction": 0.5,
+      "state": "in",
       "game": {
         "id": "401872979",
-        "state": "pre",
+        "state": "in",
         "completed": false,
-        "detail": "10/5 - 8:15 PM EDT",
+        "detail": "Halftime",
         "date": "2026-10-06T00:15Z",
         "teams": [
           {
             "id": "18",
             "name": "NO",
-            "score": "0",
+            "score": "7",
             "homeAway": "home"
           },
           {
             "id": "1",
             "name": "ATL",
-            "score": "0",
+            "score": "24",
             "homeAway": "away"
           }
         ],
-        "period": 0,
+        "period": 2,
         "displayClock": "0:00",
-        "timeRemainingFraction": 1.0
+        "timeRemainingFraction": 0.5
       },
       "injuryStatus": "ACTIVE"
     },
@@ -288,37 +288,37 @@
       "injuryStatus": "ACTIVE"
     },
     "-16018": {
-      "actual": 0.0,
+      "actual": 1.0,
       "initialProjection": 5.12090287,
       "capturedBeforeKickoff": true,
       "espnWeeklyProjection": 5.12090287,
-      "liveProjection": 5.12090287,
-      "pointsRemainingFraction": 1.0,
-      "timeRemainingFraction": 1.0,
-      "state": "pre",
+      "liveProjection": 3.560451435,
+      "pointsRemainingFraction": 0.5,
+      "timeRemainingFraction": 0.5,
+      "state": "in",
       "game": {
         "id": "401872979",
-        "state": "pre",
+        "state": "in",
         "completed": false,
-        "detail": "10/5 - 8:15 PM EDT",
+        "detail": "Halftime",
         "date": "2026-10-06T00:15Z",
         "teams": [
           {
             "id": "18",
             "name": "NO",
-            "score": "0",
+            "score": "7",
             "homeAway": "home"
           },
           {
             "id": "1",
             "name": "ATL",
-            "score": "0",
+            "score": "24",
             "homeAway": "away"
           }
         ],
-        "period": 0,
+        "period": 2,
         "displayClock": "0:00",
-        "timeRemainingFraction": 1.0
+        "timeRemainingFraction": 0.5
       },
       "injuryStatus": null
     },
@@ -390,7 +390,7 @@
         "displayClock": "0:00",
         "timeRemainingFraction": 0.0
       },
-      "injuryStatus": "ACTIVE"
+      "injuryStatus": "QUESTIONABLE"
     },
     "4430737": {
       "actual": 31.7,
@@ -641,27 +641,27 @@
   "games": [
     {
       "id": "401872979",
-      "state": "pre",
+      "state": "in",
       "completed": false,
-      "detail": "10/5 - 8:15 PM EDT",
+      "detail": "Halftime",
       "date": "2026-10-06T00:15Z",
       "teams": [
         {
           "id": "18",
           "name": "NO",
-          "score": "0",
+          "score": "7",
           "homeAway": "home"
         },
         {
           "id": "1",
           "name": "ATL",
-          "score": "0",
+          "score": "24",
           "homeAway": "away"
         }
       ],
-      "period": 0,
+      "period": 2,
       "displayClock": "0:00",
-      "timeRemainingFraction": 1.0
+      "timeRemainingFraction": 0.5
     },
     {
       "id": "401872964",
