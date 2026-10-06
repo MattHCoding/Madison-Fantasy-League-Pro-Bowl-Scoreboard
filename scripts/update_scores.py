@@ -1,5 +1,6 @@
 """Query scores/projections for selected IDs; never reads current fantasy rosters."""
 import argparse
+import math
 from datetime import datetime, timezone, timedelta
 from espn import ROOT, get_json, league_query, now, read, stat_points, unpack, validate, write
 
@@ -85,6 +86,34 @@ def build_scores(config, snapshot, data, board, previous):
     return {'season': config['season'], 'leagueId': config['leagueId'], 'week': config['week'], 'updatedAt': now(), 'projectionSource': 'ESPN fantasy weekly appliedTotal', 'liveProjectionModel': 'actual + timeRemainingFraction ** pointsRemainingExponent * initialProjection', 'pointsRemainingExponent': config.get('pointsRemainingExponent', 1), 'players': rows, 'games': games}
 
 
+def selected_scores_final(config, pool, ids, board, previous):
+    """Stop polling only after final scores for this selection have been saved."""
+    if not ids or any(previous.get(key) != config[key] for key in ('season', 'leagueId', 'week')):
+        return False
+    by_team, games = game_map(board)
+    by_id = {game['id']: game for game in games}
+    rows = previous.get('players', {})
+    if set(rows) != set(ids):
+        return False
+    for pid in ids:
+        row = rows[pid]
+        actual = row.get('actual')
+        if type(actual) not in (int, float) or not math.isfinite(actual):
+            return False
+        if row.get('state') == 'bye':
+            team = pool[pid][0].get('proTeamId')
+            if team in (None, 0, '0') or str(team) in by_team or row.get('game') is not None:
+                return False
+        elif row.get('state') == 'post':
+            saved_game = row.get('game') or {}
+            game = by_id.get(str(saved_game.get('id')))
+            if not saved_game.get('completed') or game is None or not game['completed']:
+                return False
+        else:
+            return False
+    return True
+
+
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('--scheduled', action='store_true')
@@ -94,12 +123,17 @@ def main():
         print('Matchup is not enabled; no ESPN requests made.')
         return
     snapshot = read(ROOT / f"data/rosters-{config['season']}.json")
-    validate(config, snapshot, complete=True)
+    pool = validate(config, snapshot, complete=True)
     ids = [str(p['id']) for side in config['sides'].values() for p in side['players']]
     board = get_json(f"https://site.api.espn.com/apis/site/v2/sports/football/nfl/scoreboard?dates={config['season']}&seasontype=2&week={config['week']}")
     if not board.get('events'):
         raise ValueError('No schedule returned; preserving the last successful scores.')
+    path = ROOT / 'data/scores.json'
+    previous = read(path) if path.exists() else {}
     if args.scheduled:
+        if selected_scores_final(config, pool, ids, board, previous):
+            print('Every selected player is final or on bye; no fantasy score query made.')
+            return
         events = board['events']
         starts = [datetime.fromisoformat(event['date'].replace('Z', '+00:00')) for event in events]
         clock = datetime.now(timezone.utc)
@@ -108,8 +142,6 @@ def main():
             print('Outside the matchup refresh window; no fantasy score query made.')
             return
     data = league_query(config, ['kona_playercard'], config['week'], ids)
-    path = ROOT / 'data/scores.json'
-    previous = read(path) if path.exists() else {}
     write(path, build_scores(config, snapshot, data, board, previous))
     print('Updated selected player scores and ESPN initial projections.')
 

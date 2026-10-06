@@ -59,9 +59,14 @@ The browser reloads public data every five minutes. On GitHub Pages it reads san
 JSON directly from the repository so workflow data commits do not depend on a
 second Pages build. Local previews read their local JSON files. The Actions workflow requests
 updates approximately every five minutes on NFL game days (UTC); GitHub may delay
-scheduled jobs. It makes no API requests while the matchup is disabled, and stops
-polling after all games are final and the stat-correction window has passed.
-Use **scores** for a manual refresh when needed. Score files contain a timestamp
+scheduled jobs. It makes no API requests while the matchup is disabled. Scheduled
+score refreshes skip the fantasy query once every selected player's final or bye
+score has been saved for the current season, league, week, and selected IDs. The
+NFL scoreboard is still checked to verify saved games are complete. Missing scores
+and unfinished players keep refreshing, including the first final score capture.
+The existing early/late refresh windows still apply. Use **scores** for a manual
+refresh or later stat corrections; manual refreshes bypass the completed-selection
+guard. Score files contain a timestamp
 so stale results are visible. This is not a second-by-second live feed.
 
 ## ESPN in-game projection findings
