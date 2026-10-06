@@ -2,7 +2,7 @@
   "season": 2026,
   "leagueId": 1297942157,
   "week": 4,
-  "updatedAt": "2026-10-06T01:56:56.615042+00:00",
+  "updatedAt": "2026-10-06T08:42:26.713486+00:00",
   "projectionSource": "ESPN fantasy weekly appliedTotal",
   "liveProjectionModel": "actual + timeRemainingFraction ** pointsRemainingExponent * initialProjection",
   "pointsRemainingExponent": 1,
@@ -113,37 +113,37 @@
       "injuryStatus": "ACTIVE"
     },
     "4361370": {
-      "actual": 7.7,
+      "actual": 15.6,
       "initialProjection": 15.04889542,
       "capturedBeforeKickoff": true,
       "espnWeeklyProjection": 15.04889542,
-      "liveProjection": 15.22444771,
-      "pointsRemainingFraction": 0.5,
-      "timeRemainingFraction": 0.5,
-      "state": "in",
+      "liveProjection": 15.6,
+      "pointsRemainingFraction": 0.0,
+      "timeRemainingFraction": 0.0,
+      "state": "post",
       "game": {
         "id": "401872979",
-        "state": "in",
-        "completed": false,
-        "detail": "Halftime",
+        "state": "post",
+        "completed": true,
+        "detail": "Final",
         "date": "2026-10-06T00:15Z",
         "teams": [
           {
             "id": "18",
             "name": "NO",
-            "score": "7",
+            "score": "24",
             "homeAway": "home"
           },
           {
             "id": "1",
             "name": "ATL",
-            "score": "24",
+            "score": "45",
             "homeAway": "away"
           }
         ],
-        "period": 2,
+        "period": 4,
         "displayClock": "0:00",
-        "timeRemainingFraction": 0.5
+        "timeRemainingFraction": 0.0
       },
       "injuryStatus": "ACTIVE"
     },
@@ -288,37 +288,37 @@
       "injuryStatus": "ACTIVE"
     },
     "-16018": {
-      "actual": 1.0,
+      "actual": -2.0,
       "initialProjection": 5.12090287,
       "capturedBeforeKickoff": true,
       "espnWeeklyProjection": 5.12090287,
-      "liveProjection": 3.560451435,
-      "pointsRemainingFraction": 0.5,
-      "timeRemainingFraction": 0.5,
-      "state": "in",
+      "liveProjection": -2.0,
+      "pointsRemainingFraction": 0.0,
+      "timeRemainingFraction": 0.0,
+      "state": "post",
       "game": {
         "id": "401872979",
-        "state": "in",
-        "completed": false,
-        "detail": "Halftime",
+        "state": "post",
+        "completed": true,
+        "detail": "Final",
         "date": "2026-10-06T00:15Z",
         "teams": [
           {
             "id": "18",
             "name": "NO",
-            "score": "7",
+            "score": "24",
             "homeAway": "home"
           },
           {
             "id": "1",
             "name": "ATL",
-            "score": "24",
+            "score": "45",
             "homeAway": "away"
           }
         ],
-        "period": 2,
+        "period": 4,
         "displayClock": "0:00",
-        "timeRemainingFraction": 0.5
+        "timeRemainingFraction": 0.0
       },
       "injuryStatus": null
     },
@@ -639,30 +639,6 @@
     }
   },
   "games": [
-    {
-      "id": "401872979",
-      "state": "in",
-      "completed": false,
-      "detail": "Halftime",
-      "date": "2026-10-06T00:15Z",
-      "teams": [
-        {
-          "id": "18",
-          "name": "NO",
-          "score": "7",
-          "homeAway": "home"
-        },
-        {
-          "id": "1",
-          "name": "ATL",
-          "score": "24",
-          "homeAway": "away"
-        }
-      ],
-      "period": 2,
-      "displayClock": "0:00",
-      "timeRemainingFraction": 0.5
-    },
     {
       "id": "401872964",
       "state": "post",
@@ -1016,6 +992,30 @@
           "id": "8",
           "name": "DET",
           "score": "26",
+          "homeAway": "away"
+        }
+      ],
+      "period": 4,
+      "displayClock": "0:00",
+      "timeRemainingFraction": 0.0
+    },
+    {
+      "id": "401872979",
+      "state": "post",
+      "completed": true,
+      "detail": "Final",
+      "date": "2026-10-06T00:15Z",
+      "teams": [
+        {
+          "id": "18",
+          "name": "NO",
+          "score": "24",
+          "homeAway": "home"
+        },
+        {
+          "id": "1",
+          "name": "ATL",
+          "score": "45",
           "homeAway": "away"
         }
       ],
